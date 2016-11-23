@@ -14,13 +14,13 @@ Application tech stack:
 
 ### How to run it
 
-* Maven way
+* Maven way  
     Run the command below on the **server** module:
     ````
     mvn spring-boot:run
     ````
 
-* Agnostic way
+* Agnostic way  
     Run the compiled jar:
     ````
     java -jar <the-jar-name.jar>
