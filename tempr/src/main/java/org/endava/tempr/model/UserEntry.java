@@ -28,14 +28,26 @@ public class UserEntry {
     }
 
     public String getUserName(){
+
         return userName;
     }
 
     public String getUserPassword(){
+
         return userPassword;
     }
 
-    public long getId(){
+    public Long getId(){
+
         return userId;
+    }
+
+    public void setUserName(String userName){
+
+        this.userName = userName;
+    }
+
+    public void setUserPassword(String userPassword){
+        this.userPassword = userPassword;
     }
 }
