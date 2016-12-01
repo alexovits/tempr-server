@@ -20,7 +20,7 @@ public class UserServiceBean implements UserService {
 
     @Override
     public User findOne(Long id) {
-        return userRepository.findByUserId(id);
+        return userRepository.findById(id);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class UserServiceBean implements UserService {
 
     @Override
     public User updateUser(User user) {
-        User userToUpdate = userRepository.findByUserId(user.getId());
+        User userToUpdate = userRepository.findById(user.getId());
         if(userToUpdate == null) {
             return null;
         }
