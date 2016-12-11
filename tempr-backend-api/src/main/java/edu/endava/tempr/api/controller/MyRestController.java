@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @SpringBootApplication
 @EnableAutoConfiguration
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders="*", allowCredentials="true")
 public class MyRestController {
 
     @Autowired
