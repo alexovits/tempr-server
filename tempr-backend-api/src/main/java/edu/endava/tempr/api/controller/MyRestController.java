@@ -97,7 +97,8 @@ public class MyRestController {
             http.csrf().disable();
             // @formatter:on
         }
-		
+
+        //For ignoring the OPTIONS preflights
 		@Override
 		public void configure(WebSecurity web) throws Exception {
 			web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
