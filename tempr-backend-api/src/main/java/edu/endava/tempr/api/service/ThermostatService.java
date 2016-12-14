@@ -1,7 +1,6 @@
 package edu.endava.tempr.api.service;
 
 import edu.endava.tempr.model.Thermostat;
-import edu.endava.tempr.model.User;
 
 import java.util.List;
 

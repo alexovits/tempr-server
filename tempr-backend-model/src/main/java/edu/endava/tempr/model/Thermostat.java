@@ -1,6 +1,8 @@
 package edu.endava.tempr.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by zsoltszabo on 13/12/2016.
