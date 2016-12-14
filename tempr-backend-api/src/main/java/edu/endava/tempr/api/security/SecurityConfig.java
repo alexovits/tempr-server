@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * Created by zsoltszabo on 14/12/2016.
  */
 @Configuration
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

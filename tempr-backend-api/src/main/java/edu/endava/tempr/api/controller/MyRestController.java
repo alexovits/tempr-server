@@ -1,30 +1,18 @@
 package edu.endava.tempr.api.controller;
 
 import edu.endava.tempr.api.assembler.UserAssembler;
-import edu.endava.tempr.api.security.SecurityUserDetailsService;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.common.UserDto;
 import edu.endava.tempr.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@EnableAutoConfiguration
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class MyRestController {
@@ -62,6 +50,11 @@ public class MyRestController {
         User user = userAssembler.toEntity(userDto);
         //Based on whether the user was created or not
         return (userService.createUser(user) != null) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/deviceregister/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> regDevice() {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

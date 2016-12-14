@@ -2,7 +2,9 @@ package edu.endava.tempr.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
@@ -14,8 +16,10 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public User() {
-    }
+    @OneToMany(targetEntity=Thermostat.class)
+    private List thermostatList;
+
+    public User() {}
 
     public User(String username, String password) {
         this.username = username;
@@ -46,4 +50,11 @@ public class User extends BaseEntity {
                 '}';
     }
 
+    public List getThermostatList() {
+        return thermostatList;
+    }
+
+    public void setThermostatList(List thermostatList) {
+        this.thermostatList = thermostatList;
+    }
 }
