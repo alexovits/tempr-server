@@ -16,5 +16,5 @@ public interface ThermostatService {
 
     Thermostat updateThermostat(Thermostat thermostat);
 
-    void deletThermostat(Long id);
+    void deleteThermostat(Long id);
 }

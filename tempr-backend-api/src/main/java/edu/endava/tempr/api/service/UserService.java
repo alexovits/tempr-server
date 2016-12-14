@@ -1,6 +1,7 @@
 package edu.endava.tempr.api.service;
 
 
+import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface UserService {
     User updateUser(User user);
 
     void deleteUser(Long id);
+
+    void addThermostat(Thermostat thermostat);
 }
