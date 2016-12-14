@@ -1,4 +1,4 @@
-package edu.endava.tempr.api.service;
+package edu.endava.tempr.api.security;
 
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.UserRepository;
@@ -17,12 +17,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-
-        if(user == null){
-            throw new UsernameNotFoundException(username);
-        }else{
-            UserDetails details = new SecurityUserDetails(user);
-            return details;
-        }
+        if (user != null) return new SecurityUserDetails(user);
+        throw new UsernameNotFoundException(username);
     }
 }

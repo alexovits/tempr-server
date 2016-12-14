@@ -1,7 +1,7 @@
 package edu.endava.tempr.api.controller;
 
 import edu.endava.tempr.api.assembler.UserAssembler;
-import edu.endava.tempr.api.service.SecurityUserDetailsService;
+import edu.endava.tempr.api.security.SecurityUserDetailsService;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.common.UserDto;
 import edu.endava.tempr.model.User;
@@ -24,10 +24,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SpringBootApplication
 @EnableAutoConfiguration
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders="*", allowCredentials="true")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class MyRestController {
 
     @Autowired
@@ -44,65 +43,25 @@ public class MyRestController {
     }
 
     @RequestMapping(value = "/user/{id}/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         User user = userService.findOne(id);
+        // If no user found with the given id
         if (user == null) {
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userAssembler.toDto(user), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/login/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> loginUser() {
-        return new ResponseEntity<>(new User(), HttpStatus.OK); //401
+    public ResponseEntity<UserDto> loginUser() {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/register/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> registerUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
         User user = userAssembler.toEntity(userDto);
-        User savedUser = userService.createUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED); //201
-    }
-
-    @Configuration
-    @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-    protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-        @Autowired
-        SecurityUserDetailsService userDetailsService;
-
-        /*@Autowired
-        public void configAuthBuilder(AuthenticationManagerBuilder builder) throws Exception {
-            builder.userDetailsService(userDetailsService);
-        }*/
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(userDetailsService);
-            /*auth.inMemoryAuthentication()
-                    .withUser("user1").password("secret1").roles("USER")
-                    .and()
-                    .withUser("user2").password("secret2").roles("USER");*/
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            // @formatter:off
-            //http.authorizeRequests().anyRequest().fullyAuthenticated();
-            //http.authorizeRequests().anyRequest().authenticated();
-            http.httpBasic();
-            http.authorizeRequests()
-                    .antMatchers("/user/register/").permitAll()
-                    .anyRequest().authenticated();
-            http.csrf().disable();
-            // @formatter:on
-        }
-
-        //For ignoring the OPTIONS preflights
-		@Override
-		public void configure(WebSecurity web) throws Exception {
-			web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
-		}
+        //Based on whether the user was created or not
+        return (userService.createUser(user) != null) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

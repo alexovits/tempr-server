@@ -25,7 +25,14 @@ public class UserServiceBean implements UserService {
 
     @Override
     public User createUser(User user) {
-        return userRepository.save(user);
+        User savedUser = null;
+        try {
+            savedUser = userRepository.save(user);
+        } catch(Exception ex){
+            //Log it later
+            ex.printStackTrace();
+        }
+        return savedUser;
     }
 
     @Override

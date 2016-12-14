@@ -1,4 +1,4 @@
-package edu.endava.tempr.api.service;
+package edu.endava.tempr.api.security;
 
 import edu.endava.tempr.model.User;
 import org.springframework.security.core.GrantedAuthority;
