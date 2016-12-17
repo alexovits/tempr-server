@@ -23,16 +23,19 @@ public class User extends BaseEntity {
     private String lastName;
 
     @Column(name = "email")
-    private String emailAddress;
+    private String email;
 
     @OneToMany(targetEntity=Thermostat.class)
     private List thermostatList;
 
     public User() {}
 
-    public User(String username, String password) {
+    public User(String username, String password, String firstName, String lastName, String email) {
         this.username = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
     }
 
     public String getUsername() {
@@ -84,10 +87,10 @@ public class User extends BaseEntity {
     }
 
     public String getEmailAddress() {
-        return emailAddress;
+        return email;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setEmailAddress(String email) {
+        this.email = email;
     }
 }

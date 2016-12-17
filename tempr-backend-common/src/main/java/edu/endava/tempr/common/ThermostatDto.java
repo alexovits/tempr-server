@@ -4,7 +4,7 @@ package edu.endava.tempr.common;
  * Created by zsoltszabo on 14/12/2016.
  */
 public class ThermostatDto extends AbstractDto{
-    public String token;
+    private String token;
     private String name;
 
     public ThermostatDto(){}

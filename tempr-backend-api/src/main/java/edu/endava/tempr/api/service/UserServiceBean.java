@@ -35,8 +35,8 @@ public class UserServiceBean implements UserService {
     @Override
     public User createUser(User user) {
         User savedUser = null;
+        user.setPassword(encryptionProvider.hashWithSHA256(user.getPassword()));
         try {
-            savedUser.setPassword(encryptionProvider.hashWithSHA256(savedUser.getPassword()));
             savedUser = userRepository.save(user);
         } catch(Exception ex){
             //Log it later
@@ -60,7 +60,7 @@ public class UserServiceBean implements UserService {
     }
 
     @Override
-    public void addThermostat(Thermostat thermostat) {
+    public void addThermostat(User user, Thermostat thermostat) {
 
     }
 
