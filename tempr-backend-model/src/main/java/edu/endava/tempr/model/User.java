@@ -16,6 +16,15 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "firstname")
+    private String firstName;
+
+    @Column(name = "lastname")
+    private String lastName;
+
+    @Column(name = "email")
+    private String emailAddress;
+
     @OneToMany(targetEntity=Thermostat.class)
     private List thermostatList;
 
@@ -56,5 +65,29 @@ public class User extends BaseEntity {
 
     public void setThermostatList(List thermostatList) {
         this.thermostatList = thermostatList;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

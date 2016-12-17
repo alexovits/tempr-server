@@ -1,10 +1,13 @@
 package edu.endava.tempr.api.service;
 
+import edu.endava.tempr.api.util.EncryptionProvider;
+import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
 import java.util.List;
 
 @Service
@@ -12,6 +15,12 @@ public class UserServiceBean implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private EncryptionProvider encryptionProvider;
+
+    public UserServiceBean(){
+        encryptionProvider = new EncryptionProvider();
+    }
 
     @Override
     public List<User> findAll() {
@@ -27,6 +36,7 @@ public class UserServiceBean implements UserService {
     public User createUser(User user) {
         User savedUser = null;
         try {
+            savedUser.setPassword(encryptionProvider.hashWithSHA256(savedUser.getPassword()));
             savedUser = userRepository.save(user);
         } catch(Exception ex){
             //Log it later
@@ -48,5 +58,11 @@ public class UserServiceBean implements UserService {
     public void deleteUser(Long id) {
         userRepository.delete(id);
     }
+
+    @Override
+    public void addThermostat(Thermostat thermostat) {
+
+    }
+
 
 }
