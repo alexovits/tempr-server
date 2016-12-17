@@ -19,7 +19,7 @@ public class UserAssembler implements Assembler<UserDto, User> {
         user.setPassword(dto.getPassword());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
-        user.setEmailAddress(dto.getEmail());
+        user.setEmail(dto.getEmail());
         return user;
     }
 
@@ -31,7 +31,7 @@ public class UserAssembler implements Assembler<UserDto, User> {
         userDto.setPassword(entity.getPassword());
         userDto.setFirstName(entity.getFirstName());
         userDto.setLastName(entity.getLastName());
-        userDto.setEmail(entity.getEmailAddress());
+        userDto.setEmail(entity.getEmail());
         return userDto;
     }
 

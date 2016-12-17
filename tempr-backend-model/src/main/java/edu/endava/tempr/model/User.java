@@ -86,11 +86,11 @@ public class User extends BaseEntity {
         this.lastName = lastName;
     }
 
-    public String getEmailAddress() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmailAddress(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 }

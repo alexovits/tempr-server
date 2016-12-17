@@ -60,10 +60,6 @@ public class UserDto extends AbstractDto {
         this.email = email;
     }
 
-    public String fucktheSystem(){
-        return "asda";
-    }
-
     @Override
     public String toString() {
         return "UserDto{" +
