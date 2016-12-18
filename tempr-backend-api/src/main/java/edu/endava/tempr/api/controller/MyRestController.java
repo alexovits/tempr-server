@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -67,20 +68,17 @@ public class MyRestController {
     public ResponseEntity<ThermostatDto> registerDevice(@RequestBody ThermostatDto thermostatDto) {
         User user = userService.findOne(thermostatDto.getUserId());
 
-        //!!!TO-DO validate if everything is okay with the input DTO!!!
-
         // If user with id is not found
         if(user == null){
             System.out.println("--------------Couldn't find user with id: "+thermostatDto.getUserId());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         System.out.println("--------------Found user with id: "+thermostatDto.getUserId()+":"+thermostatDto.getName()+":"+thermostatDto.getToken());
+
         // Create new thermostat
-        Thermostat newThermostat = thermostatService.createThermostat(thermostatAssembler.toEntity(thermostatDto));
+        Thermostat newThermostat = thermostatService.createThermostat(user, thermostatAssembler.toEntity(thermostatDto));
         System.out.println("--------------New device created, with token: "+ newThermostat.getToken()+":"+newThermostat.getName());
-        // Add it to the user's thermostat list
-        userService.addThermostat(user,newThermostat);
-        System.out.println("--------------New device added, with token: " + newThermostat.getToken());
+
         return new ResponseEntity<>(thermostatAssembler.toDto(newThermostat), HttpStatus.OK);
     }
 

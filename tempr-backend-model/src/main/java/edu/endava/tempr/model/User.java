@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -25,9 +24,10 @@ public class User extends BaseEntity {
 
     @Column(name = "email")
     private String email;
-
-    @OneToMany(targetEntity=Thermostat.class)
-    private Set<Thermostat> thermostatList;
+    //targetEntity=Thermostat.class,
+    //@OneToMany(mappedBy = "user")
+    @OneToMany(targetEntity=Thermostat.class, mappedBy = "user")
+    private List thermostatList;
 
     public User() {}
 
@@ -63,11 +63,11 @@ public class User extends BaseEntity {
                 '}';
     }
 
-    public Set<Thermostat> getThermostatList() {
+    public List<Thermostat> getThermostatList() {
         return thermostatList;
     }
 
-    public void setThermostatList(Set<Thermostat> thermostatList) {
+    public void setThermostatList(List<Thermostat> thermostatList) {
         this.thermostatList = thermostatList;
     }
 
@@ -93,5 +93,15 @@ public class User extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void addThermostat(Thermostat thermostat){
+        if(!thermostatList.contains(thermostat)){
+            thermostatList.add(thermostat);
+            if(thermostat.getUser() != null){
+                thermostat.getUser().getThermostatList().remove(thermostat);
+            }
+            thermostat.setUser(this);
+        }
     }
 }

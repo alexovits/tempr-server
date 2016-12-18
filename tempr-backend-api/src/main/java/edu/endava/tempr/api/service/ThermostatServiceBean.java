@@ -1,6 +1,7 @@
 package edu.endava.tempr.api.service;
 
 import edu.endava.tempr.model.Thermostat;
+import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.ThermostatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,12 @@ public class ThermostatServiceBean implements ThermostatService{
     }
 
     @Override
-    public Thermostat createThermostat(Thermostat thermostat) {
+    public Thermostat createThermostat(User user, Thermostat thermostat) {
         Thermostat savedThermostat = null;
+        user.addThermostat(thermostat);
         // Create a new random UUID token for the thermostat
         thermostat.setToken(UUID.randomUUID().toString());
+        thermostat.setUser(user);
         try {
             savedThermostat = thermostatRepository.save(thermostat);
         } catch(Exception ex){

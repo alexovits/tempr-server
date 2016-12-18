@@ -20,6 +20,4 @@ public interface UserService {
     User updateUser(User user);
 
     void deleteUser(Long id);
-
-    void addThermostat(User user, Thermostat thermostat);
 }

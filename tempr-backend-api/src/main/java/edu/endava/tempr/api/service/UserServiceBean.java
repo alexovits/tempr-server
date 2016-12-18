@@ -7,7 +7,7 @@ import edu.endava.tempr.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -57,11 +57,6 @@ public class UserServiceBean implements UserService {
     @Override
     public void deleteUser(Long id) {
         userRepository.delete(id);
-    }
-
-    @Override
-    public void addThermostat(User user, Thermostat thermostat) {
-        user.getThermostatList().add(thermostat);
     }
 
 
