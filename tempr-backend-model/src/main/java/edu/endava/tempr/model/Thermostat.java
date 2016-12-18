@@ -13,17 +13,18 @@ public class Thermostat extends BaseEntity {
     @Column(name = "token", nullable = false, unique = true)
     private String token;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "userId", nullable = false)
+    @Column(name = "kocsma", nullable = false)
     private Long userId;
 
     public Thermostat(){}
 
-    public Thermostat(String token, String name){
+    public Thermostat(String token, String name, Long userId){
         this.name = name;
         this.token = token;
+        this.userId = userId;
     }
 
     public String getToken() {

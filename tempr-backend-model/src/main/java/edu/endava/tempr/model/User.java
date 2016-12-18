@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -26,7 +27,7 @@ public class User extends BaseEntity {
     private String email;
 
     @OneToMany(targetEntity=Thermostat.class)
-    private List thermostatList;
+    private Set<Thermostat> thermostatList;
 
     public User() {}
 
@@ -62,11 +63,11 @@ public class User extends BaseEntity {
                 '}';
     }
 
-    public List getThermostatList() {
+    public Set<Thermostat> getThermostatList() {
         return thermostatList;
     }
 
-    public void setThermostatList(List thermostatList) {
+    public void setThermostatList(Set<Thermostat> thermostatList) {
         this.thermostatList = thermostatList;
     }
 
