@@ -16,6 +16,9 @@ public class Thermostat extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "userId", nullable = false)
+    private Long userId;
+
     public Thermostat(){}
 
     public Thermostat(String token, String name){
@@ -37,5 +40,13 @@ public class Thermostat extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

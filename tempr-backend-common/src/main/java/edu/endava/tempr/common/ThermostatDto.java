@@ -6,6 +6,7 @@ package edu.endava.tempr.common;
 public class ThermostatDto extends AbstractDto{
     private String token;
     private String name;
+    private Long userId;
 
     public ThermostatDto(){}
 
@@ -36,5 +37,13 @@ public class ThermostatDto extends AbstractDto{
                 "devicename='" + name + '\'' +
                 ", token='" + token + '\'' +
                 '}';
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

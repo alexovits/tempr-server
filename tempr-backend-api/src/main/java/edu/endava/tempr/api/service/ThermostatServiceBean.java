@@ -6,6 +6,7 @@ import edu.endava.tempr.repository.ThermostatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by zsoltszabo on 14/12/2016.

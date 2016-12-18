@@ -61,7 +61,7 @@ public class UserServiceBean implements UserService {
 
     @Override
     public void addThermostat(User user, Thermostat thermostat) {
-
+        user.getThermostatList().add(thermostat);
     }
 
 

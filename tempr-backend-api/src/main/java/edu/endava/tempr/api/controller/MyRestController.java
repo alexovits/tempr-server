@@ -1,9 +1,14 @@
 package edu.endava.tempr.api.controller;
 
+import edu.endava.tempr.api.assembler.ThermostatAssembler;
 import edu.endava.tempr.api.assembler.UserAssembler;
+import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
+import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.common.UserDto;
+import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
+import org.hibernate.annotations.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +26,13 @@ public class MyRestController {
     private UserService userService;
 
     @Autowired
+    private ThermostatService thermostatService;
+
+    @Autowired
     private UserAssembler userAssembler;
+
+    @Autowired
+    private ThermostatAssembler thermostatAssembler;
 
     @RequestMapping(value = "/user/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDto>> getAllUsers() {
@@ -52,9 +63,21 @@ public class MyRestController {
         return (userService.createUser(user) != null) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(value = "/deviceregister/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> regDevice() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    @RequestMapping(value = "/thermostat/register/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ThermostatDto> registerDevice(@RequestBody ThermostatDto thermostatDto) {
+        User user = userService.findOne(thermostatDto.getUserId());
+
+        //!!!TO-DO validate if everything is okay with the iput DTO!!!
+
+        // If user with id is not found
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // Create new thermostat
+        Thermostat newThermostat = thermostatService.createThermostat(thermostatAssembler.toEntity(thermostatDto));
+        // Add it to the user's thermostat list
+        userService.addThermostat(user,newThermostat);
+        return new ResponseEntity<>(thermostatAssembler.toDto(newThermostat), HttpStatus.OK);
     }
 
 }
