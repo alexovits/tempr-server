@@ -35,7 +35,7 @@ public class UserServiceBean implements UserService {
     @Override
     public User createUser(User user) {
         User savedUser = null;
-        user.setPassword(encryptionProvider.hashWithSHA256(user.getPassword()+user.getEmail()));
+        user.setPassword(encryptionProvider.hashWithSHA256(user.getPassword()+user.getUsername()));
         try {
             savedUser = userRepository.save(user);
         } catch(Exception ex){
