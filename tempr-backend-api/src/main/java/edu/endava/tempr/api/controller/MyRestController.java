@@ -5,6 +5,7 @@ import edu.endava.tempr.api.assembler.UserAssembler;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.common.ThermostatDto;
+import edu.endava.tempr.common.ThermostatLogDto;
 import edu.endava.tempr.common.UserDto;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
@@ -65,7 +66,7 @@ public class MyRestController {
     }
 
     @RequestMapping(value = "/thermostat/register/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ThermostatDto> registerDevice(@RequestBody ThermostatDto thermostatDto) {
+    public ResponseEntity<ThermostatDto> registerThermostat(@RequestBody ThermostatDto thermostatDto) {
         User user = userService.findOne(thermostatDto.getUserId());
 
         // If user with id is not found
@@ -80,7 +81,7 @@ public class MyRestController {
     }
 
     @RequestMapping(value = "/thermostat/configure/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ThermostatDto> configureDevice(@RequestBody ThermostatDto thermostatDto) {
+    public ResponseEntity<ThermostatDto> configureThermostat(@RequestBody ThermostatDto thermostatDto) {
         Thermostat thermostat = thermostatService.findOne(thermostatDto.getToken());
 
         // If thermostat with id is not found
@@ -88,6 +89,16 @@ public class MyRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/thermostat/logTemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ThermostatLogDto> logThermostatTemperature(@RequestBody ThermostatLogDto thermostatLogDto) {
+        System.out.println("INFO Thermostat report recieved!");
+        System.out.println("INFO logTimeStamp" + thermostatLogDto.getLogTimeStamp());
+        System.out.println("INFO deviceId" + thermostatLogDto.getDeviceId());
+        System.out.println("INFO intTemp" + thermostatLogDto.getIntTemp());
+        System.out.println("INFO extTemp" + thermostatLogDto.getExtTemp());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
