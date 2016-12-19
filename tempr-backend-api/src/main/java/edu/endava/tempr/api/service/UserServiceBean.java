@@ -1,13 +1,12 @@
 package edu.endava.tempr.api.service;
 
 import edu.endava.tempr.api.util.EncryptionProvider;
-import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,7 +34,8 @@ public class UserServiceBean implements UserService {
     @Override
     public User createUser(User user) {
         User savedUser = null;
-        user.setPassword(encryptionProvider.hashWithSHA256(user.getPassword()+user.getUsername()));
+        BCryptPasswordEncoder pe = new BCryptPasswordEncoder(12);
+        user.setPassword(pe.encode(user.getPassword()));
         try {
             savedUser = userRepository.save(user);
         } catch(Exception ex){
