@@ -79,4 +79,16 @@ public class MyRestController {
         return new ResponseEntity<>(thermostatAssembler.toDto(newThermostat), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/thermostat/configure/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ThermostatDto> configureDevice(@RequestBody ThermostatDto thermostatDto) {
+        Thermostat thermostat = thermostatService.findOne(thermostatDto.getToken());
+
+        // If thermostat with id is not found
+        if(thermostat == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
