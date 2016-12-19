@@ -1,7 +1,6 @@
 package edu.endava.tempr.api.service.impl;
 
 import edu.endava.tempr.api.service.UserService;
-import edu.endava.tempr.api.util.EncryptionProvider;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,7 @@ public class UserServiceBean implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private EncryptionProvider encryptionProvider;
-
     public UserServiceBean(){
-        encryptionProvider = new EncryptionProvider();
     }
 
     @Override
