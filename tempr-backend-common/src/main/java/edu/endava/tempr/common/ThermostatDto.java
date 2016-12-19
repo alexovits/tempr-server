@@ -10,11 +10,6 @@ public class ThermostatDto extends AbstractDto{
 
     public ThermostatDto(){}
 
-    public ThermostatDto(String token, String name, Long userId){
-        this.name = name;
-        this.token = token;
-        this.userId = userId;
-    }
 
     public String getToken() {
         return token;

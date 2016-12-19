@@ -3,6 +3,7 @@ package edu.endava.tempr.api.assembler;
 
 import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.model.Thermostat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,7 +17,7 @@ public class ThermostatAssembler implements Assembler<ThermostatDto, Thermostat>
         Thermostat thermostat = new Thermostat();
         thermostat.setName(dto.getName());
         thermostat.setToken(dto.getToken());
-        //thermostat.setUserId(dto.getUserId());
+        thermostat.setUserId(dto.getUserId());
         return thermostat;
     }
 
@@ -25,7 +26,7 @@ public class ThermostatAssembler implements Assembler<ThermostatDto, Thermostat>
         ThermostatDto thermostatDto = new ThermostatDto();
         thermostatDto.setName(entity.getName());
         thermostatDto.setToken(entity.getToken());
-        //thermostatDto.setUserId(entity.getUserId());
+        thermostatDto.setUserId(entity.getUserId());
         return thermostatDto;
     }
 }

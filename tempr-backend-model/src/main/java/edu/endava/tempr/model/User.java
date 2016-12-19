@@ -1,9 +1,7 @@
 package edu.endava.tempr.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,10 +22,12 @@ public class User extends BaseEntity {
 
     @Column(name = "email")
     private String email;
-    //targetEntity=Thermostat.class,
-    //@OneToMany(mappedBy = "user")
-    @OneToMany(targetEntity=Thermostat.class, mappedBy = "user")
-    private List thermostatList;
+
+    @OneToMany
+    @JoinTable(name = "user_thermostat",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "thermostat_id"))
+    private List<Thermostat> thermostatList = new ArrayList<>();
 
     public User() {}
 
@@ -98,10 +98,9 @@ public class User extends BaseEntity {
     public void addThermostat(Thermostat thermostat){
         if(!thermostatList.contains(thermostat)){
             thermostatList.add(thermostat);
-            if(thermostat.getUser() != null){
+            /*if(thermostat.getUserId() != null){
                 thermostat.getUser().getThermostatList().remove(thermostat);
-            }
-            thermostat.setUser(this);
+            }*/
         }
     }
 }

@@ -1,5 +1,6 @@
-package edu.endava.tempr.api.service;
+package edu.endava.tempr.api.service.impl;
 
+import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.api.util.EncryptionProvider;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.UserRepository;

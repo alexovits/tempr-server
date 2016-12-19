@@ -76,7 +76,8 @@ public class MyRestController {
 
         // Create new thermostat
         Thermostat newThermostat = thermostatService.createThermostat(user, thermostatAssembler.toEntity(thermostatDto));
-
+        user.addThermostat(newThermostat);
+        userService.updateUser(user);
         return new ResponseEntity<>(thermostatAssembler.toDto(newThermostat), HttpStatus.OK);
     }
 

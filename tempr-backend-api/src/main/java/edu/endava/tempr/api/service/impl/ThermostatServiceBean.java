@@ -1,5 +1,6 @@
-package edu.endava.tempr.api.service;
+package edu.endava.tempr.api.service.impl;
 
+import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.ThermostatRepository;
@@ -13,7 +14,7 @@ import java.util.UUID;
  * Created by zsoltszabo on 14/12/2016.
  */
 @Service
-public class ThermostatServiceBean implements ThermostatService{
+public class ThermostatServiceBean implements ThermostatService {
 
     @Autowired
     ThermostatRepository thermostatRepository;
@@ -31,10 +32,9 @@ public class ThermostatServiceBean implements ThermostatService{
     @Override
     public Thermostat createThermostat(User user, Thermostat thermostat) {
         Thermostat savedThermostat = null;
-        user.addThermostat(thermostat);
         // Create a new random UUID token for the thermostat
         thermostat.setToken(UUID.randomUUID().toString());
-        thermostat.setUser(user);
+        thermostat.setUserId(user.getId());
         try {
             savedThermostat = thermostatRepository.save(thermostat);
         } catch(Exception ex){

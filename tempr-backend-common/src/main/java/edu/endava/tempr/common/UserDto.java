@@ -1,5 +1,8 @@
 package edu.endava.tempr.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserDto extends AbstractDto {
 
     private String username;
@@ -7,18 +10,9 @@ public class UserDto extends AbstractDto {
     private String firstName;
     private String lastName;
     private String email;
+    private List<ThermostatDto> thermostatDtoList = new ArrayList<>();
 
-    public UserDto() {
-        
-    }
-
-    public UserDto(String username, String password, String firstName, String lastName, String email) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
+    public UserDto() {}
 
     public String getUsername() {
         return username;
@@ -66,5 +60,13 @@ public class UserDto extends AbstractDto {
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public List<ThermostatDto> getThermostatDtoList() {
+        return thermostatDtoList;
+    }
+
+    public void setThermostatDtoList(List<ThermostatDto> thermostatDtoList) {
+        this.thermostatDtoList = thermostatDtoList;
     }
 }

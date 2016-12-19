@@ -8,26 +8,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Thermostats")
 public class Thermostat extends BaseEntity {
+
     @Column(name = "token", nullable = false, unique = true)
     private String token;
 
     @Column(name = "name")
     private String name;
 
-    //@Column(name = "user_id", nullable = false)
-    //private Long userId;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    public Thermostat(){}
-
-    public Thermostat(String token, String name, User user){
-        this.name = name;
-        this.token = token;
-        //this.userId = userId;
-        this.user = user;
+    public Thermostat() {
     }
 
     public String getToken() {
@@ -46,20 +37,11 @@ public class Thermostat extends BaseEntity {
         this.name = name;
     }
 
-    /*public Long getUserId() {
-        return 3L;
-        //return userId;
+    public Long getUserId() {
+        return userId;
     }
 
     public void setUserId(Long userId) {
-        //this.userId = userId;
-    }*/
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+        this.userId = userId;
     }
 }
