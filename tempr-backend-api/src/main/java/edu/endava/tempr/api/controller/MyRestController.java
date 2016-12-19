@@ -92,7 +92,7 @@ public class MyRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/thermostat/logTemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/thermostat/logtemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatLogDto> logThermostatTemperature(@RequestBody ThermostatLogDto thermostatLogDto) {
         System.out.println("INFO Thermostat report recieved!");
         System.out.println("INFO logTimeStamp" + thermostatLogDto.getLogTimeStamp());

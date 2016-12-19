@@ -29,6 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic();
         http.authorizeRequests()
                 .antMatchers("/user/register/").permitAll()
+                .antMatchers("/thermostat/configure/").permitAll()
+                .antMatchers("/thermostat/logtemp/").permitAll()
                 .anyRequest().authenticated();
         http.csrf().disable();
         // @formatter:on
