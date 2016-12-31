@@ -17,6 +17,9 @@
         <spring.version>4.3.4.RELEASE</spring.version>
         <spring-boot.version>1.4.2.RELEASE</spring-boot.version>
         <mysql-connector-java.version>5.1.40</mysql-connector-java.version>
+        <log4j.version>2.7</log4j.version>
+        <slf4j.version>1.7.21</slf4j.version>
+        <jackson.version>2.8.1</jackson.version>
         <!-- Plugin versions -->
         <maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
     </properties>
@@ -75,7 +78,39 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
             </dependency>
+            <!-- Logging dependencies -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
 
 </project>
