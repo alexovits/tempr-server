@@ -55,14 +55,6 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
-
     public List<Thermostat> getThermostatList() {
         return thermostatList;
     }
@@ -98,9 +90,14 @@ public class User extends BaseEntity {
     public void addThermostat(Thermostat thermostat){
         if(!thermostatList.contains(thermostat)){
             thermostatList.add(thermostat);
-            /*if(thermostat.getUserId() != null){
-                thermostat.getUser().getThermostatList().remove(thermostat);
-            }*/
         }
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
