@@ -18,13 +18,11 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+
     @Bean
     public CommandLineRunner addDefaultUser(UserService userService) {
         return (args) -> {
             userService.createUser(new User("user","user","John","Doe","user@tempr.com"));
-            logger.info("TEMPLATE INFO--------------------!!!");
-            logger.debug("TEMPLATE DEBUG--------------------!!!");
-            logger.error("TEMPLATE ERROR--------------------!!!");
         };
     }
 }

@@ -7,6 +7,8 @@ import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.common.ThermostatLogDto;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by zsoltszabo on 31/12/2016.
  */
+
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class ThermostatController {
+    private static final Logger logger = LoggerFactory.getLogger(ThermostatController.class);
+
     @Autowired
     private ThermostatService thermostatService;
 

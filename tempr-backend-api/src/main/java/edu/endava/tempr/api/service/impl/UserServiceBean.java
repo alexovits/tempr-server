@@ -3,6 +3,8 @@ package edu.endava.tempr.api.service.impl;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,7 @@ public class UserServiceBean implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserServiceBean(){
-    }
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceBean.class);
 
     @Override
     public List<User> findAll() {
@@ -25,6 +26,7 @@ public class UserServiceBean implements UserService {
 
     @Override
     public User findOne(Long id) {
+        logger.info("Looking for user with id: '{}'",id);
         return userRepository.findById(id);
     }
 
@@ -36,9 +38,10 @@ public class UserServiceBean implements UserService {
         try {
             savedUser = userRepository.save(user);
         } catch(Exception ex){
-            //Log it later
+            logger.warn("Could not create user: '{}' with exception '{}'", user, ex);
             ex.printStackTrace();
         }
+        logger.info("Created new user with id: '{}'",savedUser.getId());
         return savedUser;
     }
 
@@ -46,14 +49,17 @@ public class UserServiceBean implements UserService {
     public User updateUser(User user) {
         User userToUpdate = userRepository.findById(user.getId());
         if(userToUpdate == null) {
+            logger.info("User with id: '{}' was not found!", user.getId());
             return null;
         }
+        logger.info("User with id: '{}' was updated!", user.getId());
         return userRepository.save(user);
     }
 
     @Override
     public void deleteUser(Long id) {
         userRepository.delete(id);
+        logger.info("User with id: '{}' was not deleted!",id);
     }
 
 
