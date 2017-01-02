@@ -54,19 +54,22 @@ public class UserDto extends AbstractDto {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
-
     public List<ThermostatDto> getThermostatDtoList() {
         return thermostatDtoList;
     }
 
     public void setThermostatDtoList(List<ThermostatDto> thermostatDtoList) {
         this.thermostatDtoList = thermostatDtoList;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

@@ -1,8 +1,8 @@
 package edu.endava.tempr.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zsoltszabo on 13/12/2016.
@@ -22,6 +22,12 @@ public class Thermostat extends BaseEntity {
 
     @Column(name = "user_id")
     private Long userId;
+
+    @OneToMany
+    @JoinTable(name = "thermostatLog_thermostat",
+            joinColumns = @JoinColumn(name = "token"),
+            inverseJoinColumns = @JoinColumn(name = "thermostatLog_id"))
+    private List<ThermostatLog> thermostatLogList = new ArrayList<>();
 
     public Thermostat() {
     }
@@ -56,5 +62,15 @@ public class Thermostat extends BaseEntity {
 
     public void setConfigured(Short configured) {
         this.configured = configured;
+    }
+
+    @Override
+    public String toString() {
+        return "Thermostat{" +
+                "name='" + name + '\'' +
+                ", token='" + token + '\'' +
+                ", userId='" + userId + '\'' +
+                ", configured='" + configured + '\'' +
+                '}';
     }
 }

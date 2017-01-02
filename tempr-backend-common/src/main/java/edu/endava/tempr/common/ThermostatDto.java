@@ -1,7 +1,5 @@
 package edu.endava.tempr.common;
 
-import javax.net.ssl.SNIHostName;
-
 /**
  * Created by zsoltszabo on 14/12/2016.
  */
@@ -48,8 +46,10 @@ public class ThermostatDto extends AbstractDto{
     @Override
     public String toString() {
         return "ThermostatDto{" +
-                "devicename='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", token='" + token + '\'' +
+                ", configured='" + configured + '\'' +
+                ", userId='" + userId + '\'' +
                 '}';
     }
 }

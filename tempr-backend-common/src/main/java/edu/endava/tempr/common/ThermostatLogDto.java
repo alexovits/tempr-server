@@ -5,7 +5,7 @@ package edu.endava.tempr.common;
  */
 public class ThermostatLogDto extends AbstractDto {
     private String logTimeStamp;
-    private String deviceId;
+    private String token;
     private String extTemp;
     private String intTemp;
 
@@ -15,14 +15,6 @@ public class ThermostatLogDto extends AbstractDto {
 
     public void setLogTimeStamp(String logTimeStamp) {
         this.logTimeStamp = logTimeStamp;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
     }
 
     public String getExtTemp() {
@@ -39,5 +31,23 @@ public class ThermostatLogDto extends AbstractDto {
 
     public void setIntTemp(String intTemp) {
         this.intTemp = intTemp;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Override
+    public String toString() {
+        return "ThermostatLogDto{" +
+                "logTimeStamp='" + logTimeStamp + '\'' +
+                ", extTemp='" + extTemp + '\'' +
+                ", intTemp='" + intTemp + '\'' +
+                ", token='" + token + '\'' +
+                '}';
     }
 }
