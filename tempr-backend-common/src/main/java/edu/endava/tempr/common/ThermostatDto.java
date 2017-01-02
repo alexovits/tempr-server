@@ -10,7 +10,6 @@ public class ThermostatDto extends AbstractDto{
 
     public ThermostatDto(){}
 
-
     public String getToken() {
         return token;
     }
@@ -27,19 +26,19 @@ public class ThermostatDto extends AbstractDto{
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "ThermostatDto{" +
-                "devicename='" + name + '\'' +
-                ", token='" + token + '\'' +
-                '}';
-    }
-
     public Long getUserId() {
         return userId;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "ThermostatDto{" +
+                "devicename='" + name + '\'' +
+                ", token='" + token + '\'' +
+                '}';
     }
 }

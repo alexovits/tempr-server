@@ -24,6 +24,15 @@ public class ThermostatServiceBean implements ThermostatService {
         return thermostatRepository.findAll();
     }
 
+    private String generateNewToken(String userName){
+        String token = userName + "/" + UUID.randomUUID().toString().substring(0, 5);
+        // Check if token is already in database. (low probability)
+        while(findOne(token) != null){
+            token = userName + "/" + UUID.randomUUID().toString().substring(0, 5);
+        }
+        return token;
+    }
+
     @Override
     public Thermostat findOne(String token) {
         return thermostatRepository.findByToken(token);
@@ -32,8 +41,8 @@ public class ThermostatServiceBean implements ThermostatService {
     @Override
     public Thermostat createThermostat(User user, Thermostat thermostat) {
         Thermostat savedThermostat = null;
-        // Create a new random UUID token for the thermostat
-        thermostat.setToken(UUID.randomUUID().toString());
+        // Create a new token for device by using the template: {user}/{UUID first n chars}
+        thermostat.setToken(generateNewToken(user.getUsername()));
         thermostat.setUserId(user.getId());
         try {
             savedThermostat = thermostatRepository.save(thermostat);

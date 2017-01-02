@@ -7,26 +7,29 @@ Configuration:
       value: "logs"
 
   Appenders:
+
     Console:
       name: Console
       target: SYSTEM_OUT
       PatternLayout:
         Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %thread %logger{36} - %msg%n"
 
-    File:
-      name: File_Appender
-      fileName: ${log-path}/info.log
-      PatternLayout:
-        Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %thread %logger{36} - %msg%n"
-      Policies:
-        SizeBasedTriggeringPolicy:
-          size: 1 KB
-      DefaultRollOverStrategy:
-        max: 30
+    RollingFile:
+      - name: File_Appender
+        fileName: ${log-path}/info.log
+        filePattern: "logs/archive/info.log.%d{yyyy-MM-dd-hh-mm}.gz"
+        PatternLayout:
+          Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %thread %logger{36} - %msg%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 1 KB
+        DefaultRollOverStrategy:
+          max: 30
 
   Loggers:
+
     Root:
-      level: debug
+      level: info
       AppenderRef:
         - ref: Console
 
