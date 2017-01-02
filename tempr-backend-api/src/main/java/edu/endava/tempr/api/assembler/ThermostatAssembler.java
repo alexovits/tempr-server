@@ -17,6 +17,7 @@ public class ThermostatAssembler implements Assembler<ThermostatDto, Thermostat>
         Thermostat thermostat = new Thermostat();
         thermostat.setName(dto.getName());
         thermostat.setToken(dto.getToken());
+        thermostat.setConfigured(dto.getConfigured());
         thermostat.setUserId(dto.getUserId());
         return thermostat;
     }
@@ -26,6 +27,7 @@ public class ThermostatAssembler implements Assembler<ThermostatDto, Thermostat>
         ThermostatDto thermostatDto = new ThermostatDto();
         thermostatDto.setName(entity.getName());
         thermostatDto.setToken(entity.getToken());
+        thermostatDto.setConfigured(entity.getConfigured());
         thermostatDto.setUserId(entity.getUserId());
         return thermostatDto;
     }

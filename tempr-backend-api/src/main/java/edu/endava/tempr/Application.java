@@ -2,6 +2,7 @@ package edu.endava.tempr;
 
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,8 +19,8 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-
     @Bean
+    @Autowired
     public CommandLineRunner addDefaultUser(UserService userService) {
         return (args) -> {
             userService.createUser(new User("user","user","John","Doe","user@tempr.com"));

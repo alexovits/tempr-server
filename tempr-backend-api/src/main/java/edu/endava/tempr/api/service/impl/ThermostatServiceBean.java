@@ -4,6 +4,8 @@ import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.ThermostatRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ public class ThermostatServiceBean implements ThermostatService {
 
     @Autowired
     ThermostatRepository thermostatRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ThermostatServiceBean.class);
 
     @Override
     public List<Thermostat> findAll() {
@@ -44,6 +48,7 @@ public class ThermostatServiceBean implements ThermostatService {
         // Create a new token for device by using the template: {user}/{UUID first n chars}
         thermostat.setToken(generateNewToken(user.getUsername()));
         thermostat.setUserId(user.getId());
+        thermostat.setConfigured((short) 0);
         try {
             savedThermostat = thermostatRepository.save(thermostat);
         } catch(Exception ex){
@@ -55,7 +60,13 @@ public class ThermostatServiceBean implements ThermostatService {
 
     @Override
     public Thermostat updateThermostat(Thermostat thermostat) {
-        return null;
+        Thermostat thermostatToUpdate = thermostatRepository.findByToken(thermostat.getToken());
+        if(thermostatToUpdate == null){
+            logger.info("User with token: '{}' was not found!", thermostat.getToken());
+            return null;
+        }
+        logger.info("User with token: '{}' was updated!", thermostat.getToken());
+        return thermostatRepository.save(thermostat);
     }
 
     @Override

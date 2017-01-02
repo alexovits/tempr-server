@@ -7,8 +7,6 @@ import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.common.ThermostatLogDto;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class ThermostatController {
-    private static final Logger logger = LoggerFactory.getLogger(ThermostatController.class);
 
     @Autowired
     private ThermostatService thermostatService;
@@ -58,16 +55,41 @@ public class ThermostatController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        // If it's already configured inform client
+        if(thermostat.getConfigured() == 1){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        // Set it to configured
+        thermostat.setConfigured((short) 1);
+        thermostatService.updateThermostat(thermostat);
+
+        return new ResponseEntity<>(thermostatAssembler.toDto(thermostat), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/thermostat/unconfigure/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ThermostatDto> unConfigureThermostat(@RequestBody ThermostatDto thermostatDto) {
+        Thermostat thermostat = thermostatService.findOne(thermostatDto.getToken());
+
+        // If thermostat with id is not found
+        if(thermostat == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // If it's not configure yet
+        if(thermostat.getConfigured() == 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        // If it is configured -> unconfigure
+        thermostat.setConfigured((short) 0);
+        thermostatService.updateThermostat(thermostat);
+
+        return new ResponseEntity<>(thermostatAssembler.toDto(thermostat), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/thermostat/logtemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatLogDto> logThermostatTemperature(@RequestBody ThermostatLogDto thermostatLogDto) {
-        System.out.println("INFO Thermostat report recieved!");
-        System.out.println("INFO logTimeStamp" + thermostatLogDto.getLogTimeStamp());
-        System.out.println("INFO deviceId" + thermostatLogDto.getDeviceId());
-        System.out.println("INFO intTemp" + thermostatLogDto.getIntTemp());
-        System.out.println("INFO extTemp" + thermostatLogDto.getExtTemp());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

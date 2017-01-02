@@ -1,11 +1,14 @@
 package edu.endava.tempr.common;
 
+import javax.net.ssl.SNIHostName;
+
 /**
  * Created by zsoltszabo on 14/12/2016.
  */
 public class ThermostatDto extends AbstractDto{
     private String token;
     private String name;
+    private Short configured;
     private Long userId;
 
     public ThermostatDto(){}
@@ -32,6 +35,14 @@ public class ThermostatDto extends AbstractDto{
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Short getConfigured() {
+        return configured;
+    }
+
+    public void setConfigured(Short configured) {
+        this.configured = configured;
     }
 
     @Override
