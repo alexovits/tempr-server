@@ -2,6 +2,7 @@ package edu.endava.tempr.api.service.impl;
 
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.model.Thermostat;
+import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.ThermostatRepository;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ public class ThermostatServiceBean implements ThermostatService {
 
     @Override
     public List<Thermostat> findAll() {
+        logger.info("Looking for all thermostats");
         return thermostatRepository.findAll();
     }
 
@@ -39,6 +41,7 @@ public class ThermostatServiceBean implements ThermostatService {
 
     @Override
     public Thermostat findOne(String token) {
+        logger.info("Looking for thermostat with token: '{}'", token);
         return thermostatRepository.findByToken(token);
     }
 
@@ -55,6 +58,7 @@ public class ThermostatServiceBean implements ThermostatService {
             // Log it later
             ex.printStackTrace();
         }
+        logger.info("Created thermostat with token: '{}'", savedThermostat.getToken());
         return savedThermostat;
     }
 
@@ -62,15 +66,21 @@ public class ThermostatServiceBean implements ThermostatService {
     public Thermostat updateThermostat(Thermostat thermostat) {
         Thermostat thermostatToUpdate = thermostatRepository.findByToken(thermostat.getToken());
         if(thermostatToUpdate == null){
-            logger.info("User with token: '{}' was not found!", thermostat.getToken());
+            logger.info("Thermostat with token: '{}' was not found!", thermostat.getToken());
             return null;
         }
-        logger.info("User with token: '{}' was updated!", thermostat.getToken());
+        logger.info("Thermostat with token: '{}' was updated!", thermostat.getToken());
         return thermostatRepository.save(thermostat);
     }
 
     @Override
     public void deleteThermostat(Long id) {
+        logger.info("Deleting thermostat with id: '{}'", id);
         thermostatRepository.delete(id);
+    }
+
+    @Override
+    public void addLogToThermostat(Thermostat thermostat, ThermostatLog thermostatLog){
+
     }
 }

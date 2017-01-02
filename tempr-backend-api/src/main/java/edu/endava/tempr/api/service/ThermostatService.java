@@ -1,6 +1,7 @@
 package edu.endava.tempr.api.service;
 
 import edu.endava.tempr.model.Thermostat;
+import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.model.User;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface ThermostatService {
     Thermostat updateThermostat(Thermostat thermostat);
 
     void deleteThermostat(Long id);
+
+    void addLogToThermostat(Thermostat thermostat, ThermostatLog thermostatLog);
 }

@@ -64,6 +64,20 @@ public class Thermostat extends BaseEntity {
         this.configured = configured;
     }
 
+    public List<ThermostatLog> getThermostatLogList() {
+        return thermostatLogList;
+    }
+
+    public void setThermostatLogList(List<ThermostatLog> thermostatLogList) {
+        this.thermostatLogList = thermostatLogList;
+    }
+
+    public void addThermostatLog(ThermostatLog thermostatLog){
+        if(!thermostatLogList.contains(thermostatLog)){
+            thermostatLogList.add(thermostatLog);
+        }
+    }
+
     @Override
     public String toString() {
         return "Thermostat{" +

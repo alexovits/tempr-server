@@ -1,5 +1,8 @@
 package edu.endava.tempr.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by zsoltszabo on 14/12/2016.
  */
@@ -8,6 +11,7 @@ public class ThermostatDto extends AbstractDto{
     private String name;
     private Short configured;
     private Long userId;
+    private List<ThermostatLogDto> thermostatLogDtoList = new ArrayList<>();
 
     public ThermostatDto(){}
 
@@ -51,5 +55,13 @@ public class ThermostatDto extends AbstractDto{
                 ", configured='" + configured + '\'' +
                 ", userId='" + userId + '\'' +
                 '}';
+    }
+
+    public List<ThermostatLogDto> getThermostatLogDtoList() {
+        return thermostatLogDtoList;
+    }
+
+    public void setThermostatLogDtoList(List<ThermostatLogDto> thermostatLogDtoList) {
+        this.thermostatLogDtoList = thermostatLogDtoList;
     }
 }
