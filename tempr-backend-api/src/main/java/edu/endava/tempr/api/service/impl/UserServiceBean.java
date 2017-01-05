@@ -17,7 +17,7 @@ public class UserServiceBean implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceBean.class);
 
     @Override
     public List<User> findAll() {
@@ -26,7 +26,7 @@ public class UserServiceBean implements UserService {
 
     @Override
     public User findOne(Long id) {
-        logger.info("Looking for user with id: '{}'",id);
+        LOG.info("Looking for user with id: '{}'",id);
         return userRepository.findById(id);
     }
 
@@ -38,10 +38,10 @@ public class UserServiceBean implements UserService {
         try {
             savedUser = userRepository.save(user);
         } catch(Exception ex){
-            logger.warn("Could not create user: '{}' with exception '{}'", user, ex);
+            LOG.warn("Could not create user: '{}' with exception '{}'", user, ex);
             ex.printStackTrace();
         }
-        logger.info("Created new user with id: '{}'",savedUser.getId());
+        LOG.info("Created new user with id: '{}'",savedUser.getId());
         return savedUser;
     }
 
@@ -49,17 +49,17 @@ public class UserServiceBean implements UserService {
     public User updateUser(User user) {
         User userToUpdate = userRepository.findById(user.getId());
         if(userToUpdate == null) {
-            logger.info("User with id: '{}' was not found!", user.getId());
+            LOG.info("User with id: '{}' was not found!", user.getId());
             return null;
         }
-        logger.info("User with id: '{}' was updated!", user.getId());
+        LOG.info("User with id: '{}' was updated!", user.getId());
         return userRepository.save(user);
     }
 
     @Override
     public void deleteUser(Long id) {
         userRepository.delete(id);
-        logger.info("User with id: '{}' was not deleted!",id);
+        LOG.info("User with id: '{}' was deleted!",id);
     }
 
 

@@ -22,43 +22,43 @@ public class ThermostatServiceBean implements ThermostatService {
     @Autowired
     ThermostatRepository thermostatRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(ThermostatServiceBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ThermostatServiceBean.class);
+    private static final int tokenLength = 5;
 
     @Override
     public List<Thermostat> findAll() {
-        logger.info("Looking for all thermostats");
+        LOG.info("Looking for all thermostats");
         return thermostatRepository.findAll();
     }
 
+    // Creates a new token for a device by using the template: {username}/{UUID's first tokenLength chars}
     private String generateNewToken(String userName){
-        String token = userName + "/" + UUID.randomUUID().toString().substring(0, 5);
+        String token = userName + "/" + UUID.randomUUID().toString().substring(0, tokenLength);
         // Check if token is already in database. (low probability)
         while(findOne(token) != null){
-            token = userName + "/" + UUID.randomUUID().toString().substring(0, 5);
+            token = userName + "/" + UUID.randomUUID().toString().substring(0, tokenLength);
         }
         return token;
     }
 
     @Override
     public Thermostat findOne(String token) {
-        logger.info("Looking for thermostat with token: '{}'", token);
+        LOG.info("Looking for thermostat with token: '{}'", token);
         return thermostatRepository.findByToken(token);
     }
 
     @Override
     public Thermostat createThermostat(User user, Thermostat thermostat) {
         Thermostat savedThermostat = null;
-        // Create a new token for device by using the template: {user}/{UUID first n chars}
         thermostat.setToken(generateNewToken(user.getUsername()));
         thermostat.setUserId(user.getId());
         thermostat.setConfigured((short) 0);
         try {
             savedThermostat = thermostatRepository.save(thermostat);
         } catch(Exception ex){
-            // Log it later
-            ex.printStackTrace();
+            LOG.error("Error occured when saving new thermostat for user with the id '{}'",user.getId(), ex);
         }
-        logger.info("Created thermostat with token: '{}'", savedThermostat.getToken());
+        LOG.info("Created thermostat with token: '{}'", savedThermostat.getToken());
         return savedThermostat;
     }
 
@@ -66,16 +66,16 @@ public class ThermostatServiceBean implements ThermostatService {
     public Thermostat updateThermostat(Thermostat thermostat) {
         Thermostat thermostatToUpdate = thermostatRepository.findByToken(thermostat.getToken());
         if(thermostatToUpdate == null){
-            logger.info("Thermostat with token: '{}' was not found!", thermostat.getToken());
+            LOG.info("Thermostat with token: '{}' was not found!", thermostat.getToken());
             return null;
         }
-        logger.info("Thermostat with token: '{}' was updated!", thermostat.getToken());
+        LOG.info("Thermostat with token: '{}' was updated!", thermostat.getToken());
         return thermostatRepository.save(thermostat);
     }
 
     @Override
     public void deleteThermostat(Long id) {
-        logger.info("Deleting thermostat with id: '{}'", id);
+        LOG.info("Deleting thermostat with id: '{}'", id);
         thermostatRepository.delete(id);
     }
 

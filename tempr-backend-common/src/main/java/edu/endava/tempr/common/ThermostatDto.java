@@ -35,7 +35,7 @@ public class ThermostatDto extends AbstractDto{
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public final void setUserId(Long userId) {
         this.userId = userId;
     }
 
