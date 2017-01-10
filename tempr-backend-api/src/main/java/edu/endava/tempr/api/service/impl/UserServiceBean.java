@@ -62,5 +62,14 @@ public class UserServiceBean implements UserService {
         LOG.info("User with id: '{}' was deleted!",id);
     }
 
+    @Override
+    public User findByName(String userName){
+        User user = userRepository.findByUsername(userName);
+        if(user == null){
+            return null;
+        }
+        return user;
+    }
+
 
 }

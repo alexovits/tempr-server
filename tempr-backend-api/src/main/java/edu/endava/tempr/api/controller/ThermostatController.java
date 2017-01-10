@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by zsoltszabo on 31/12/2016.
  */
-
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class ThermostatController {

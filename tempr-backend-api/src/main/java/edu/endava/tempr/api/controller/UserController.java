@@ -37,8 +37,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/login/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> loginUser() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<UserDto> loginUser(@RequestBody UserDto userDto) {
+        User user = userService.findByName(userDto.getUsername());
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(userAssembler.toDto(user), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/register/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -30,6 +30,7 @@ public class Thermostat extends BaseEntity {
     private List<ThermostatLog> thermostatLogList = new ArrayList<>();
 
     public Thermostat() {
+        //EMPTY
     }
 
     public String getToken() {

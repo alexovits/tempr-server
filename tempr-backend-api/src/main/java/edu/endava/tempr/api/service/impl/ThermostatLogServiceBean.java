@@ -1,7 +1,6 @@
 package edu.endava.tempr.api.service.impl;
 
 import edu.endava.tempr.api.service.ThermostatLogService;
-import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.repository.ThermostatLogRepository;
 import org.slf4j.Logger;

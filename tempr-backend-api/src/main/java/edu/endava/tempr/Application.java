@@ -1,6 +1,10 @@
 package edu.endava.tempr;
 
+import edu.endava.tempr.api.service.ThermostatLogService;
+import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
+import edu.endava.tempr.model.Thermostat;
+import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,9 +23,13 @@ public class Application {
 
     @Bean
     @Autowired
-    public CommandLineRunner addDefaultUser(UserService userService) {
+    public CommandLineRunner addDefaultUser(UserService userService, ThermostatService thermostatService, ThermostatLogService thermostatLogService) {
         return (args) -> {
-            userService.createUser(new User("user","user","John","Doe","user@tempr.com"));
+            User defUser = userService.createUser(new User("user","user","John","Doe","user@tempr.com"));
+            Thermostat defThermostat = new Thermostat();
+            defThermostat.setUserId(defUser.getId());
+            defThermostat.setName("Device");
+            defThermostat = thermostatService.createThermostat(defUser,defThermostat);
         };
     }
 }
