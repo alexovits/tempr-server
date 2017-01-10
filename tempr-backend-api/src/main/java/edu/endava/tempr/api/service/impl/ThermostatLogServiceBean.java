@@ -6,10 +6,12 @@ import edu.endava.tempr.repository.ThermostatLogRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by zsoltszabo on 05/01/2017.
  */
+@Service
 public class ThermostatLogServiceBean implements ThermostatLogService {
 
     @Autowired
