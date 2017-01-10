@@ -14,7 +14,7 @@ public class ThermostatLog extends BaseEntity {
     @Column(name = "logTimeStamp", nullable = false)
     private String logTimeStamp;
 
-    @Column(name = "token", nullable = false)
+    @Column(name = "thermostat_token", nullable = false)
     private String token;
 
     @Column(name = "external_temperature")

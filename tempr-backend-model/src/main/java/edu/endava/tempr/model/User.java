@@ -29,7 +29,9 @@ public class User extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "thermostat_id"))
     private List<Thermostat> thermostatList = new ArrayList<>();
 
-    public User() {}
+    public User() {
+        //EMPTY
+    }
 
     public User(String username, String password, String firstName, String lastName, String email) {
         this.username = username;

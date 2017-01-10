@@ -78,9 +78,4 @@ public class ThermostatServiceBean implements ThermostatService {
         LOG.info("Deleting thermostat with id: '{}'", id);
         thermostatRepository.delete(id);
     }
-
-    @Override
-    public void addLogToThermostat(Thermostat thermostat, ThermostatLog thermostatLog){
-
-    }
 }

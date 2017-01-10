@@ -35,7 +35,7 @@ public class ThermostatDto extends AbstractDto{
         return userId;
     }
 
-    public final void setUserId(Long userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
 
@@ -45,6 +45,14 @@ public class ThermostatDto extends AbstractDto{
 
     public void setConfigured(Short configured) {
         this.configured = configured;
+    }
+
+    public List<ThermostatLogDto> getThermostatLogDtoList() {
+        return thermostatLogDtoList;
+    }
+
+    public void setThermostatLogDtoList(List<ThermostatLogDto> thermostatLogDtoList) {
+        this.thermostatLogDtoList = thermostatLogDtoList;
     }
 
     @Override
@@ -57,11 +65,4 @@ public class ThermostatDto extends AbstractDto{
                 '}';
     }
 
-    public List<ThermostatLogDto> getThermostatLogDtoList() {
-        return thermostatLogDtoList;
-    }
-
-    public void setThermostatLogDtoList(List<ThermostatLogDto> thermostatLogDtoList) {
-        this.thermostatLogDtoList = thermostatLogDtoList;
-    }
 }

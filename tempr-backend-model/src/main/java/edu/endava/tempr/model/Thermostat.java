@@ -24,9 +24,9 @@ public class Thermostat extends BaseEntity {
     private Long userId;
 
     @OneToMany
-    @JoinTable(name = "thermostatLog_thermostat",
-            joinColumns = @JoinColumn(name = "token"),
-            inverseJoinColumns = @JoinColumn(name = "thermostatLog_id"))
+    @JoinTable(name = "thermostat_thermostatLog",
+            joinColumns = @JoinColumn(name = "thermostat_token"),
+            inverseJoinColumns = @JoinColumn(name = "token"))
     private List<ThermostatLog> thermostatLogList = new ArrayList<>();
 
     public Thermostat() {

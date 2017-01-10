@@ -1,11 +1,13 @@
 package edu.endava.tempr.api.controller;
 
 import edu.endava.tempr.api.assembler.ThermostatAssembler;
+import edu.endava.tempr.api.assembler.ThermostatLogAssembler;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.common.ThermostatLogDto;
 import edu.endava.tempr.model.Thermostat;
+import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,9 @@ public class ThermostatController {
 
     @Autowired
     private ThermostatAssembler thermostatAssembler;
+
+    @Autowired
+    private ThermostatLogAssembler thermostatLogAssembler;
 
     @Autowired
     private UserService userService;
@@ -90,6 +95,8 @@ public class ThermostatController {
 
     @RequestMapping(value = "/thermostat/logtemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatLogDto> logThermostatTemperature(@RequestBody ThermostatLogDto thermostatLogDto) {
+        ThermostatLog thermostatLog = thermostatLogAssembler.toEntity(thermostatLogDto);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
