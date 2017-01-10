@@ -31,11 +31,10 @@ public class Application {
             defThermostat.setName("Device-1");
             defThermostat = thermostatService.createThermostat(defUser,defThermostat);
 
-            /*
             Thermostat defThermostat1 = new Thermostat();
             defThermostat1.setUserId(defUser.getId());
             defThermostat1.setName("Device-2");
-            defThermostat1 = thermostatService.createThermostat(defUser,defThermostat1);*/
+            defThermostat1 = thermostatService.createThermostat(defUser,defThermostat1);
         };
     }
 }
