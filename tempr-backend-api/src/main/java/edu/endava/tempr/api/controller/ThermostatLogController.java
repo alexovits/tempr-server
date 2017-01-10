@@ -32,4 +32,5 @@ public class ThermostatLogController {
         thermostatLogService.create(thermostatLog);
         return new ResponseEntity(HttpStatus.OK);
     }
+
 }

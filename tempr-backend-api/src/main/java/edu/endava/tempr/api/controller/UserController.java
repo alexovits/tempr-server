@@ -3,6 +3,7 @@ package edu.endava.tempr.api.controller;
 import edu.endava.tempr.api.assembler.UserAssembler;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
+import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.common.UserDto;
 import edu.endava.tempr.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,5 +65,15 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userAssembler.toDto(user), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/users/thermostatList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ThermostatDto>> getThermostatList(@RequestBody UserDto userDto) {
+        User user = userService.findOne(userDto.getId());
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(userAssembler.toDto(user).getThermostatDtoList(), HttpStatus.OK);
     }
 }

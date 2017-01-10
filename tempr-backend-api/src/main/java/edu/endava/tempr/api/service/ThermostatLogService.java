@@ -2,8 +2,6 @@ package edu.endava.tempr.api.service;
 
 import edu.endava.tempr.model.ThermostatLog;
 
-import java.util.List;
-
 /**
  * Created by zsoltszabo on 05/01/2017.
  */
