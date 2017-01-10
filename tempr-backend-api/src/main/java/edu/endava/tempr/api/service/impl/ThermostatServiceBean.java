@@ -5,6 +5,7 @@ import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.ThermostatRepository;
+import edu.endava.tempr.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class ThermostatServiceBean implements ThermostatService {
 
     @Autowired
     ThermostatRepository thermostatRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     private static final Logger LOG = LoggerFactory.getLogger(ThermostatServiceBean.class);
     private static final int tokenLength = 5;
@@ -59,6 +63,11 @@ public class ThermostatServiceBean implements ThermostatService {
             LOG.error("Error occured when saving new thermostat for user with the id '{}'",user.getId(), ex);
         }
         LOG.info("Created thermostat with token: '{}'", savedThermostat.getToken());
+
+        // Inserts save thermostat into user's list
+        user.addThermostat(savedThermostat);
+        userRepository.save(user);
+
         return savedThermostat;
     }
 

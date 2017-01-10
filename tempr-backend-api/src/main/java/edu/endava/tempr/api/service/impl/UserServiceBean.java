@@ -70,6 +70,4 @@ public class UserServiceBean implements UserService {
         }
         return user;
     }
-
-
 }

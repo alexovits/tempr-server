@@ -5,14 +5,16 @@ import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.common.UserDto;
+import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,9 @@ import java.util.stream.Collectors;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
@@ -72,6 +77,12 @@ public class UserController {
         User user = userService.findOne(userDto.getId());
         if(user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        LOG.info("fsdfasdf");
+
+        for(Thermostat t : user.getThermostatList()){
+            LOG.info("Device: {}",t.getName());
         }
 
         return new ResponseEntity<>(userAssembler.toDto(user).getThermostatDtoList(), HttpStatus.OK);

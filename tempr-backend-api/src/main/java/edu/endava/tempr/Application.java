@@ -28,8 +28,10 @@ public class Application {
             User defUser = userService.createUser(new User("user","user","John","Doe","user@tempr.com"));
             Thermostat defThermostat = new Thermostat();
             defThermostat.setUserId(defUser.getId());
-            defThermostat.setName("Device");
+            defThermostat.setName("Device-1");
             defThermostat = thermostatService.createThermostat(defUser,defThermostat);
+            //defThermostat.setName("Device-2");
+            //defThermostat = thermostatService.createThermostat(defUser,defThermostat);
         };
     }
 }
