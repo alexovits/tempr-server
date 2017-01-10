@@ -79,8 +79,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        LOG.info("fsdfasdf");
-
         for(Thermostat t : user.getThermostatList()){
             LOG.info("Device: {}",t.getName());
         }
