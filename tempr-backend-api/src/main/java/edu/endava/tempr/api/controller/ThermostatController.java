@@ -30,9 +30,6 @@ public class ThermostatController {
     private ThermostatAssembler thermostatAssembler;
 
     @Autowired
-    private ThermostatLogAssembler thermostatLogAssembler;
-
-    @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/thermostat/register/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -93,10 +90,4 @@ public class ThermostatController {
         return new ResponseEntity<>(thermostatAssembler.toDto(thermostat), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/thermostat/logtemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ThermostatLogDto> logThermostatTemperature(@RequestBody ThermostatLogDto thermostatLogDto) {
-        ThermostatLog thermostatLog = thermostatLogAssembler.toEntity(thermostatLogDto);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }
