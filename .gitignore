@@ -1,0 +1,6 @@
+
+**/target
+*.iml
+.idea/
+tempr-backend-api/logs/**
+.DS_Store

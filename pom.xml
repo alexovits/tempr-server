@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>edu.endava.tempr</groupId>
+	<artifactId>tempr-backend-reactor</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>TempR Backend: Reactor</name>
+
+	<modules>
+		<module>tempr-backend-api</module>
+		<module>tempr-backend-common</module>
+		<module>tempr-backend-model</module>
+		<module>tempr-backend-parent</module>
+		<module>tempr-backend-repository</module>
+	</modules>
+
+</project>
