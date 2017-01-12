@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 @SpringBootApplication
 public class Application {
 
@@ -27,15 +29,18 @@ public class Application {
         return (args) -> {
             User defUser = userService.createUser(new User("user","user","John","Doe","user@tempr.com"));
             Thermostat defThermostat = new Thermostat();
-            defThermostat.setUserId(defUser.getId());
             defThermostat.setName("Device-1");
             defThermostat = thermostatService.createThermostat(defUser,defThermostat);
 
-            /*
-            Thermostat defThermostat1 = new Thermostat();
-            defThermostat1.setUserId(defUser.getId());
-            defThermostat1.setName("Device-2");
-            defThermostat1 = thermostatService.createThermostat(defUser,defThermostat1);*/
+            defThermostat = new Thermostat();
+            defThermostat.setName("Device-2");
+            defThermostat = thermostatService.createThermostat(defUser,defThermostat);
+
+            /*User defUser = userService.findByName("user");
+            List<Thermostat> k = defUser.getThermostatList();
+            for(Thermostat t : k){
+                System.out.println(t.toString());
+            }*/
         };
     }
 }
