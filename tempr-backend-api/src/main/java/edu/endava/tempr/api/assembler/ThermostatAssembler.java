@@ -23,10 +23,10 @@ public class ThermostatAssembler implements Assembler<ThermostatDto, Thermostat>
         thermostat.setName(dto.getName());
         thermostat.setToken(dto.getToken());
         thermostat.setConfigured(dto.getConfigured());
-        thermostat.setUserId(dto.getUserId());
-        for(ThermostatLogDto t: dto.getThermostatLogDtoList()){
+        //thermostat.setUserId(dto.getUserId());
+        /*for(ThermostatLogDto t: dto.getThermostatLogDtoList()){
             thermostat.getThermostatLogList().add(thermostatLogAssembler.toEntity(t));
-        }
+        }*/
         return thermostat;
     }
 
@@ -36,10 +36,10 @@ public class ThermostatAssembler implements Assembler<ThermostatDto, Thermostat>
         thermostatDto.setName(entity.getName());
         thermostatDto.setToken(entity.getToken());
         thermostatDto.setConfigured(entity.getConfigured());
-        thermostatDto.setUserId(entity.getUserId());
-        for(ThermostatLog t: entity.getThermostatLogList()){
+        //thermostatDto.setUserId(entity.getUserId());
+        /*for(ThermostatLog t: entity.getThermostatLogList()){
             thermostatDto.getThermostatLogDtoList().add(thermostatLogAssembler.toDto(t));
-        }
+        }*/
         return thermostatDto;
     }
 }

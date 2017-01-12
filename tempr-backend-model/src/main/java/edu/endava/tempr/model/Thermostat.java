@@ -20,14 +20,8 @@ public class Thermostat extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "user_id")
-    private Long userId;
-
-    @OneToMany
-    @JoinTable(name = "thermostat_thermostatLog",
-            joinColumns = @JoinColumn(name = "thermostat_token"),
-            inverseJoinColumns = @JoinColumn(name = "token"))
-    private List<ThermostatLog> thermostatLogList = new ArrayList<>();
+    @ManyToOne
+    private User user;
 
     public Thermostat() {
         //EMPTY
@@ -49,14 +43,6 @@ public class Thermostat extends BaseEntity {
         this.name = name;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public Short getConfigured() {
         return configured;
     }
@@ -65,7 +51,7 @@ public class Thermostat extends BaseEntity {
         this.configured = configured;
     }
 
-    public List<ThermostatLog> getThermostatLogList() {
+    /*public List<ThermostatLog> getThermostatLogList() {
         return thermostatLogList;
     }
 
@@ -77,6 +63,14 @@ public class Thermostat extends BaseEntity {
         if(!thermostatLogList.contains(thermostatLog)){
             thermostatLogList.add(thermostatLog);
         }
+    }*/
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -84,7 +78,6 @@ public class Thermostat extends BaseEntity {
         return "Thermostat{" +
                 "name='" + name + '\'' +
                 ", token='" + token + '\'' +
-                ", userId='" + userId + '\'' +
                 ", configured='" + configured + '\'' +
                 '}';
     }

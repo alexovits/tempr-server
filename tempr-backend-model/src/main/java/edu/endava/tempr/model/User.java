@@ -25,10 +25,7 @@ public class User extends BaseEntity {
     @Column(name = "email")
     private String email;
 
-    @OneToMany
-    @JoinTable(name = "user_thermostat",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "thermostat_id"))
+    @OneToMany( mappedBy = "user")
     private List<Thermostat> thermostatList = new ArrayList<>();
 
     public User() {
