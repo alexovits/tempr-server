@@ -1,6 +1,7 @@
 package edu.endava.tempr.api.assembler;
 
 
+import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.common.ThermostatLogDto;
 import edu.endava.tempr.model.Thermostat;
@@ -17,16 +18,16 @@ public class ThermostatAssembler implements Assembler<ThermostatDto, Thermostat>
     @Autowired
     private ThermostatLogAssembler thermostatLogAssembler;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public Thermostat toEntity(ThermostatDto dto) {
         Thermostat thermostat = new Thermostat();
         thermostat.setName(dto.getName());
         thermostat.setToken(dto.getToken());
         thermostat.setConfigured(dto.getConfigured());
-        //thermostat.setUserId(dto.getUserId());
-        /*for(ThermostatLogDto t: dto.getThermostatLogDtoList()){
-            thermostat.getThermostatLogList().add(thermostatLogAssembler.toEntity(t));
-        }*/
+        thermostat.setUser(userService.findOne(dto.getUserId()));
         return thermostat;
     }
 
@@ -36,10 +37,7 @@ public class ThermostatAssembler implements Assembler<ThermostatDto, Thermostat>
         thermostatDto.setName(entity.getName());
         thermostatDto.setToken(entity.getToken());
         thermostatDto.setConfigured(entity.getConfigured());
-        //thermostatDto.setUserId(entity.getUserId());
-        /*for(ThermostatLog t: entity.getThermostatLogList()){
-            thermostatDto.getThermostatLogDtoList().add(thermostatLogAssembler.toDto(t));
-        }*/
+        thermostatDto.setUserId(entity.getUser().getId());
         return thermostatDto;
     }
 }

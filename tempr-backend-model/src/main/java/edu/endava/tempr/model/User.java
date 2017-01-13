@@ -25,7 +25,7 @@ public class User extends BaseEntity {
     @Column(name = "email")
     private String email;
 
-    @OneToMany( mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Thermostat> thermostatList = new ArrayList<>();
 
     public User() {

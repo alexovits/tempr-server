@@ -1,6 +1,11 @@
 package edu.endava.tempr.model;
 
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +13,7 @@ import java.util.List;
  * Created by zsoltszabo on 02/01/2017.
  */
 @Entity
-@Table(name="ThermostatLog")
+@Table(name="ThermostatLog", indexes={@Index(name="ThermostatLog_Thermostat_Index", columnList = "thermostat_token")})
 public class ThermostatLog extends BaseEntity {
 
     @Column(name = "logTimeStamp", nullable = false)

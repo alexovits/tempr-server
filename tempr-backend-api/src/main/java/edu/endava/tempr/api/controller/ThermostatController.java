@@ -1,13 +1,10 @@
 package edu.endava.tempr.api.controller;
 
 import edu.endava.tempr.api.assembler.ThermostatAssembler;
-import edu.endava.tempr.api.assembler.ThermostatLogAssembler;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.common.ThermostatDto;
-import edu.endava.tempr.common.ThermostatLogDto;
 import edu.endava.tempr.model.Thermostat;
-import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +30,7 @@ public class ThermostatController {
 
     @RequestMapping(value = "/thermostat/register/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatDto> registerThermostat(@RequestBody ThermostatDto thermostatDto) {
+        // Check if user that wants to have thermostat exists at all
         User user = userService.findOne(thermostatDto.getUserId());
 
         // If user with id is not found

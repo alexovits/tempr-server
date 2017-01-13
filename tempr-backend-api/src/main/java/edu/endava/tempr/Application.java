@@ -36,11 +36,11 @@ public class Application {
             defThermostat.setName("Device-2");
             defThermostat = thermostatService.createThermostat(defUser,defThermostat);
 
-            /*User defUser = userService.findByName("user");
-            List<Thermostat> k = defUser.getThermostatList();
+            User user = userService.findByName("user");
+            List<Thermostat> k = user.getThermostatList();
             for(Thermostat t : k){
                 System.out.println(t.toString());
-            }*/
+            }
         };
     }
 }

@@ -1,8 +1,9 @@
 package edu.endava.tempr.model;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Created by zsoltszabo on 13/12/2016.
@@ -51,20 +52,6 @@ public class Thermostat extends BaseEntity {
         this.configured = configured;
     }
 
-    /*public List<ThermostatLog> getThermostatLogList() {
-        return thermostatLogList;
-    }
-
-    public void setThermostatLogList(List<ThermostatLog> thermostatLogList) {
-        this.thermostatLogList = thermostatLogList;
-    }
-
-    public void addThermostatLog(ThermostatLog thermostatLog){
-        if(!thermostatLogList.contains(thermostatLog)){
-            thermostatLogList.add(thermostatLog);
-        }
-    }*/
-
     public User getUser() {
         return user;
     }
@@ -79,6 +66,7 @@ public class Thermostat extends BaseEntity {
                 "name='" + name + '\'' +
                 ", token='" + token + '\'' +
                 ", configured='" + configured + '\'' +
+                ", userId=" + user.getId() + '\'' +
                 '}';
     }
 }
