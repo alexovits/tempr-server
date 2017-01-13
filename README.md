@@ -25,4 +25,6 @@ Application tech stack:
     ````
     java -jar <the-jar-name.jar>
     ````
+### CD Pipeline
+
 ### Contributors
