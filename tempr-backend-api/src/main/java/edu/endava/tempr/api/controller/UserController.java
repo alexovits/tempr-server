@@ -72,7 +72,7 @@ public class UserController {
         return new ResponseEntity<>(userAssembler.toDto(user), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user/thermostatList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/user/thermostatList/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ThermostatDto>> getThermostatList(@RequestBody UserDto userDto) {
         User user = userService.findOne(userDto.getId());
         if(user == null){

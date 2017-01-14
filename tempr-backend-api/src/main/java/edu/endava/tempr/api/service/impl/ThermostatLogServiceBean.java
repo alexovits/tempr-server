@@ -8,6 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by zsoltszabo on 05/01/2017.
  */
@@ -49,6 +55,24 @@ public class ThermostatLogServiceBean implements ThermostatLogService {
 
     @Override
     public ThermostatLog getLatest() {
-        return null;
+        return thermostatLogRepository.findLatestLog().get(0);
+    }
+
+    @Override
+    public List<ThermostatLog> getLastTenDays() {
+        // Taking a sample date (Should be now()-10)
+        String tenDaysBefore = "2017/01/04 16:42:08";
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date startDate = new Date();
+        try {
+            // Converting it to a Date format
+            startDate = dateFormat.parse(tenDaysBefore);
+            // And back just to make sure eveything's fine
+            String newDateString = dateFormat.format(startDate);
+            LOG.info("Logs after date {}",newDateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return thermostatLogRepository.findAfterDate(startDate);
     }
 }
