@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,8 +17,9 @@ import java.util.List;
 @Table(name="ThermostatLog", indexes={@Index(name="ThermostatLog_Thermostat_Index", columnList = "thermostat_token")})
 public class ThermostatLog extends BaseEntity {
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "logTimeStamp", nullable = false)
-    private String logTimeStamp;
+    private Date logTimeStamp;
 
     @Column(name = "thermostat_token", nullable = false)
     private String token;
@@ -28,13 +30,6 @@ public class ThermostatLog extends BaseEntity {
     @Column(name = "internal_temperature")
     private String intTemp;
 
-    public String getLogTimeStamp() {
-        return logTimeStamp;
-    }
-
-    public void setLogTimeStamp(String logTimeStamp) {
-        this.logTimeStamp = logTimeStamp;
-    }
 
     public String getExtTemp() {
         return extTemp;
@@ -58,6 +53,14 @@ public class ThermostatLog extends BaseEntity {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public void setLogTimeStamp(Date logTimeStamp) {
+        this.logTimeStamp = logTimeStamp;
+    }
+
+    public Date getLogTimeStamp() {
+        return logTimeStamp;
     }
 
     @Override
