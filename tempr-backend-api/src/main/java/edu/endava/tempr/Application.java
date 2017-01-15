@@ -6,13 +6,13 @@ import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -50,7 +50,7 @@ public class Application {
 
             // Adding log 1
             try {
-                String startDateString = "2017/01/10 13:42:08";
+                String startDateString = "2017/01/03 13:42:08";
                 DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 Date newDate;
                 newDate = df.parse(startDateString);
@@ -65,7 +65,7 @@ public class Application {
 
             // Adding log 2
             try {
-                String startDateString = "2017/01/11 18:42:08";
+                String startDateString = "2017/01/10 18:42:08";
                 DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 Date newDate;
                 newDate = df.parse(startDateString);
@@ -80,7 +80,7 @@ public class Application {
 
             // Adding log 3
             try {
-                String startDateString = "2017/01/03 13:42:08";
+                String startDateString = "2017/01/11 13:42:08";
                 DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 Date newDate;
                 newDate = df.parse(startDateString);
@@ -93,11 +93,11 @@ public class Application {
                 e.printStackTrace();
             }
 
-            ThermostatLog fetchLog = thermostatLogService.getLatest();
+            ThermostatLog fetchLog = thermostatLogService.getLatest(defThermostat.getToken());
             LOG.info("Got the latest log {}",fetchLog.toString());
 
             LOG.info("Check out all after ");
-            List<ThermostatLog> fetchLogs = thermostatLogService.getLastTenDays();
+            List<ThermostatLog> fetchLogs = thermostatLogService.getLastTenDays(defThermostat.getToken());
             for(ThermostatLog t: fetchLogs){
                 LOG.info(t.toString());
             }

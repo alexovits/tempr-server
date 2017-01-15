@@ -54,12 +54,12 @@ public class ThermostatLogServiceBean implements ThermostatLogService {
     }
 
     @Override
-    public ThermostatLog getLatest() {
-        return thermostatLogRepository.findLatestLog().get(0);
+    public ThermostatLog getLatest(String token) {
+        return thermostatLogRepository.findFirstByTokenOrderByLogTimeStampDesc(token);
     }
 
     @Override
-    public List<ThermostatLog> getLastTenDays() {
+    public List<ThermostatLog> getLastTenDays(String token) {
         // Taking a sample date (Should be now()-10)
         String tenDaysBefore = "2017/01/04 16:42:08";
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -67,12 +67,12 @@ public class ThermostatLogServiceBean implements ThermostatLogService {
         try {
             // Converting it to a Date format
             startDate = dateFormat.parse(tenDaysBefore);
-            // And back just to make sure eveything's fine
+            // And back just to make sure everything's fine
             String newDateString = dateFormat.format(startDate);
             LOG.info("Logs after date {}",newDateString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return thermostatLogRepository.findAfterDate(startDate);
+        return thermostatLogRepository.findByTokenAndLogTimeStampGreaterThanOrderByLogTimeStampDesc(token, startDate);
     }
 }
