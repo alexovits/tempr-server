@@ -3,6 +3,7 @@ package edu.endava.tempr.api.service.impl;
 import edu.endava.tempr.api.service.ThermostatLogService;
 import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.repository.ThermostatLogRepository;
+import edu.endava.tempr.repository.ThermostatRepository;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -11,10 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,7 +33,8 @@ public class ThermostatLogServiceBean implements ThermostatLogService {
 
     @Override
     public ThermostatLog create(ThermostatLog thermostatLog) {
-        thermostatLog.setLogTimeStamp(new DateTime());
+        //thermostatLog.setLogTimeStamp(new DateTime());
+        LOG.info("Creating a new log {}",thermostatLog.toString());
         return thermostatLogRepository.save(thermostatLog);
     }
 
@@ -59,12 +57,14 @@ public class ThermostatLogServiceBean implements ThermostatLogService {
 
     @Override
     public ThermostatLog getLatest(String token) {
+        LOG.info("Fetching the latest log of device with token: {}", token);
         return thermostatLogRepository.findFirstByTokenOrderByLogTimeStampDesc(token);
     }
 
     @Override
     public List<ThermostatLog> getLastTenDays(String token) {
         // Fetch logs from for the last ten days
+        LOG.info("Fetching the log history of device with token: {}", token);
         DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss");
         DateTime afterDate = new DateTime().minusDays(10);
         LOG.info("Logs after date {}",dtf.print(afterDate));

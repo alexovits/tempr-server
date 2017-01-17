@@ -17,10 +17,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @SpringBootApplication
@@ -73,7 +69,7 @@ public class Application {
             thermostatLog1 = new ThermostatLog();
             thermostatLog1.setToken(defThermostat.getToken());
             thermostatLog1.setLogTimeStamp(newDate);
-            thermostatLog1.setIntTemp("23");
+            thermostatLog1.setIntTemp("22");
             thermostatLogService.create(thermostatLog1);
 
 
