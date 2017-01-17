@@ -1,14 +1,12 @@
 package edu.endava.tempr.model;
 
-import org.hibernate.annotations.*;
+import org.joda.time.DateTime;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by zsoltszabo on 02/01/2017.
@@ -17,9 +15,9 @@ import java.util.List;
 @Table(name="ThermostatLog", indexes={@Index(name="ThermostatLog_Thermostat_Index", columnList = "thermostat_token")})
 public class ThermostatLog extends BaseEntity {
 
-    @Temporal(TemporalType.TIMESTAMP)
+    //@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "logTimeStamp", nullable = false)
-    private Date logTimeStamp;
+    private DateTime logTimeStamp;
 
     @Column(name = "thermostat_token", nullable = false)
     private String token;
@@ -55,11 +53,11 @@ public class ThermostatLog extends BaseEntity {
         this.token = token;
     }
 
-    public void setLogTimeStamp(Date logTimeStamp) {
+    public void setLogTimeStamp(DateTime logTimeStamp) {
         this.logTimeStamp = logTimeStamp;
     }
 
-    public Date getLogTimeStamp() {
+    public DateTime getLogTimeStamp() {
         return logTimeStamp;
     }
 

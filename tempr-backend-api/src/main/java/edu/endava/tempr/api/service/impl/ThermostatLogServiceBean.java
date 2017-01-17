@@ -3,6 +3,9 @@ package edu.endava.tempr.api.service.impl;
 import edu.endava.tempr.api.service.ThermostatLogService;
 import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.repository.ThermostatLogRepository;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,7 @@ public class ThermostatLogServiceBean implements ThermostatLogService {
 
     @Override
     public ThermostatLog create(ThermostatLog thermostatLog) {
+        thermostatLog.setLogTimeStamp(new DateTime());
         return thermostatLogRepository.save(thermostatLog);
     }
 
@@ -60,19 +64,10 @@ public class ThermostatLogServiceBean implements ThermostatLogService {
 
     @Override
     public List<ThermostatLog> getLastTenDays(String token) {
-        // Taking a sample date (Should be now()-10)
-        String tenDaysBefore = "2017/01/04 16:42:08";
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date startDate = new Date();
-        try {
-            // Converting it to a Date format
-            startDate = dateFormat.parse(tenDaysBefore);
-            // And back just to make sure everything's fine
-            String newDateString = dateFormat.format(startDate);
-            LOG.info("Logs after date {}",newDateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return thermostatLogRepository.findByTokenAndLogTimeStampGreaterThanOrderByLogTimeStampDesc(token, startDate);
+        // Fetch logs from for the last ten days
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss");
+        DateTime afterDate = new DateTime().minusDays(10);
+        LOG.info("Logs after date {}",dtf.print(afterDate));
+        return thermostatLogRepository.findByTokenAndLogTimeStampGreaterThanOrderByLogTimeStampDesc(token, afterDate);
     }
 }
