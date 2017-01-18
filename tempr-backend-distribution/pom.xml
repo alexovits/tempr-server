@@ -21,6 +21,10 @@
 					<plugin>
 						<groupId>com.spotify</groupId>
 						<artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <serverId>tempr-docker-registry</serverId>
+                            <registryUrl>http://hulk.tempr.xyz:8082</registryUrl>
+                        </configuration>
 						<executions>
 							<execution>
 								<id>dockerize-server</id>

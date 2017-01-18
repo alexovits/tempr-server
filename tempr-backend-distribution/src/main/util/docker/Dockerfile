@@ -11,7 +11,7 @@ RUN apt-get update && \
    apt-get install -y oracle-java8-installer && \
    apt-get clean
 
-# Add server binary
+# Add server binary (because docker doesn't want to govern any other layer's than it's own)
 ADD tempr-backend-api-1.0.0-SNAPSHOT.jar app.jar
 
 #TODO instead of 3000 change defult port to 2375
