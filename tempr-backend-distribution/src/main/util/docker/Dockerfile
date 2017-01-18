@@ -14,6 +14,7 @@ RUN apt-get update && \
 # Add server binary
 ADD tempr-backend-api-1.0.0-SNAPSHOT.jar app.jar
 
+#TODO instead of 3000 change defult port to 2375
 # Not changed flag by default in docker.
 RUN sh -c 'touch /app.jar'
 

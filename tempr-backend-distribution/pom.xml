@@ -40,6 +40,16 @@
 									</resources>
 								</configuration>
 							</execution>
+							<execution>
+								<id>push-image</id>
+								<phase>install</phase>
+								<goals>
+									<goal>push</goal>
+								</goals>
+								<configuration>
+									<imageName>hulk.tempr.xyz:8082/tempr-server</imageName>
+								</configuration>
+							</execution>
 						</executions>
 						<dependencies>
 							<dependency>
