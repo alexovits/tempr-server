@@ -12,6 +12,7 @@
 	<modules>
 		<module>tempr-backend-api</module>
 		<module>tempr-backend-common</module>
+        <module>tempr-backend-distribution</module>
 		<module>tempr-backend-model</module>
 		<module>tempr-backend-parent</module>
 		<module>tempr-backend-repository</module>

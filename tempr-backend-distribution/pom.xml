@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>edu.endava.tempr</groupId>
+		<artifactId>tempr-backend-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../tempr-backend-parent</relativePath>
+	</parent>
+
+	<artifactId>tempr-backend-distribution</artifactId>
+	<packaging>pom</packaging>
+	<name>Tempr Backend: Distribution</name>
+
+	<profiles>
+		<profile>
+			<id>dockerize</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>dockerize-server</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>build</goal>
+								</goals>
+								<configuration>
+									<imageName>hulk.tempr.xyz:8082/tempr-server</imageName>
+									<dockerDirectory>${project.basedir}/src/main/util/docker</dockerDirectory>
+									<resources>
+										<resource>
+											<targetPath>/</targetPath>
+											<directory>${project.basedir}/../tempr-backend-api/target</directory>
+											<include>tempr-backend-api-1.0.0-SNAPSHOT.jar</include>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>edu.endava.tempr</groupId>
+								<artifactId>tempr-backend-api</artifactId>
+								<version>1.0.0-SNAPSHOT</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
