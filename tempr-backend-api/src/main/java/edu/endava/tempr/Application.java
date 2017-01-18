@@ -18,6 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication
 public class Application {
@@ -47,31 +48,26 @@ public class Application {
                 System.out.println(t.toString());
             }
 
-            // Adding log 1
+            Random rand = new Random();
+
+            // Adding random logs
             DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss");
-            DateTime newDate = dtf.parseDateTime("2017/01/03 13:42:08");
-            ThermostatLog thermostatLog1 = new ThermostatLog();
-            thermostatLog1.setToken(defThermostat.getToken());
-            thermostatLog1.setLogTimeStamp(newDate);
-            thermostatLog1.setIntTemp("23");
-            thermostatLogService.create(thermostatLog1);
+            DateTime newDate;
+            for(int i=3;i<16;i++){
+                if(i<10) {
+                    newDate = dtf.parseDateTime("2017/01/0" + Integer.toString(i) + " 13:42:08");
+                }else{
+                    newDate = dtf.parseDateTime("2017/01/" + Integer.toString(i) + " 13:42:08");
+                }
 
-            // Adding log 2
-            newDate = dtf.parseDateTime("2017/01/11 12:42:08");
-            thermostatLog1 = new ThermostatLog();
-            thermostatLog1.setToken(defThermostat.getToken());
-            thermostatLog1.setLogTimeStamp(newDate);
-            thermostatLog1.setIntTemp("23");
-            thermostatLogService.create(thermostatLog1);
+                ThermostatLog thermostatLog1 = new ThermostatLog();
 
-            // Adding log 3
-            newDate = dtf.parseDateTime("2017/01/12 16:32:08");
-            thermostatLog1 = new ThermostatLog();
-            thermostatLog1.setToken(defThermostat.getToken());
-            thermostatLog1.setLogTimeStamp(newDate);
-            thermostatLog1.setIntTemp("22");
-            thermostatLogService.create(thermostatLog1);
-
+                thermostatLog1.setToken(defThermostat.getToken());
+                thermostatLog1.setLogTimeStamp(newDate);
+                int randTemperature = rand.nextInt(7) + 20;
+                thermostatLog1.setIntTemp(Integer.toString(randTemperature));
+                thermostatLogService.create(thermostatLog1);
+            }
 
             ThermostatLog fetchLog = thermostatLogService.getLatest(defThermostat.getToken());
             LOG.info("Got the latest log {}",fetchLog.toString());
