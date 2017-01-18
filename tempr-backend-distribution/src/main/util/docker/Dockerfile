@@ -12,7 +12,7 @@ RUN apt-get update && \
    apt-get clean
 
 # Add server binary
-ADD tempr-backend-api-1.0.0-SNAPSHOT.jar api.jar
+ADD tempr-backend-api-1.0.0-SNAPSHOT.jar app.jar
 
 # Not changed flag by default in docker.
 RUN sh -c 'touch /app.jar'
