@@ -55,7 +55,7 @@ public class ThermostatServiceBean implements ThermostatService {
     public Thermostat createThermostat(User user, Thermostat thermostat) {
         Thermostat savedThermostat = null;
         thermostat.setToken(generateNewToken(user.getUsername()));
-        thermostat.setUserId(user.getId());
+        thermostat.setUser(user);
         thermostat.setConfigured((short) 0);
         try {
             savedThermostat = thermostatRepository.save(thermostat);
@@ -63,6 +63,7 @@ public class ThermostatServiceBean implements ThermostatService {
             LOG.error("Error occured when saving new thermostat for user with the id '{}'",user.getId(), ex);
         }
         LOG.info("Created thermostat with token: '{}'", savedThermostat.getToken());
+        LOG.info("Created thermostat: '{}'", savedThermostat.toString());
 
         // Inserts save thermostat into user's list
         user.addThermostat(savedThermostat);

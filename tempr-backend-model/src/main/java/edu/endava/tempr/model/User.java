@@ -1,5 +1,7 @@
 package edu.endava.tempr.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +25,7 @@ public class User extends BaseEntity {
     @Column(name = "email")
     private String email;
 
-    @OneToMany
-    @JoinTable(name = "user_thermostat",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "thermostat_id"))
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Thermostat> thermostatList = new ArrayList<>();
 
     public User() {

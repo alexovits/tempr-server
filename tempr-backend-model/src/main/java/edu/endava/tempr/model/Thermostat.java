@@ -1,8 +1,9 @@
 package edu.endava.tempr.model;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Created by zsoltszabo on 13/12/2016.
@@ -20,14 +21,8 @@ public class Thermostat extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "user_id")
-    private Long userId;
-
-    @OneToMany
-    @JoinTable(name = "thermostat_thermostatLog",
-            joinColumns = @JoinColumn(name = "thermostat_token"),
-            inverseJoinColumns = @JoinColumn(name = "token"))
-    private List<ThermostatLog> thermostatLogList = new ArrayList<>();
+    @ManyToOne
+    private User user;
 
     public Thermostat() {
         //EMPTY
@@ -49,14 +44,6 @@ public class Thermostat extends BaseEntity {
         this.name = name;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public Short getConfigured() {
         return configured;
     }
@@ -65,18 +52,12 @@ public class Thermostat extends BaseEntity {
         this.configured = configured;
     }
 
-    public List<ThermostatLog> getThermostatLogList() {
-        return thermostatLogList;
+    public User getUser() {
+        return user;
     }
 
-    public void setThermostatLogList(List<ThermostatLog> thermostatLogList) {
-        this.thermostatLogList = thermostatLogList;
-    }
-
-    public void addThermostatLog(ThermostatLog thermostatLog){
-        if(!thermostatLogList.contains(thermostatLog)){
-            thermostatLogList.add(thermostatLog);
-        }
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -84,8 +65,8 @@ public class Thermostat extends BaseEntity {
         return "Thermostat{" +
                 "name='" + name + '\'' +
                 ", token='" + token + '\'' +
-                ", userId='" + userId + '\'' +
                 ", configured='" + configured + '\'' +
+                ", userId=" + user.getId() + '\'' +
                 '}';
     }
 }

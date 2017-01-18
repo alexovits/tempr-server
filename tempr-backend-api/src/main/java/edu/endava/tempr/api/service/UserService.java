@@ -3,6 +3,7 @@ package edu.endava.tempr.api.service;
 
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
+import org.joda.time.DateTime;
 
 import java.util.List;
 

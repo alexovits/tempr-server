@@ -29,7 +29,6 @@ public class UserAssembler implements Assembler<UserDto, User> {
         for(ThermostatDto thermostatDto: dto.getThermostatDtoList()){
             user.getThermostatList().add(thermostatAssembler.toEntity(thermostatDto));
         }
-
         return user;
     }
 
