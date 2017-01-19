@@ -30,7 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/user/register/").permitAll()
                 .antMatchers("/thermostat/configure/").permitAll()
-                .antMatchers("/thermostat/logtemp/").permitAll()
+                .antMatchers("/thermostat/log/").permitAll()
+                .antMatchers("/user/").permitAll()
                 .anyRequest().authenticated();
         http.csrf().disable();
         // @formatter:on
