@@ -52,21 +52,15 @@ public class Application {
 
             // Adding random logs
             DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss");
-            DateTime newDate;
-            for(int i=3;i<16;i++){
-                if(i<10) {
-                    newDate = dtf.parseDateTime("2017/01/0" + Integer.toString(i) + " 13:42:08");
-                }else{
-                    newDate = dtf.parseDateTime("2017/01/" + Integer.toString(i) + " 13:42:08");
-                }
-
+            DateTime newDate = new DateTime();
+            for(int i=0;i<10;i++){
                 ThermostatLog thermostatLog1 = new ThermostatLog();
-
                 thermostatLog1.setToken(defThermostat.getToken());
                 thermostatLog1.setLogTimeStamp(newDate);
                 int randTemperature = rand.nextInt(7) + 20;
                 thermostatLog1.setIntTemp(Integer.toString(randTemperature));
                 thermostatLogService.create(thermostatLog1);
+                newDate = newDate.minusDays(1);
             }
 
             ThermostatLog fetchLog = thermostatLogService.getLatest(defThermostat.getToken());
