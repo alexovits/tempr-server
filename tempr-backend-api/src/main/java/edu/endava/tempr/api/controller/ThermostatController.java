@@ -28,6 +28,8 @@ public class ThermostatController {
     @Autowired
     private UserService userService;
 
+    private int desiredTemperature = 25;
+
     @RequestMapping(value = "/thermostat/register/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatDto> registerThermostat(@RequestBody ThermostatDto thermostatDto) {
         // Check if user that wants to have thermostat exists at all
@@ -85,6 +87,17 @@ public class ThermostatController {
         thermostatService.updateThermostat(thermostat);
 
         return new ResponseEntity<>(thermostatAssembler.toDto(thermostat), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/desiredTemp/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> getDesiredTemperature() {
+        return new ResponseEntity<>(desiredTemperature, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/desiredTemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> setDesiredTemperature(@RequestBody int desiredTemperature) {
+        this.desiredTemperature = desiredTemperature;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
