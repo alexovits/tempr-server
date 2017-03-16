@@ -16,13 +16,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -57,26 +52,26 @@ public class Application {
             Random rand = new Random();
 
             // Adding random logs
-            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss");
-            DateTime newDate = new DateTime();
+            //DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss");
+            //DateTime newDate = new DateTime();
             for(int i=0;i<10;i++){
                 ThermostatLog thermostatLog1 = new ThermostatLog();
                 thermostatLog1.setToken(defThermostat.getToken());
-                thermostatLog1.setLogTimeStamp(newDate);
+                thermostatLog1.setLogTimeStamp(LocalDateTime.now());
                 int randTemperature = rand.nextInt(7) + 20;
                 thermostatLog1.setIntTemp(Integer.toString(randTemperature));
                 thermostatLogService.create(thermostatLog1);
-                newDate = newDate.minusDays(1);
+                //newDate = newDate.minusDays(1);
             }
 
             ThermostatLog fetchLog = thermostatLogService.getLatest(defThermostat.getToken());
             LOG.info("Got the latest log {}",fetchLog.toString());
 
-            LOG.info("Check out all after ");
-            List<ThermostatLog> fetchLogs = thermostatLogService.getLastTenDays(defThermostat.getToken());
-            for(ThermostatLog t: fetchLogs){
-                LOG.info(t.toString());
-            }
+            //LOG.info("Check out all after ");
+            //List<ThermostatLog> fetchLogs = thermostatLogService.getLastTenDays(defThermostat.getToken());
+            //for(ThermostatLog t: fetchLogs){
+            //    LOG.info(t.toString());
+           // }
 
         };
     }

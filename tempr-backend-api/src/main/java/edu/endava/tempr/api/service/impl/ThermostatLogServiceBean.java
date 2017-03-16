@@ -3,10 +3,6 @@ package edu.endava.tempr.api.service.impl;
 import edu.endava.tempr.api.service.ThermostatLogService;
 import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.repository.ThermostatLogRepository;
-import edu.endava.tempr.repository.ThermostatRepository;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +61,10 @@ public class ThermostatLogServiceBean implements ThermostatLogService {
     public List<ThermostatLog> getLastTenDays(String token) {
         // Fetch logs from for the last ten days
         LOG.info("Fetching the log history of device with token: {}", token);
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss");
+        /*DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss");
         DateTime afterDate = new DateTime().minusDays(10);
         LOG.info("Logs after date {}",dtf.print(afterDate));
-        return thermostatLogRepository.findByTokenAndLogTimeStampGreaterThanOrderByLogTimeStampDesc(token, afterDate);
+        return thermostatLogRepository.findByTokenAndLogTimeStampGreaterThanOrderByLogTimeStampDesc(token, afterDate);*/
+        return null;
     }
 }
