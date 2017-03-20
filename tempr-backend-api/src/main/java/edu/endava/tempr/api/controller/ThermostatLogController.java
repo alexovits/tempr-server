@@ -94,4 +94,16 @@ public class ThermostatLogController {
         return new ResponseEntity<>(desiredTemperature, HttpStatus.OK);
     }
 
+
+    // Handling POST to set the desired temperature set for a specific thermostat
+    /*@RequestMapping(value = "/thermostat/desiredtemp/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> getDesiredTemperature(@RequestBody ThermostatDto thermostatDto){
+        // If there's no token at all, OR if it's non-existent return error OR temperature is not specified
+        if(thermostatDto.getToken() == null || thermostatService.findOne(thermostatDto.getToken()) == null || thermostatDto.get){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+
+    }*/
+
 }

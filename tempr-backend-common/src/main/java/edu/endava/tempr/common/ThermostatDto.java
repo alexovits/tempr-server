@@ -8,6 +8,7 @@ public class ThermostatDto extends AbstractDto{
     private String name;
     private Short configured;
     private Long userId;
+    private Integer desiredTemperature;
 
     public ThermostatDto(){}
 
@@ -43,6 +44,14 @@ public class ThermostatDto extends AbstractDto{
         this.userId = userId;
     }
 
+    public Integer getDesiredTemperature() {
+        return desiredTemperature;
+    }
+
+    public void setDesiredTemperature(Integer desiredTemperature) {
+        this.desiredTemperature = desiredTemperature;
+    }
+
     @Override
     public String toString() {
         return "ThermostatDto{" +
@@ -50,6 +59,7 @@ public class ThermostatDto extends AbstractDto{
                 ", token='" + token + '\'' +
                 ", configured='" + configured + '\'' +
                 ", userId='" + userId + '\'' +
+                ", desiredTemperature='" + desiredTemperature + '\'' +
                 '}';
     }
 }
