@@ -83,11 +83,11 @@ public class ThermostatLogController {
     // Handling GET to the actual desired temperature set for a specific thermostat
     @RequestMapping(value = "/thermostat/desiredtemp/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> getDesiredTemperature(@RequestParam("thermostatId") String thermostatId){
-        Thermostat targetTermostat = thermostatService.findOne(thermostatId);
+        Thermostat targetThermostat = thermostatService.findOne(thermostatId);
         Integer desiredTemperature;
-        if(targetTermostat == null){
+        if(targetThermostat == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }else if ((desiredTemperature = targetTermostat.getDesiredTemperature()) == null){
+        }else if ((desiredTemperature = targetThermostat.getDesiredTemperature()) == null){
             // If the desired temoerature is not set yet
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         }
@@ -96,14 +96,17 @@ public class ThermostatLogController {
 
 
     // Handling POST to set the desired temperature set for a specific thermostat
-    /*@RequestMapping(value = "/thermostat/desiredtemp/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/thermostat/desiredtemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> getDesiredTemperature(@RequestBody ThermostatDto thermostatDto){
+        Thermostat currentThermostat;
         // If there's no token at all, OR if it's non-existent return error OR temperature is not specified
-        if(thermostatDto.getToken() == null || thermostatService.findOne(thermostatDto.getToken()) == null || thermostatDto.get){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        if(thermostatDto.getToken() == null || (currentThermostat = thermostatService.findOne(thermostatDto.getToken())) == null || thermostatDto.getDesiredTemperature() == null){
+            return new ResponseEntity(1, HttpStatus.BAD_REQUEST);
         }
 
-
-    }*/
+        currentThermostat.setDesiredTemperature(thermostatDto.getDesiredTemperature());
+        thermostatService.updateThermostat(currentThermostat);
+        return new ResponseEntity(2, HttpStatus.OK);
+    }
 
 }
