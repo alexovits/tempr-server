@@ -43,6 +43,7 @@ public class Application {
 
             defThermostat = new Thermostat();
             defThermostat.setName("Device-2");
+            defThermostat.setDesiredTemperature(19);
             defThermostat = thermostatService.createThermostat(defUser, defThermostat);
 
             // Showing every thermostat of a user

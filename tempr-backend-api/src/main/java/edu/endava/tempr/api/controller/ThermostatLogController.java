@@ -5,6 +5,7 @@ import edu.endava.tempr.api.service.ThermostatLogService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.common.ThermostatLogDto;
+import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.ThermostatLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,6 @@ public class ThermostatLogController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         ThermostatLog thermostatLog = thermostatLogAssembler.toEntity(thermostatLogDto);
-        // TO-DO Change to java 8 time
         thermostatLog.setLogTimeStamp(LocalDateTime.now());
         thermostatLogService.create(thermostatLog);
         return new ResponseEntity(HttpStatus.OK);
@@ -78,6 +78,20 @@ public class ThermostatLogController {
         }
 
         return new ResponseEntity<>(fetchedLogs, HttpStatus.OK);
+    }
+
+    // Handling GET to the actual desired temperature set for a specific thermostat
+    @RequestMapping(value = "/thermostat/desiredtemp/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> getDesiredTemperature(@RequestParam("thermostatId") String thermostatId){
+        Thermostat targetTermostat = thermostatService.findOne(thermostatId);
+        Integer desiredTemperature;
+        if(targetTermostat == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }else if ((desiredTemperature = targetTermostat.getDesiredTemperature()) == null){
+            // If the desired temoerature is not set yet
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(desiredTemperature, HttpStatus.OK);
     }
 
 }

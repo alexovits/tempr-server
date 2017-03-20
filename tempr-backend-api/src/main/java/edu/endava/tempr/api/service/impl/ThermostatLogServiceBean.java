@@ -30,7 +30,7 @@ public class ThermostatLogServiceBean implements ThermostatLogService {
 
     @Override
     public ThermostatLog create(ThermostatLog thermostatLog) {
-        //thermostatLog.setLogTimeStamp(new DateTime());
+        // Current time setting is done outside in the controller, this MIGHT change
         LOG.info("Creating a new log {}",thermostatLog.toString());
         return thermostatLogRepository.save(thermostatLog);
     }
