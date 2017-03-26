@@ -7,13 +7,19 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.WebApplicationInitializer;
+
+import javax.servlet.ServletContext;
+import javax.servlet.SessionTrackingMode;
+import java.util.EnumSet;
 
 /**
  * Created by zsoltszabo on 14/12/2016.
  */
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebApplicationInitializer{
 
     @Autowired
     SecurityUserDetailsService userDetailsService;
@@ -25,7 +31,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
         http.httpBasic();
         http.authorizeRequests()
                 .antMatchers("/user/register/").permitAll()
@@ -36,12 +41,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/thermostat/desiredTemp/").permitAll()
                 .anyRequest().authenticated();
         http.csrf().disable();
-        // @formatter:on
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
     }
 
     //For ignoring the OPTIONS preflights
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+    }
+
+    @Override
+    public void onStartup(ServletContext servletContext){
+        servletContext.setSessionTrackingModes(EnumSet.of(SessionTrackingMode.COOKIE));
     }
 }
