@@ -1,4 +1,4 @@
-package edu.endava.tempr.config;
+package edu.endava.tempr.api.config;
 
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
@@ -16,10 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * Created by zsoltszabo on 3/16/17.
  */
-@EnableWebMvc
-@ComponentScan(basePackages = {"edu.endava.tempr"})
 @Configuration
-public class appConfig extends WebMvcConfigurerAdapter{
+public class AppConfig extends WebMvcConfigurerAdapter{
 
     @Configuration
     @EnableSwagger2
