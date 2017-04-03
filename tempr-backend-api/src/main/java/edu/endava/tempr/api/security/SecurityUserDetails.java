@@ -23,7 +23,7 @@ public class SecurityUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authList = new ArrayList<>(1);
-        authList.add(new SimpleGrantedAuthority(user.getUserType().toString()));
+        authList.add(user.getUserType());
         return authList;
     }
 

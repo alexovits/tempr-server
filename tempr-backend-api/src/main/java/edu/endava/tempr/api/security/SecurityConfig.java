@@ -36,8 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebA
                 .antMatchers("/user/register/").permitAll()
                 .antMatchers("/thermostat/configure/").permitAll()
                 .antMatchers("/thermostat/log/").permitAll()
-                .antMatchers("/user/").hasRole("ADMIN")
                 .antMatchers("/version").permitAll()
+                .antMatchers("/user/").hasAuthority("ADMIN")
+                .antMatchers("/simulator/*").hasAuthority("ADMIN")
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); // Creating cookies when it is required
