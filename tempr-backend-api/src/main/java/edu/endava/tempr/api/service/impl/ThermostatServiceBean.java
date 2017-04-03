@@ -2,7 +2,6 @@ package edu.endava.tempr.api.service.impl;
 
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.model.Thermostat;
-import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.ThermostatRepository;
 import edu.endava.tempr.repository.UserRepository;

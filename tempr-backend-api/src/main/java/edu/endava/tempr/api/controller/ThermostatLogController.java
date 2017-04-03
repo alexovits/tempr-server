@@ -5,8 +5,8 @@ import edu.endava.tempr.api.service.ThermostatLogService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.common.ThermostatLogDto;
+import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.ThermostatLog;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class ThermostatLogController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         ThermostatLog thermostatLog = thermostatLogAssembler.toEntity(thermostatLogDto);
-        thermostatLog.setLogTimeStamp(new DateTime());
+        thermostatLog.setLogTimeStamp(LocalDateTime.now());
         thermostatLogService.create(thermostatLog);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -77,6 +78,35 @@ public class ThermostatLogController {
         }
 
         return new ResponseEntity<>(fetchedLogs, HttpStatus.OK);
+    }
+
+    // Handling GET to the actual desired temperature set for a specific thermostat
+    @RequestMapping(value = "/thermostat/desiredtemp/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> getDesiredTemperature(@RequestParam("thermostatId") String thermostatId){
+        Thermostat targetThermostat = thermostatService.findOne(thermostatId);
+        Integer desiredTemperature;
+        if(targetThermostat == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }else if ((desiredTemperature = targetThermostat.getDesiredTemperature()) == null){
+            // If the desired temoerature is not set yet
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(desiredTemperature, HttpStatus.OK);
+    }
+
+
+    // Handling POST to set the desired temperature set for a specific thermostat
+    @RequestMapping(value = "/thermostat/desiredtemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> getDesiredTemperature(@RequestBody ThermostatDto thermostatDto){
+        Thermostat currentThermostat;
+        // If there's no token at all, OR if it's non-existent return error OR temperature is not specified
+        if(thermostatDto.getToken() == null || (currentThermostat = thermostatService.findOne(thermostatDto.getToken())) == null || thermostatDto.getDesiredTemperature() == null){
+            return new ResponseEntity(1, HttpStatus.BAD_REQUEST);
+        }
+
+        currentThermostat.setDesiredTemperature(thermostatDto.getDesiredTemperature());
+        thermostatService.updateThermostat(currentThermostat);
+        return new ResponseEntity(2, HttpStatus.OK);
     }
 
 }

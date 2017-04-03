@@ -3,9 +3,12 @@ package edu.endava.tempr.api.controller;
 import edu.endava.tempr.api.assembler.ThermostatAssembler;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
+import edu.endava.tempr.common.TemperatureDto;
 import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class ThermostatController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(User.class);
 
     @Autowired
     private ThermostatService thermostatService;
@@ -87,4 +92,18 @@ public class ThermostatController {
         return new ResponseEntity<>(thermostatAssembler.toDto(thermostat), HttpStatus.OK);
     }
 
+<<<<<<< HEAD
+    /*@RequestMapping(value = "/thermostat/desiredTemp/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> getDesiredTemperature() {
+        return new ResponseEntity<>(desiredTemperature, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/thermostat/desiredTemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity setDesiredTemperature(@RequestBody TemperatureDto temperatureDto) {
+        this.desiredTemperature = temperatureDto.getTemp();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }*/
+
+=======
+>>>>>>> master
 }

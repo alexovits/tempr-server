@@ -1,21 +1,21 @@
 package edu.endava.tempr.common;
 
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 
 /**
  * Created by zsoltszabo on 19/12/2016.
  */
 public class ThermostatLogDto extends AbstractDto {
-    private DateTime logTimeStamp;
+    private LocalDateTime logTimeStamp;
     private String token;
     private String extTemp;
     private String intTemp;
 
-    public DateTime getLogTimeStamp() {
+    public LocalDateTime getLogTimeStamp() {
         return logTimeStamp;
     }
 
-    public void setLogTimeStamp(DateTime logTimeStamp) {
+    public void setLogTimeStamp(LocalDateTime logTimeStamp) {
         this.logTimeStamp = logTimeStamp;
     }
 

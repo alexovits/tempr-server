@@ -21,6 +21,9 @@ public class Thermostat extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "desiredTemperature")
+    private Integer desiredTemperature;
+
     @ManyToOne
     private User user;
 
@@ -60,6 +63,14 @@ public class Thermostat extends BaseEntity {
         this.user = user;
     }
 
+    public Integer getDesiredTemperature() {
+        return desiredTemperature;
+    }
+
+    public void setDesiredTemperature(Integer desiredTemperature) {
+        this.desiredTemperature = desiredTemperature;
+    }
+
     @Override
     public String toString() {
         return "Thermostat{" +
@@ -67,6 +78,7 @@ public class Thermostat extends BaseEntity {
                 ", token='" + token + '\'' +
                 ", configured='" + configured + '\'' +
                 ", userId=" + user.getId() + '\'' +
+                ", desiredTemperature=" + desiredTemperature + '\'' +
                 '}';
     }
 }
