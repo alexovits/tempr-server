@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebA
                 .antMatchers("/user/register/").permitAll()
                 .antMatchers("/thermostat/configure/").permitAll()
                 .antMatchers("/thermostat/log/").permitAll()
-                .antMatchers("/user/").permitAll()
+                .antMatchers("/user/").hasRole("ADMIN")
                 .antMatchers("/version").permitAll()
                 .anyRequest().authenticated();
         http.csrf().disable();

@@ -35,7 +35,7 @@ public class Application {
     public CommandLineRunner addDefaultUser(UserService userService, ThermostatService thermostatService, ThermostatLogService thermostatLogService) {
         return (args) -> {
             // Create a demo ADMIN
-            User adminUser = userService.createUser(new User("admina", "admin", "Admin", "Janos", "admin@tempr.com", UserType.ADMIN));
+            User adminUser = userService.createUser(new User("admin", "admin", "Admin", "Janos", "admin@tempr.com", UserType.ADMIN));
             // Create a demo user
             User defUser = userService.createUser(new User("user", "user", "John", "Doe", "user@tempr.com", UserType.USER));
 
