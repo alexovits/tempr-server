@@ -1,7 +1,5 @@
 package edu.endava.tempr.model;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +20,12 @@ public class User extends BaseEntity {
     @Column(name = "lastname")
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
+
+    @Column(name = "usertype", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Thermostat> thermostatList = new ArrayList<>();
@@ -32,12 +34,13 @@ public class User extends BaseEntity {
         //EMPTY
     }
 
-    public User(String username, String password, String firstName, String lastName, String email) {
+    public User(String username, String password, String firstName, String lastName, String email, UserType userType) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.userType = userType;
     }
 
     public String getUsername() {
@@ -94,6 +97,14 @@ public class User extends BaseEntity {
         }
     }
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -102,6 +113,8 @@ public class User extends BaseEntity {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", type='" + userType + '\'' +
                 '}';
     }
+
 }
