@@ -64,7 +64,8 @@ public class User extends BaseEntity {
     }
 
     public void setThermostatList(List<Thermostat> thermostatList) {
-        this.thermostatList = thermostatList;
+        this.thermostatList = new ArrayList<>();
+        thermostatList.forEach(t -> thermostatList.add(t));
     }
 
     public String getFirstName() {

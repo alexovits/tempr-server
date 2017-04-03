@@ -1,9 +1,8 @@
 package edu.endava.tempr.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zsoltszabo on 13/12/2016.
@@ -26,6 +25,9 @@ public class Thermostat extends BaseEntity {
 
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "thermostat", fetch = FetchType.EAGER)
+    private List<HeatingCircuit> heatingCircuitList = new ArrayList<>();
 
     public Thermostat() {
         //EMPTY
@@ -69,6 +71,21 @@ public class Thermostat extends BaseEntity {
 
     public void setDesiredTemperature(Integer desiredTemperature) {
         this.desiredTemperature = desiredTemperature;
+    }
+
+    public List<HeatingCircuit> getHeatingCircuitList() {
+        return heatingCircuitList;
+    }
+
+    public void setHeatingCircuitList(List<HeatingCircuit> heatingCircuitList) {
+        this.heatingCircuitList = new ArrayList<>();
+        heatingCircuitList.forEach(hc -> this.heatingCircuitList.add(hc));
+    }
+
+    public void addHeatingCircuit(HeatingCircuit hc){
+        if(!heatingCircuitList.contains(hc)){
+            heatingCircuitList.add(hc);
+        }
     }
 
     @Override
