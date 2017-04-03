@@ -113,7 +113,7 @@ public class User extends BaseEntity {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", type='" + userType + '\'' +
+                ", type='" + userType.toString() + '\'' +
                 '}';
     }
 
