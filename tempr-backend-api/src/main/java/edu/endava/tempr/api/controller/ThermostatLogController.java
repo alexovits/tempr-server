@@ -37,7 +37,7 @@ public class ThermostatLogController {
     @Autowired
     private ThermostatService thermostatService;
 
-    @RequestMapping(value = "/thermostat/log/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/thermostat/heatingcircuit/log/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity logThermostatTemperature(@RequestBody ThermostatLogDto thermostatLogDto) {
         if(thermostatLogDto.getToken() == null || thermostatLogDto.getIntTemp() == null || thermostatService.findOne(thermostatLogDto.getToken()) == null){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -94,6 +94,30 @@ public class ThermostatLogController {
         return new ResponseEntity<>(desiredTemperature, HttpStatus.OK);
     }
 
+    //TODO:
+    /**
+        - temperatures GET -> returns of every HC the desired, suggested, current,
+        - /desiredTemp POST -> sets desired temperature of given HC
+        - /log -> logs HC's temp
+
+        - HW endpoints:
+            - /log
+            - temperatures GET
+
+        - UI endpoints:
+            - /desiredTemp POST (Later)
+            - /temperatures GET
+            - ON/OFF ML
+            - /loghistory -> sensor last x days temp (Later)
+            - /heatingcircuit/register (Later)
+
+        - SUMILATOR: (/simulator indicates in-memory db usage)
+            - GET /simulator/temperatures
+            - /simulator/log
+            - /simulator/thermostat/register (Later)
+            - /simulator/heatingcircuit/register (Later)
+            - /simulator/reset (Later)
+    **/
 
     // Handling POST to set the desired temperature set for a specific thermostat
     @RequestMapping(value = "/thermostat/desiredtemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

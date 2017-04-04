@@ -70,6 +70,7 @@ public class ThermostatController {
         return new ResponseEntity<>(thermostatAssembler.toDto(thermostat), HttpStatus.OK);
     }
 
+    // UNUSED for the time being
     @RequestMapping(value = "/thermostat/unconfigure/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatDto> unConfigureThermostat(@RequestBody ThermostatDto thermostatDto) {
         Thermostat thermostat = thermostatService.findOne(thermostatDto.getToken());
