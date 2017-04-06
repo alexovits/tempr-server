@@ -16,12 +16,15 @@ public class HeatingCircuit extends BaseEntity{
     private Integer desiredTemperature;
 
     @ManyToOne
+    @Column(nullable = false)
     private Thermostat thermostat;
 
     @OneToOne
+    @Column(nullable = false)
     private HeatingSource heatingSource;
 
     @OneToOne
+    @Column(nullable = false)
     private Sensor sensor;
 
     public HeatingSource getHeatingSource() {

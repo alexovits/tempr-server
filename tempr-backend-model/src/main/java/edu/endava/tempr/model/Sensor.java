@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 @Entity
 public class Sensor extends BaseEntity{
 
-    @Column(name = "sensorId")
+    @Column(name = "sensorId", unique = true, nullable = false)
     private Long sensorId;
 
     public Long getSensorId() {

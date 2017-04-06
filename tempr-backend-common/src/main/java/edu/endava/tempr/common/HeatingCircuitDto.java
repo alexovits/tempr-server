@@ -3,11 +3,13 @@ package edu.endava.tempr.common;
 /**
  * Created by zsoltszabo on 4/4/17.
  */
-public class HeatingCircuitDto {
+public class HeatingCircuitDto extends AbstractDto{
 
     private String name;
 
-    private Long thermostatId;
+    private String thermostatToken;
+
+    private Integer desiredTemperature;
 
     private HeatingSourceDto heatingSourceDto;
 
@@ -24,19 +26,19 @@ public class HeatingCircuitDto {
         this.name = name;
     }
 
-    public Long getThermostatId() {
-        return thermostatId;
+    public String getThermostatToken() {
+        return thermostatToken;
     }
 
-    public void getThermostatId(Long thermostatId) {
-        this.thermostatId = thermostatId;
+    public void setThermostatToken(String thermostatToken) {
+        this.thermostatToken = thermostatToken;
     }
 
-    public HeatingSourceDto getHeatingSource() {
+    public HeatingSourceDto getHeatingSourceDto() {
         return heatingSourceDto;
     }
 
-    public void setHeatingSource(HeatingSourceDto thermostatId) {
+    public void setHeatingSourceDto(HeatingSourceDto thermostatId) {
         this.heatingSourceDto = heatingSourceDto;
     }
 
@@ -46,5 +48,13 @@ public class HeatingCircuitDto {
 
     public void setSensor(SensorDto sensorDto) {
         this.sensorDto = sensorDto;
+    }
+
+    public Integer getDesiredTemperature() {
+        return desiredTemperature;
+    }
+
+    public void setDesiredTemperature(Integer desiredTemperature) {
+        this.desiredTemperature = desiredTemperature;
     }
 }
