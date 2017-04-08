@@ -10,12 +10,8 @@ import java.util.List;
  */
 public interface ThermostatService {
     List<Thermostat> findAll();
-
     Thermostat findOne(String token);
-
     Thermostat createThermostat(User user, Thermostat thermostat);
-
     Thermostat updateThermostat(Thermostat thermostat);
-
     void deleteThermostat(Long id);
 }

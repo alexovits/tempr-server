@@ -76,6 +76,7 @@ public class ThermostatServiceBean implements ThermostatService {
         Thermostat thermostatToUpdate = thermostatRepository.findByToken(thermostat.getToken());
         if(thermostatToUpdate == null){
             LOG.info("Thermostat with token: '{}' was not found!", thermostat.getToken());
+            //TODO: Throw exception
             return null;
         }
         LOG.info("Thermostat with token: '{}' was updated!", thermostat.getToken());
