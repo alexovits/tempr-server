@@ -1,10 +1,8 @@
 package edu.endava.tempr;
 
-import edu.endava.tempr.api.service.ThermostatLogService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.model.Thermostat;
-import edu.endava.tempr.model.ThermostatLog;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.model.UserType;
 import org.slf4j.Logger;
@@ -32,7 +30,7 @@ public class Application {
 
     @Bean
     @Autowired
-    public CommandLineRunner addDefaultUser(UserService userService, ThermostatService thermostatService, ThermostatLogService thermostatLogService) {
+    public CommandLineRunner addDefaultUser(UserService userService, ThermostatService thermostatService) {
         return (args) -> {
             // Create a demo ADMIN
             User adminUser = userService.createUser(new User("admin", "admin", "Admin", "Janos", "admin@tempr.com", UserType.ADMIN));
@@ -58,7 +56,7 @@ public class Application {
             // Adding random logs for the last ten days to the "Device-2" thermostat of user "user"
             Random rand = new Random();
             LocalDateTime newDate = LocalDateTime.now();
-            for(int i=0;i<daysToGenerate;i++){
+            /*for(int i=0;i<daysToGenerate;i++){
                 ThermostatLog randomThermostatLog = new ThermostatLog();
                 randomThermostatLog.setToken(defThermostat.getToken());
                 randomThermostatLog.setLogTimeStamp(newDate);
@@ -76,7 +74,7 @@ public class Application {
             List<ThermostatLog> fetchedLogs = thermostatLogService.getLastTenDays(defThermostat.getToken());
             for(ThermostatLog fetchedLog: fetchedLogs){
                 LOG.info(fetchedLog.toString());
-            }
+            }*/
 
         };
     }

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by zsoltszabo on 13/12/2016.
  */
 @Entity
-@Table(name = "Thermostats")
+@Table(name = "Thermostats", indexes={@Index(name="Thermostat_Token_Index", columnList = "token")})
 public class Thermostat extends BaseEntity {
 
     @Column(name = "token", nullable = false, unique = true)

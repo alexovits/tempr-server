@@ -1,12 +1,14 @@
 package edu.endava.tempr.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zsoltszabo on 4/3/17.
  */
 @Entity
-@Table(name = "HeatingCircuits")
+@Table(name = "HeatingCircuit")
 public class HeatingCircuit extends BaseEntity{
 
     @Column(name = "name")
@@ -16,16 +18,19 @@ public class HeatingCircuit extends BaseEntity{
     private Integer desiredTemperature;
 
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private Thermostat thermostat;
 
     @OneToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private HeatingSource heatingSource;
 
     @OneToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private Sensor sensor;
+
+    @OneToMany(mappedBy = "heatingCircuit", fetch = FetchType.EAGER)
+    private List<SensorLog> sensorLogList = new ArrayList<>();
 
     public HeatingSource getHeatingSource() {
         return heatingSource;
@@ -65,6 +70,21 @@ public class HeatingCircuit extends BaseEntity{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<SensorLog> getSensorLogList() {
+        return sensorLogList;
+    }
+
+    public void setSensorLogList(List<SensorLog> sensorLogList) {
+        this.sensorLogList = new ArrayList<>();
+        sensorLogList.forEach(hc -> this.sensorLogList.add(hc));
+    }
+
+    public void addSensorLog(SensorLog sensorLog){
+        if(!sensorLogList.contains(sensorLog)){
+            sensorLogList.add(sensorLog);
+        }
     }
 
     @Override

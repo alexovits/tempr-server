@@ -1,22 +1,13 @@
 package edu.endava.tempr.api.service.impl;
 
-import edu.endava.tempr.api.service.ThermostatLogService;
-import edu.endava.tempr.model.ThermostatLog;
-import edu.endava.tempr.repository.ThermostatLogRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Created by zsoltszabo on 05/01/2017.
  */
 @Service
-public class ThermostatLogServiceBean implements ThermostatLogService {
-
+public class ThermostatLogServiceBean{
+/*
     @Autowired
     ThermostatLogRepository thermostatLogRepository;
 
@@ -67,4 +58,5 @@ public class ThermostatLogServiceBean implements ThermostatLogService {
         LOG.info("Logs after date {}", afterDate);
         return thermostatLogRepository.findByTokenAndLogTimeStampGreaterThanOrderByLogTimeStampDesc(token, afterDate);
     }
+    */
 }

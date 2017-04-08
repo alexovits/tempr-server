@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ThermostatRepository extends JpaRepository<Thermostat, Long> {
     Thermostat findByToken(String token);
+    //List<ThermostatLog> findByTokenAndLogTimeStampGreaterThanOrderByLogTimeStampDesc(String token, LocalDateTime fromDate);
+
 }

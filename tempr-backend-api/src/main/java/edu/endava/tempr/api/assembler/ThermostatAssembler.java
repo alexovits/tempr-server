@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ThermostatAssembler implements Assembler<ThermostatDto, Thermostat> {
 
-    @Autowired
-    private ThermostatLogAssembler thermostatLogAssembler;
 
     @Autowired
     private UserService userService;
