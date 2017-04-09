@@ -17,16 +17,19 @@ public class HeatingCircuit extends BaseEntity{
     @Column(name = "desiredTemperature")
     private Integer desiredTemperature;
 
+    @Column(name = "suggestedTemperature")
+    private Integer suggestedTemperature;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Thermostat thermostat;
 
     @OneToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private HeatingSource heatingSource;
 
     @OneToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true, referencedColumnName = "sensorId")
     private Sensor sensor;
 
     @OneToMany(mappedBy = "heatingCircuit", fetch = FetchType.EAGER)
@@ -87,8 +90,16 @@ public class HeatingCircuit extends BaseEntity{
         }
     }
 
+    public Integer getSuggestedTemperature() {
+        return suggestedTemperature;
+    }
+
+    public void setSuggestedTemperature(Integer suggestedTemperature) {
+        this.suggestedTemperature = suggestedTemperature;
+    }
+
     @Override
     public String toString(){
-        return String.format("Sensor{name = %s, desiredTemperature = %s, sensorID = %s, heatingSourceID = %s}", name, desiredTemperature, sensor.getSensorId(), heatingSource.getId());
+        return String.format("Sensor{name = %s, desiredTemperature = %s, sensorID = %s, heatingSourceID = %s, suggestedTemperature = %s}", name, desiredTemperature, sensor.getSensorId(), heatingSource.getId(), suggestedTemperature);
     }
 }

@@ -1,10 +1,10 @@
 package edu.endava.tempr;
 
+import edu.endava.tempr.api.service.HeatingCircuitService;
+import edu.endava.tempr.api.service.SensorService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
-import edu.endava.tempr.model.Thermostat;
-import edu.endava.tempr.model.User;
-import edu.endava.tempr.model.UserType;
+import edu.endava.tempr.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class Application {
 
     @Bean
     @Autowired
-    public CommandLineRunner addDefaultUser(UserService userService, ThermostatService thermostatService) {
+    public CommandLineRunner addDefaultUser(UserService userService, ThermostatService thermostatService, HeatingCircuitService heatingCircuitService, SensorService sensorService) {
         return (args) -> {
             // Create a demo ADMIN
             User adminUser = userService.createUser(new User("admin", "admin", "Admin", "Janos", "admin@tempr.com", UserType.ADMIN));
@@ -53,10 +53,21 @@ public class Application {
                 LOG.info(t.toString());
             }
 
+            // Add heating circuits to the thermostat & sensor
+            HeatingCircuit heatingCircuit = new HeatingCircuit();
+            heatingCircuit.setName("Nagyszoba");
+            heatingCircuit = heatingCircuitService.create(heatingCircuit, defThermostat.getToken());
+            Sensor sensor = new Sensor();
+            sensor.setSensorId((long) 83627);
+            sensorService.create(sensor, heatingCircuit.getId());
+
+            // This is the way to fetch heating circuit from the UUID of the sensor
+            LOG.info(heatingCircuitService.findBySensorId(sensorService.findBySensorId((long) 83627).getId()).getName());
+            //LOG.info(heatingCircuitService.findBySensorId((long) 1).getName());
             // Adding random logs for the last ten days to the "Device-2" thermostat of user "user"
-            Random rand = new Random();
+             /*Random rand = new Random();
             LocalDateTime newDate = LocalDateTime.now();
-            /*for(int i=0;i<daysToGenerate;i++){
+            for(int i=0;i<daysToGenerate;i++){
                 ThermostatLog randomThermostatLog = new ThermostatLog();
                 randomThermostatLog.setToken(defThermostat.getToken());
                 randomThermostatLog.setLogTimeStamp(newDate);

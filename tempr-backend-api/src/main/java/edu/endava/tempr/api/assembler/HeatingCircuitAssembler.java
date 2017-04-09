@@ -23,6 +23,7 @@ public class HeatingCircuitAssembler implements Assembler<HeatingCircuitDto, Hea
         heatingCircuit.setDesiredTemperature(dto.getDesiredTemperature());
         heatingCircuit.setHeatingSource(heatingSourceAssembler.toEntity(dto.getHeatingSourceDto()));
         heatingCircuit.setThermostat(thermostatService.findOne(dto.getThermostatToken()));
+        heatingCircuit.setSuggestedTemperature(dto.getSuggestedTemperature());
         return heatingCircuit;
     }
 
@@ -33,6 +34,7 @@ public class HeatingCircuitAssembler implements Assembler<HeatingCircuitDto, Hea
         heatingCircuitDto.setDesiredTemperature(entity.getDesiredTemperature());
         heatingCircuitDto.setHeatingSourceDto(heatingSourceAssembler.toDto(entity.getHeatingSource()));
         heatingCircuitDto.setThermostatToken(entity.getThermostat().getToken());
+        heatingCircuitDto.setSuggestedTemperature(entity.getSuggestedTemperature());
         return heatingCircuitDto;
     }
 }

@@ -11,6 +11,8 @@ public class HeatingCircuitDto extends AbstractDto{
 
     private Integer desiredTemperature;
 
+    private Integer suggestedTemperature;
+
     private HeatingSourceDto heatingSourceDto;
 
     private SensorDto sensorDto;
@@ -56,5 +58,13 @@ public class HeatingCircuitDto extends AbstractDto{
 
     public void setDesiredTemperature(Integer desiredTemperature) {
         this.desiredTemperature = desiredTemperature;
+    }
+
+    public Integer getSuggestedTemperature() {
+        return suggestedTemperature;
+    }
+
+    public void setSuggestedTemperature(Integer suggestedTemperature) {
+        this.suggestedTemperature = suggestedTemperature;
     }
 }
