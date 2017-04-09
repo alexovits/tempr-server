@@ -22,14 +22,9 @@ public class SensorController {
     @Autowired
     private HeatingCircuitService heatingCircuitService;
 
-    /**
-     * The following parameters are needed from sensorLogDto
-     * @param
-     * @param
-     */
     @RequestMapping(value = "/thermostat/sensor/log/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity insertSensorLog(@RequestParam("sensorId") Long sensorId, @RequestParam("temperature") Integer temperature) {
-        LOG.info("Got the following parameters: {}, {}", sensorId, temperature);
+    public ResponseEntity insertSensorLog(@RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature) {
+        LOG.info("Got the following parameters for logging: {} -> {}", chipId, temperature);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

@@ -1,11 +1,14 @@
 package edu.endava.tempr.api.service.impl;
 
 import edu.endava.tempr.api.service.SimulatorService;
+import edu.endava.tempr.common.TemperaturesDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,10 +26,8 @@ public class SimulatorServiceBean implements SimulatorService {
     }
 
     public void loadMapWithStaticValues(){
-        addHeatingCircuit(1233);
-        addHeatingCircuit(4354);
-        addHeatingCircuit(3645);
-        addHeatingCircuit(4233);
+        addHeatingCircuit(8670624);
+        addHeatingCircuit(460059);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class SimulatorServiceBean implements SimulatorService {
 
     @Override
     public void logTemperature(int temperature, long chipId) {
-        if(!heatingCircuitList.containsKey(chipId)) {
+        if(heatingCircuitList.containsKey(chipId)) {
             heatingCircuitList.get(chipId).setTemperature(temperature);
             LOG.info("Set temp for chip {}",chipId);
         }
@@ -47,7 +48,7 @@ public class SimulatorServiceBean implements SimulatorService {
 
     @Override
     public void setSuggestedTemperature(int temperature, long chipId) {
-        if(!heatingCircuitList.containsKey(chipId)) {
+        if(heatingCircuitList.containsKey(chipId)) {
             heatingCircuitList.get(chipId).setSuggestedTemperature(temperature);
             LOG.info("Set suggested temp for chip {}",chipId);
         }
@@ -55,10 +56,17 @@ public class SimulatorServiceBean implements SimulatorService {
 
     @Override
     public void setDesiredTemperature(int temperature, long chipId) {
-        if(!heatingCircuitList.containsKey(chipId)) {
+        if(heatingCircuitList.containsKey(chipId)) {
             heatingCircuitList.get(chipId).setDesiredTemperature(temperature);
             LOG.info("Set desired temp for chip {}",chipId);
         }
+    }
+
+    @Override
+    public List<TemperaturesDto> getSimulatedLogList() {
+        List<TemperaturesDto> simList = new ArrayList<>();
+        heatingCircuitList.forEach((chipId, simulatedHC) -> simList.add(new TemperaturesDto(simulatedHC.getTemperature(), simulatedHC.getSuggestedTemperature(), simulatedHC.getDesiredTemperature(), chipId)));
+        return simList;
     }
 
     public class SimulatedHeatingCircuit{
