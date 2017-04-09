@@ -4,14 +4,13 @@ package edu.endava.tempr.common;
  * Created by zsoltszabo on 4/4/17.
  */
 public class SensorDto extends AbstractDto{
-    private Long sensorId;
+    private Long chipId;
 
-
-    public Long getSensorId() {
-        return sensorId;
+    public Long getChipId() {
+        return chipId;
     }
 
-    public void setSensorId(Long sensorId) {
-        this.sensorId = sensorId;
+    public void setChipId(Long chipId) {
+        this.chipId = chipId;
     }
 }

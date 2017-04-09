@@ -42,7 +42,7 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
     }
 
     @Override
-    public HeatingCircuit findBySensorId(Long sensorId) {
-        return heatingCircuitRepository.findBySensorId(sensorId);
+    public HeatingCircuit findByChipId(Long chipId) {
+        return heatingCircuitRepository.findBySensorChipId(chipId);
     }
 }

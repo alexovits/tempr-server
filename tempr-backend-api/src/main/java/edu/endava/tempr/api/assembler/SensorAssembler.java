@@ -13,14 +13,14 @@ public class SensorAssembler implements Assembler<SensorDto, Sensor> {
     @Override
     public Sensor toEntity(SensorDto dto) {
         Sensor sensor = new Sensor();
-        sensor.setSensorId(dto.getSensorId());
+        sensor.setChipId(dto.getChipId());
         return sensor;
     }
 
     @Override
     public SensorDto toDto(Sensor entity) {
         SensorDto sensorDto = new SensorDto();
-        sensorDto.setSensorId(entity.getSensorId());
+        sensorDto.setChipId(entity.getChipId());
         return sensorDto;
     }
 }

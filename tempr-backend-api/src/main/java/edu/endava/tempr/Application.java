@@ -58,12 +58,12 @@ public class Application {
             heatingCircuit.setName("Nagyszoba");
             heatingCircuit = heatingCircuitService.create(heatingCircuit, defThermostat.getToken());
             Sensor sensor = new Sensor();
-            sensor.setSensorId((long) 83627);
+            sensor.setChipId((long) 83627);
             sensorService.create(sensor, heatingCircuit.getId());
 
             // This is the way to fetch heating circuit from the UUID of the sensor
-            LOG.info(heatingCircuitService.findBySensorId(sensorService.findBySensorId((long) 83627).getId()).getName());
-            //LOG.info(heatingCircuitService.findBySensorId((long) 1).getName());
+            //LOG.info(heatingCircuitService.findBySensorId(sensorService.findBySensorId((long) 83627).getId()).getName());
+            LOG.info(heatingCircuitService.findByChipId((long) 83627).getName());
             // Adding random logs for the last ten days to the "Device-2" thermostat of user "user"
              /*Random rand = new Random();
             LocalDateTime newDate = LocalDateTime.now();

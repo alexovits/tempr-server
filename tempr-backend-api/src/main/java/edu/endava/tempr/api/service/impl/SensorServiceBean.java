@@ -27,13 +27,13 @@ public class SensorServiceBean implements SensorService{
     private HeatingCircuitRepository heatingCircuitRepository;
 
     @Override
-    public Sensor findOne(Long id) {
-        return sensorRepository.findOne(id);
+    public Sensor findOne(Long sensorId) {
+        return sensorRepository.findOne(sensorId);
     }
 
     @Override
-    public Sensor findBySensorId(Long sensorId) {
-        return sensorRepository.findBySensorId(sensorId);
+    public Sensor findByChipId(Long chipId) {
+        return sensorRepository.findByChipId(chipId);
     }
 
     @Override
@@ -42,9 +42,9 @@ public class SensorServiceBean implements SensorService{
         if((heatingCircuit = heatingCircuitRepository.findOne(heatingCircuitId)) == null){
             throw new InvalidParameterException("Couldn't find Heating Circuit™ with the id: " + heatingCircuitId);
         }
-        LOG.info("Saving sensor with id {}", sensor.getSensorId());
+        LOG.info("Saving sensor with Chip ID: {}", sensor.getChipId());
         Sensor savedSensor = sensorRepository.save(sensor);
-        LOG.info("Successfully saved sensor with id {}", sensor.getSensorId());
+        LOG.info("Successfully saved sensor with Chip ID: {}", sensor.getChipId());
         heatingCircuit.setSensor(savedSensor);
         heatingCircuitRepository.save(heatingCircuit);
         return savedSensor;
@@ -52,11 +52,11 @@ public class SensorServiceBean implements SensorService{
 
     @Override
     public Sensor update(Sensor sensor) {
-        Sensor updatedSensor = sensorRepository.findBySensorId(sensor.getSensorId());
+        Sensor updatedSensor = sensorRepository.findByChipId(sensor.getChipId());
         if(updatedSensor == null){
-            LOG.error("No sensor found with this id: {}", updatedSensor.getSensorId());
+            LOG.error("No sensor found with this Chip ID: {}", updatedSensor.getChipId());
         }
-        LOG.info("Successfully updated with id {}", sensor.getSensorId());
+        LOG.info("Successfully updated with Chip ID: {}", sensor.getChipId());
         //sensor.setId(updatedSensor.getId());
         return sensorRepository.save(sensor);
     }

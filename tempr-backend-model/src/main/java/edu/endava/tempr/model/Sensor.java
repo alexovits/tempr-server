@@ -10,19 +10,20 @@ import javax.persistence.Entity;
 @Entity
 public class Sensor extends BaseEntity{
 
-    @Column(name = "sensorId", unique = true, nullable = false)
-    private Long sensorId;
+    @Column(name = "chipId", unique = true, nullable = false)
+    private Long chipId;
 
-    public Long getSensorId() {
-        return sensorId;
+    public Long getChipId() {
+        return chipId;
     }
 
-    public void setSensorId(Long sensorId) {
-        this.sensorId = sensorId;
+    public void setChipId(Long chipId) {
+        this.chipId = chipId;
     }
+
 
     @Override
     public String toString(){
-        return String.format("Sensor{sensorId = %s}", sensorId);
+        return String.format("Sensor{sensorId = %s}", chipId);
     }
 }

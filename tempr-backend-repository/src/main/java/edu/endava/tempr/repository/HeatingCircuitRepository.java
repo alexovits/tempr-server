@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface HeatingCircuitRepository extends JpaRepository<HeatingCircuit, Long> {
-    HeatingCircuit findBySensorId(Long sensorId);
+    HeatingCircuit findBySensorChipId(Long chipId);
 }

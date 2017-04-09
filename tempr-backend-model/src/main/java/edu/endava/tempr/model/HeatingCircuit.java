@@ -29,7 +29,7 @@ public class HeatingCircuit extends BaseEntity{
     private HeatingSource heatingSource;
 
     @OneToOne
-    @JoinColumn(nullable = true, referencedColumnName = "sensorId")
+    @JoinColumn(nullable = true, name = "chipId", referencedColumnName = "chipId")
     private Sensor sensor;
 
     @OneToMany(mappedBy = "heatingCircuit", fetch = FetchType.EAGER)
@@ -100,6 +100,6 @@ public class HeatingCircuit extends BaseEntity{
 
     @Override
     public String toString(){
-        return String.format("Sensor{name = %s, desiredTemperature = %s, sensorID = %s, heatingSourceID = %s, suggestedTemperature = %s}", name, desiredTemperature, sensor.getSensorId(), heatingSource.getId(), suggestedTemperature);
+        return String.format("Sensor{name = %s, desiredTemperature = %s, sensorID = %s, heatingSourceID = %s, suggestedTemperature = %s}", name, desiredTemperature, sensor.getChipId(), heatingSource.getId(), suggestedTemperature);
     }
 }
