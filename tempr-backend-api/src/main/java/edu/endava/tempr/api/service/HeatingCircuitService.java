@@ -8,4 +8,5 @@ import edu.endava.tempr.model.HeatingCircuit;
 public interface HeatingCircuitService {
     HeatingCircuit create(HeatingCircuit heatingCircuit, String thermostatToken);
     HeatingCircuit findByChipId(Long chipId);
+    HeatingCircuit update(HeatingCircuit heatingCircuit);
 }

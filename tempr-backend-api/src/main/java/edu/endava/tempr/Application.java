@@ -11,12 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+@EntityScan(
+        basePackageClasses = {Application.class, Jsr310JpaConverters.class}
+)
 @SpringBootApplication
 public class Application {
 
@@ -58,12 +63,19 @@ public class Application {
             heatingCircuit.setName("Nagyszoba");
             heatingCircuit = heatingCircuitService.create(heatingCircuit, defThermostat.getToken());
             Sensor sensor = new Sensor();
-            sensor.setChipId((long) 83627);
+            sensor.setChipId((long) 8670624);
             sensorService.create(sensor, heatingCircuit.getId());
 
-            // This is the way to fetch heating circuit from the UUID of the sensor
-            //LOG.info(heatingCircuitService.findBySensorId(sensorService.findBySensorId((long) 83627).getId()).getName());
-            LOG.info(heatingCircuitService.findByChipId((long) 83627).getName());
+            // Add another hc
+            heatingCircuit = new HeatingCircuit();
+            heatingCircuit.setName("Nappali");
+            heatingCircuit = heatingCircuitService.create(heatingCircuit, defThermostat.getToken());
+            sensor = new Sensor();
+            sensor.setChipId((long) 460059);
+            sensorService.create(sensor, heatingCircuit.getId());
+
+            LOG.info(heatingCircuitService.findByChipId((long) 8670624).getName());
+
             // Adding random logs for the last ten days to the "Device-2" thermostat of user "user"
              /*Random rand = new Random();
             LocalDateTime newDate = LocalDateTime.now();

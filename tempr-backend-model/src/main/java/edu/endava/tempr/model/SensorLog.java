@@ -1,8 +1,6 @@
 package edu.endava.tempr.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -11,13 +9,15 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="SensorLog")
 public class SensorLog extends BaseEntity{
-    @Column(nullable = false)
+
+    @Column(nullable = true, columnDefinition = "DATETIME")
     private LocalDateTime logTimeStamp;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(nullable = true)
     private HeatingCircuit heatingCircuit;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer temperature;
 
     public LocalDateTime getLogTimeStamp() {

@@ -45,4 +45,16 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
     public HeatingCircuit findByChipId(Long chipId) {
         return heatingCircuitRepository.findBySensorChipId(chipId);
     }
+
+    //Isn't this a bit redundant? Should we have dedicated functions?
+    // Maybe if the update would check on whether the object has id/chipId it can search for it so only 1 query is executed
+    @Override
+    public HeatingCircuit update(HeatingCircuit heatingCircuit) {
+        HeatingCircuit updateHeatingCircuit = heatingCircuitRepository.findOne(heatingCircuit.getId());
+        if(updateHeatingCircuit == null){
+            LOG.error("No Heating Circuit™ found with this ID: {}", updateHeatingCircuit.getId());
+            return null;
+        }
+        return heatingCircuitRepository.save(heatingCircuit);
+    }
 }

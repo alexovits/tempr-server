@@ -41,7 +41,7 @@ public class UserServiceBean implements UserService {
             LOG.warn("Could not create user: '{}' with exception '{}'", user, ex);
             ex.printStackTrace();
         }
-        LOG.info("Created new user with id: '{}'",savedUser.getId());
+        LOG.info("Created new user with id: '{}'", savedUser.getId());
         return savedUser;
     }
 

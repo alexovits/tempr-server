@@ -3,7 +3,7 @@ package edu.endava.tempr.common;
 /**
  * Created by zsoltszabo on 4/9/17.
  */
-public class TemperaturesDto extends AbstractDto{
+public class TemperaturesDto{
     private int temperature, suggestedTemperature, desiredTemperature;
     private long chipId;
 

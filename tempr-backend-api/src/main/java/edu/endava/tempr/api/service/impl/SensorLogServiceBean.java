@@ -7,10 +7,14 @@ import edu.endava.tempr.repository.SensorLogRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 /**
  * Created by zsoltszabo on 4/8/17.
  */
+@Service
 public class SensorLogServiceBean implements SensorLogService{
 
     private static final Logger LOG = LoggerFactory.getLogger(SensorLogService.class);
@@ -24,8 +28,13 @@ public class SensorLogServiceBean implements SensorLogService{
     }
 
     @Override
-    public SensorLog create(SensorLog sensorLog) {
-        LOG.info("Saving sensor log");
+    public SensorLog create(int temperature, HeatingCircuit heatingCircuit) {
+        SensorLog sensorLog = new SensorLog();
+        sensorLog.setTemperature(temperature);
+        //TO_DO Not serializing right...
+        sensorLog.setLogTimeStamp(LocalDateTime.now());
+        LOG.info("FASZOM: {}", sensorLog.getLogTimeStamp());
+        sensorLog.setHeatingCircuit(heatingCircuit);
         SensorLog savedSensorLog = sensorLogRepository.save(sensorLog);
         LOG.info("Successfully saved sensor log");
         return savedSensorLog;
