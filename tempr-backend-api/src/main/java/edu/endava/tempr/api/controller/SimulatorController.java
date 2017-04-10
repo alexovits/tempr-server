@@ -30,11 +30,17 @@ public class SimulatorController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/simulator/desiredtemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateDesiredTemperature(@RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature) {
+        LOG.info("Got the following parameters for setting desired temperature: {} -> {}", chipId, temperature);
+        simulatorService.setDesiredTemperature(temperature, chipId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/simulator/temperatures/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TemperaturesDto>> retrieveSimulatedLog(){
         return new ResponseEntity(simulatorService.getSimulatedLogList(), HttpStatus.OK);
     }
-
 
     //TODO:
     /**
