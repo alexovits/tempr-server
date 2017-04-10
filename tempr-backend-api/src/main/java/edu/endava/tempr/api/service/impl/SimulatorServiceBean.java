@@ -18,7 +18,8 @@ import java.util.Map;
 public class SimulatorServiceBean implements SimulatorService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SimulatorService.class);
-    Map<Long,SimulatedHeatingCircuit> heatingCircuitList;
+    private boolean suggestionFlag;
+    private Map<Long,SimulatedHeatingCircuit> heatingCircuitList;
 
     public SimulatorServiceBean(){
         heatingCircuitList = new HashMap<>();
@@ -28,6 +29,7 @@ public class SimulatorServiceBean implements SimulatorService {
     public void loadMapWithStaticValues(){
         addHeatingCircuit(8670624);
         addHeatingCircuit(460059);
+        suggestionFlag = false;
     }
 
     @Override
@@ -63,14 +65,20 @@ public class SimulatorServiceBean implements SimulatorService {
     }
 
     @Override
+    public void setSuggestionFlag(boolean suggestionFlag) {
+        this.suggestionFlag = suggestionFlag;
+    }
+
+    @Override
     public List<TemperaturesDto> getSimulatedLogList() {
         List<TemperaturesDto> simList = new ArrayList<>();
-        heatingCircuitList.forEach((chipId, simulatedHC) -> simList.add(new TemperaturesDto(simulatedHC.getTemperature(), simulatedHC.getSuggestedTemperature(), simulatedHC.getDesiredTemperature(), chipId)));
+        heatingCircuitList.forEach((chipId, simulatedHC) -> simList.add(new TemperaturesDto(simulatedHC.getTemperature(), simulatedHC.getSuggestedTemperature(), simulatedHC.getDesiredTemperature(), chipId, suggestionFlag)));
         return simList;
     }
 
     public class SimulatedHeatingCircuit{
         private int temperature, suggestedTemperature, desiredTemperature;
+
 
         public int getTemperature() {
             return temperature;

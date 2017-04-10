@@ -33,7 +33,6 @@ public class SensorLogServiceBean implements SensorLogService{
         sensorLog.setTemperature(temperature);
         //TO_DO Not serializing right...
         sensorLog.setLogTimeStamp(LocalDateTime.now());
-        LOG.info("FASZOM: {}", sensorLog.getLogTimeStamp());
         sensorLog.setHeatingCircuit(heatingCircuit);
         SensorLog savedSensorLog = sensorLogRepository.save(sensorLog);
         LOG.info("Successfully saved sensor log");

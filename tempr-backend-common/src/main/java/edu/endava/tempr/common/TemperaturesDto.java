@@ -6,12 +6,14 @@ package edu.endava.tempr.common;
 public class TemperaturesDto{
     private int temperature, suggestedTemperature, desiredTemperature;
     private long chipId;
+    private boolean suggestionFlag;
 
-    public TemperaturesDto(int temperature, int suggestedTemperature, int desiredTemperature, long chipId){
+    public TemperaturesDto(int temperature, int suggestedTemperature, int desiredTemperature, long chipId, boolean suggestionFlag){
         this.temperature = temperature;
         this.suggestedTemperature = suggestedTemperature;
         this.desiredTemperature = desiredTemperature;
         this.chipId = chipId;
+        this.suggestionFlag = suggestionFlag;
     }
 
     public int getTemperature() {
@@ -44,5 +46,13 @@ public class TemperaturesDto{
 
     public void setSuggestedTemperature(int suggestedTemperature) {
         this.suggestedTemperature = suggestedTemperature;
+    }
+
+    public boolean isSuggestionFlag() {
+        return suggestionFlag;
+    }
+
+    public void setSuggestionFlag(boolean suggestionFlag) {
+        this.suggestionFlag = suggestionFlag;
     }
 }

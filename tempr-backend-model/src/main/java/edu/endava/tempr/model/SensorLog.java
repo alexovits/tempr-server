@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
 @Table(name="SensorLog")
 public class SensorLog extends BaseEntity{
 
-    @Column(nullable = true, columnDefinition = "DATETIME")
+    @Column(nullable = false, columnDefinition = "DATETIME")
     private LocalDateTime logTimeStamp;
 
     @ManyToOne
-    @JoinColumn(nullable = true)
+    @JoinColumn(nullable = false)
     private HeatingCircuit heatingCircuit;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Integer temperature;
 
     public LocalDateTime getLogTimeStamp() {

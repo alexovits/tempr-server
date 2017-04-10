@@ -12,5 +12,6 @@ public interface SimulatorService {
     void logTemperature(int temperature, long chipId);
     void setSuggestedTemperature(int temperature, long chipId);
     void setDesiredTemperature(int temperature, long chipId);
+    void setSuggestionFlag(boolean suggestionFlag);
     List<TemperaturesDto> getSimulatedLogList();
 }

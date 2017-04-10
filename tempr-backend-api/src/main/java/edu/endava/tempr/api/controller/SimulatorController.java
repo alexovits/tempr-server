@@ -42,6 +42,20 @@ public class SimulatorController {
         return new ResponseEntity(simulatorService.getSimulatedLogList(), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/simulator/suggestedtemp/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateSuggestedTemperature(@RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature) {
+        LOG.info("Got the following parameters for setting suggested temperature: {} -> {}", chipId, temperature);
+        simulatorService.setSuggestedTemperature(temperature, chipId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/simulator/togglesuggestion/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateSuggestedTemperature(@RequestParam("suggestionFlag") Boolean suggestionFlag) {
+        LOG.info("Got the following suggestion flag {}",suggestionFlag);
+        simulatorService.setSuggestionFlag(suggestionFlag);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     //TODO:
     /**
      - temperatures GET -> returns of every HC the desired, suggested, current,
