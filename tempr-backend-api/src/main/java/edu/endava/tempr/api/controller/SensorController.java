@@ -28,8 +28,8 @@ public class SensorController {
     private SensorLogService sensorLogService;
 
     @RequestMapping(value = "/thermostat/heatingcircuit/log/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createSensorLog(@RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature) {
-        LOG.info("Got the following parameters for logging: {} -> {}", chipId, temperature);
+    public ResponseEntity createSensorLog(@RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature, @RequestParam("token") String token) {
+        LOG.info("Got the following parameters for logging: {} -> {} -> {}", token, chipId, temperature);
         HeatingCircuit heatingCircuit;
         if((heatingCircuit = heatingCircuitService.findByChipId(chipId)) == null){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -40,8 +40,8 @@ public class SensorController {
 
     // Isn't it problematic that anyone who has USER permission and knows the ID can change stuff?
     @RequestMapping(value = "/thermostat/heatingcircuit/desiredtemperature/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateDesiredTemperature(@RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature) {
-        LOG.info("Request to set desired temperature of {} -> {}", chipId, temperature);
+    public ResponseEntity updateDesiredTemperature(@RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature, @RequestParam("token") String token) {
+        LOG.info("Request to set desired temperature of {} -> {} -> {}", token, chipId, temperature);
         HeatingCircuit heatingCircuit;
         if((heatingCircuit = heatingCircuitService.findByChipId(chipId)) == null){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
