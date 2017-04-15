@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-public class SensorController {
+public class HeatingCircuitController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SensorController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HeatingCircuitController.class);
 
     @Autowired
     private HeatingCircuitService heatingCircuitService;
@@ -38,10 +38,16 @@ public class SensorController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // Isn't it problematic that anyone who has USER permission and knows the ID can change stuff?
+    /**
+     * Returns the latest reported temperature of a heatingCircuit object, thus the most current one.
+     *
+     * @param chipId
+     * @return ResponseEntity containing the temperature as Integer and the Status
+     * */
     @RequestMapping(value = "/thermostat/heatingcircuit/desiredtemperature/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateDesiredTemperature(@RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature, @RequestParam("token") String token) {
-        LOG.info("Request to set desired temperature of {} -> {} -> {}", token, chipId, temperature);
+    public ResponseEntity updateDesiredTemperature(@RequestParam("chipId") Long chipId, @RequestParam("desiredTemperature") Integer desiredTemperature) {
+        LOG.info("Request to set desired temperature of {} to {}", chipId, desiredTemperature);
+        //heatingCircuitService.updateDesiredTemperature(chipId, desiredTemperature);
         HeatingCircuit heatingCircuit;
         if((heatingCircuit = heatingCircuitService.findByChipId(chipId)) == null){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -52,4 +58,20 @@ public class SensorController {
         }
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    /**
+     * Returns the latest reported temperature of a heatingCircuit object, thus the most current one.
+     *
+     * @param heatingCircuitId
+     * @return ResponseEntity containing the temperature as Integer and the Status
+     * */
+    @RequestMapping(value = "/thermostat/heatingcircuit/temperature/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> getLatestTempOfHeatingCircuit(@RequestParam("heatingCircuitId") Long heatingCircuitId) {
+        LOG.info("Request for the latet temperature report: Heating Circuit™ ID -> {}", heatingCircuitId);
+        return new ResponseEntity(sensorLogService.getLatest(heatingCircuitId), HttpStatus.OK);
+    }
+
+    /*
+    *
+    * */
 }

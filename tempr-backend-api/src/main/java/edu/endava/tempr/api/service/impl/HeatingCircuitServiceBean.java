@@ -42,8 +42,13 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
     }
 
     @Override
-    public HeatingCircuit findByChipId(Long chipId) {
+    public HeatingCircuit findByChipId(long chipId) {
         return heatingCircuitRepository.findBySensorChipId(chipId);
+    }
+
+    @Override
+    public HeatingCircuit findOne(long heatingCircuitId) {
+        return heatingCircuitRepository.findOne(heatingCircuitId);
     }
 
     //Isn't this a bit redundant? Should we have dedicated functions?
@@ -56,5 +61,10 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
             return null;
         }
         return heatingCircuitRepository.save(heatingCircuit);
+    }
+
+    @Override
+    public void updateDesiredTemperature(long chipId, int desiredTemperature) {
+
     }
 }

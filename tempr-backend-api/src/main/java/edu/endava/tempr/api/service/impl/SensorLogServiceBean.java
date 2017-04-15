@@ -40,7 +40,7 @@ public class SensorLogServiceBean implements SensorLogService{
     }
 
     @Override
-    public SensorLog getLatest(HeatingCircuit heatingCircuit) {
-        return null;
+    public SensorLog getLatest(Long heatingCircuitId) {
+        return sensorLogRepository.findFirstByHeatingCircuitOrderByLogTimeStampDesc(heatingCircuitId);
     }
 }

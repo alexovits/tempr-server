@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class SimulatorController {
-    private static final Logger LOG = LoggerFactory.getLogger(SensorController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HeatingCircuitController.class);
 
     @Autowired
     SimulatorService simulatorService;

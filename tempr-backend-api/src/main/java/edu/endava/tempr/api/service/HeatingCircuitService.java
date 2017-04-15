@@ -7,6 +7,8 @@ import edu.endava.tempr.model.HeatingCircuit;
  */
 public interface HeatingCircuitService {
     HeatingCircuit create(HeatingCircuit heatingCircuit, String thermostatToken);
-    HeatingCircuit findByChipId(Long chipId);
+    HeatingCircuit findByChipId(long chipId);
+    HeatingCircuit findOne(long heatingCircuitId);
     HeatingCircuit update(HeatingCircuit heatingCircuit);
+    void updateDesiredTemperature(long chipId, int desiredTemperature);
 }
