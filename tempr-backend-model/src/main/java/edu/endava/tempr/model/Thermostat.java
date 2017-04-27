@@ -23,7 +23,7 @@ public class Thermostat extends BaseEntity {
     @Column(name = "desiredTemperature")
     private Integer desiredTemperature;
 
-    @ManyToOne
+    @OneToOne
     private User user;
 
     @OneToMany(mappedBy = "thermostat", fetch = FetchType.EAGER)

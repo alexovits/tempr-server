@@ -44,10 +44,10 @@ public class Application {
 
             // Create demo devices for the user
             Thermostat defThermostat = new Thermostat();
-            defThermostat.setName("Device-1");
+            defThermostat.setName("Thermo-1");
             thermostatService.createThermostat(defUser, defThermostat);
             defThermostat = new Thermostat();
-            defThermostat.setName("Device-2");
+            defThermostat.setName("Thermo-2");
             defThermostat.setDesiredTemperature(19);
             defThermostat = thermostatService.createThermostat(defUser, defThermostat);
 

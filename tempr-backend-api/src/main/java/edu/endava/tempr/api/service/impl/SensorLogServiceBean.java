@@ -31,11 +31,10 @@ public class SensorLogServiceBean implements SensorLogService{
     public SensorLog create(int temperature, HeatingCircuit heatingCircuit) {
         SensorLog sensorLog = new SensorLog();
         sensorLog.setTemperature(temperature);
-        //TO_DO Not serializing right...
         sensorLog.setLogTimeStamp(LocalDateTime.now());
         sensorLog.setHeatingCircuit(heatingCircuit);
         SensorLog savedSensorLog = sensorLogRepository.save(sensorLog);
-        LOG.info("Successfully saved sensor log");
+        LOG.info("Successfully saved sensor log for Heating Circuit with ID {} and temperature {}", heatingCircuit.getId(), temperature);
         return savedSensorLog;
     }
 

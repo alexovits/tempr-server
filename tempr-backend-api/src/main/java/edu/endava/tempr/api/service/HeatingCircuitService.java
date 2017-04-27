@@ -10,5 +10,6 @@ public interface HeatingCircuitService {
     HeatingCircuit findByChipId(long chipId);
     HeatingCircuit findOne(long heatingCircuitId);
     HeatingCircuit update(HeatingCircuit heatingCircuit);
-    void updateDesiredTemperature(long chipId, int desiredTemperature);
+    Integer getDesiredTemperature(long heatingCircuitId);
+    void updateDesiredTemperature(long heatingCircuitId, int desiredTemperature);
 }

@@ -3,6 +3,7 @@ package edu.endava.tempr.api.controller;
 import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.model.HeatingCircuit;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,21 @@ public class HeatingCircuitController {
     @Autowired
     private SensorLogService sensorLogService;
 
+    /**
+     * ••• Used by Hardware •••
+     * Log the temperature on a specific Heating Circuit
+     * @param chipId The unique ID of the sensor.
+     * @param temperature Temperature value that shall be logged.
+     * @return ResponseEntity containing the status of the request's action
+     * */
     @RequestMapping(value = "/thermostat/heatingcircuit/log/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createSensorLog(@RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature, @RequestParam("token") String token) {
-        LOG.info("Got the following parameters for logging: {} -> {} -> {}", token, chipId, temperature);
-        HeatingCircuit heatingCircuit;
-        if((heatingCircuit = heatingCircuitService.findByChipId(chipId)) == null){
+    public ResponseEntity createSensorLog(@RequestHeader(value="Authorization") String basicAuthHeader, @RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature) {
+        LOG.info("Request to log for {} sensor the {} temperature {}", chipId, temperature, basicAuthHeader);
+        HeatingCircuit heatingCircuit = heatingCircuitService.findByChipId(chipId);
+        // Decoding the second part of the Authorization header
+        String decodedUserName = new String(Base64.decodeBase64(basicAuthHeader.split(" ")[1]));
+        // Check if the Heating Circuit's Thermostat belongs to the same user that sent the request
+        if(heatingCircuit.getThermostat().getUser().getUsername() != decodedUserName){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         sensorLogService.create(temperature, heatingCircuit);
@@ -39,30 +50,37 @@ public class HeatingCircuitController {
     }
 
     /**
-     * Returns the latest reported temperature of a heatingCircuit object, thus the most current one.
-     *
-     * @param chipId
-     * @return ResponseEntity containing the temperature as Integer and the Status
+     * ••• Used by UI •••
+     * Sets the desired temperature of a specific Heating Circuit
+     * @param heatingCircuitId The internal ID of a Heating Circuit
+     * @param desiredTemperature Temperature value that the desired temperature will be updated to.
+     * @return ResponseEntity containing the status of the request's action
      * */
     @RequestMapping(value = "/thermostat/heatingcircuit/desiredtemperature/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateDesiredTemperature(@RequestParam("chipId") Long chipId, @RequestParam("desiredTemperature") Integer desiredTemperature) {
-        LOG.info("Request to set desired temperature of {} to {}", chipId, desiredTemperature);
-        //heatingCircuitService.updateDesiredTemperature(chipId, desiredTemperature);
-        HeatingCircuit heatingCircuit;
-        if((heatingCircuit = heatingCircuitService.findByChipId(chipId)) == null){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        heatingCircuit.setDesiredTemperature(temperature);
-        if(heatingCircuitService.update(heatingCircuit) == null){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity setDesiredTemperature(@RequestParam("heatingCircuitId") Long heatingCircuitId, @RequestParam("desiredTemperature") Integer desiredTemperature) {
+        LOG.info("Request to set desired temperature of {} to {}", heatingCircuitId, desiredTemperature);
+        heatingCircuitService.updateDesiredTemperature(heatingCircuitId, desiredTemperature);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
+     * ••• Used by UI •••
+     * Returns the desired temperature of a specific Heating Circuit
+     * @param heatingCircuitId The internal ID of a Heating Circuit
+     * @return ResponseEntity containing the status of the request's action and the desired temperature
+     * */
+    @RequestMapping(value = "/thermostat/heatingcircuit/desiredtemperature/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getDesiredTemperature(@RequestParam("heatingCircuitId") Long heatingCircuitId) {
+        LOG.info("Request to get desired temperature of {} to {}", heatingCircuitId);
+        heatingCircuitService.getDesiredTemperature(heatingCircuitId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
+     * ••• Used by UI •••
      * Returns the latest reported temperature of a heatingCircuit object, thus the most current one.
      *
-     * @param heatingCircuitId
+     * @param heatingCircuitId The internal ID of a Heating Circuit
      * @return ResponseEntity containing the temperature as Integer and the Status
      * */
     @RequestMapping(value = "/thermostat/heatingcircuit/temperature/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -72,6 +90,6 @@ public class HeatingCircuitController {
     }
 
     /*
-    *
+    * UI knows ThermoId, userId, heatingCircuitId
     * */
 }
