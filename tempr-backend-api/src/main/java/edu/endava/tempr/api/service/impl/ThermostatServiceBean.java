@@ -1,6 +1,10 @@
 package edu.endava.tempr.api.service.impl;
 
+import edu.endava.tempr.api.service.HeatingCircuitService;
+import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.api.service.ThermostatService;
+import edu.endava.tempr.common.TemperaturesDto;
+import edu.endava.tempr.model.HeatingCircuit;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.ThermostatRepository;
@@ -10,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,14 +24,17 @@ import java.util.UUID;
 @Service
 public class ThermostatServiceBean implements ThermostatService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ThermostatServiceBean.class);
+    private static final int tokenLength = 5;
+
     @Autowired
     ThermostatRepository thermostatRepository;
 
     @Autowired
     UserRepository userRepository;
 
-    private static final Logger LOG = LoggerFactory.getLogger(ThermostatServiceBean.class);
-    private static final int tokenLength = 5;
+    @Autowired
+    SensorLogService sensorLogService;
 
     @Override
     public List<Thermostat> findAll() {
@@ -81,6 +89,28 @@ public class ThermostatServiceBean implements ThermostatService {
         }
         LOG.info("Thermostat with token: '{}' was updated!", thermostat.getToken());
         return thermostatRepository.save(thermostat);
+    }
+
+    @Override
+    public List getTemperatures(String thermostatToken) {
+        List temperatureList = new ArrayList<TemperaturesDto>();
+        Thermostat thermostat = thermostatRepository.findByToken(thermostatToken);
+
+        if(thermostat == null){
+            LOG.info("Thermostat with token: '{}' was not found!", thermostat.getToken());
+            throw new RuntimeException("Invalid Token");
+        }
+
+        Integer y = 1;
+        Long fakeID = 3L;
+
+        thermostat.getHeatingCircuitList().forEach(
+                //hc -> temperatureList.add(new TemperaturesDto(sensorLogService.getLatest(hc.getId()).getTemperature(), hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAIFlag()))
+                hc -> {
+                    temperatureList.add(new TemperaturesDto(sensorLogService.getLatestTemperature(hc.getId()), hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAIFlag()));
+                }
+        );
+        return temperatureList;
     }
 
     @Override

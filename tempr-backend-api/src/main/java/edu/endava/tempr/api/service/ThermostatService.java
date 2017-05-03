@@ -13,5 +13,6 @@ public interface ThermostatService {
     Thermostat findOne(String token);
     Thermostat createThermostat(User user, Thermostat thermostat);
     Thermostat updateThermostat(Thermostat thermostat);
+    List getTemperatures(String thermostatToken);
     void deleteThermostat(Long id);
 }

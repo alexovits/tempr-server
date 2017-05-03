@@ -1,9 +1,6 @@
 package edu.endava.tempr;
 
-import edu.endava.tempr.api.service.HeatingCircuitService;
-import edu.endava.tempr.api.service.SensorService;
-import edu.endava.tempr.api.service.ThermostatService;
-import edu.endava.tempr.api.service.UserService;
+import edu.endava.tempr.api.service.*;
 import edu.endava.tempr.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +12,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Random;
 
 @EntityScan(
         basePackageClasses = {Application.class, Jsr310JpaConverters.class}
@@ -35,7 +30,7 @@ public class Application {
 
     @Bean
     @Autowired
-    public CommandLineRunner addDefaultUser(UserService userService, ThermostatService thermostatService, HeatingCircuitService heatingCircuitService, SensorService sensorService) {
+    public CommandLineRunner addDefaultUser(SensorLogService sensorLogService, UserService userService, ThermostatService thermostatService, HeatingCircuitService heatingCircuitService, SensorService sensorService) {
         return (args) -> {
             // Create a demo ADMIN
             User adminUser = userService.createUser(new User("admin", "admin", "Admin", "Janos", "admin@tempr.com", UserType.ADMIN));
@@ -75,6 +70,12 @@ public class Application {
             sensorService.create(sensor, heatingCircuit.getId());
 
             LOG.info(heatingCircuitService.findByChipId((long) 8670624).getName());
+
+            HeatingCircuit hc = heatingCircuitService.findByChipId((long) 8670624);
+
+            sensorLogService.create(10,hc);
+
+            LOG.info("Here is {}", thermostatService.getTemperatures(defThermostat.getToken()));
 
             // Adding random logs for the last ten days to the "Device-2" thermostat of user "user"
              /*Random rand = new Random();

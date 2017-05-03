@@ -2,6 +2,8 @@ package edu.endava.tempr.api.service;
 
 import edu.endava.tempr.model.HeatingCircuit;
 
+import java.util.List;
+
 /**
  * Created by zsoltszabo on 4/8/17.
  */

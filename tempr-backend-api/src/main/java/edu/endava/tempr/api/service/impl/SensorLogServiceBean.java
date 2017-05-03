@@ -39,7 +39,19 @@ public class SensorLogServiceBean implements SensorLogService{
     }
 
     @Override
-    public SensorLog getLatest(Long heatingCircuitId) {
-        return sensorLogRepository.findFirstByHeatingCircuitOrderByLogTimeStampDesc(heatingCircuitId);
+    public SensorLog getLatestLog(Long heatingCircuitId) {
+        return sensorLogRepository.findFirstByHeatingCircuitIdOrderByLogTimeStampDesc(heatingCircuitId);
+    }
+
+    @Override
+    public Integer getLatestTemperature(Long heatingCircuitId) {
+        Integer latestTemp = null;
+        try{
+            latestTemp = getLatestLog(heatingCircuitId).getTemperature();
+        }catch(NullPointerException e){
+            LOG.error("Couldn't fetch the latest temperature {}", e.getMessage());
+        }finally {
+            return latestTemp;
+        }
     }
 }

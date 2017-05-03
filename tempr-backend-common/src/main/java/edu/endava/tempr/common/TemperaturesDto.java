@@ -4,27 +4,27 @@ package edu.endava.tempr.common;
  * Created by zsoltszabo on 4/9/17.
  */
 public class TemperaturesDto{
-    private int temperature, suggestedTemperature, desiredTemperature;
-    private long chipId;
-    private boolean suggestionFlag;
+    private Integer currentTemperature, suggestedTemperature, desiredTemperature;
+    private Long heatingCircuitId;
+    private Boolean AIFlag;
 
-    public TemperaturesDto(int temperature, int suggestedTemperature, int desiredTemperature, long chipId, boolean suggestionFlag){
-        this.temperature = temperature;
+    public TemperaturesDto(Integer currentTemperature, Integer suggestedTemperature, Integer desiredTemperature, Long heatingCircuitId, Boolean AIFlag){
+        this.currentTemperature = currentTemperature;
         this.suggestedTemperature = suggestedTemperature;
         this.desiredTemperature = desiredTemperature;
-        this.chipId = chipId;
-        this.suggestionFlag = suggestionFlag;
+        this.heatingCircuitId = heatingCircuitId;
+        this.AIFlag = AIFlag;
     }
 
-    public int getTemperature() {
-        return temperature;
+    public Integer getCurrentTemperature() {
+        return currentTemperature;
     }
 
-    public void setTemperature(int temperature) {
-        this.temperature = temperature;
+    public void setCurrentTemperature(int currentTemperature) {
+        this.currentTemperature = currentTemperature;
     }
 
-    public int getDesiredTemperature() {
+    public Integer getDesiredTemperature() {
         return desiredTemperature;
     }
 
@@ -32,15 +32,15 @@ public class TemperaturesDto{
         this.desiredTemperature = desiredTemperature;
     }
 
-    public long getChipId() {
-        return chipId;
+    public Long getHeatingCircuitId() {
+        return heatingCircuitId;
     }
 
-    public void setChipId(long chipId) {
-        this.chipId = chipId;
+    public void setHeatingCircuitId(long heatingCircuitId) {
+        this.heatingCircuitId = heatingCircuitId;
     }
 
-    public int getSuggestedTemperature() {
+    public Integer getSuggestedTemperature() {
         return suggestedTemperature;
     }
 
@@ -48,11 +48,11 @@ public class TemperaturesDto{
         this.suggestedTemperature = suggestedTemperature;
     }
 
-    public boolean isSuggestionFlag() {
-        return suggestionFlag;
+    public Boolean isAIFlag() {
+        return AIFlag;
     }
 
-    public void setSuggestionFlag(boolean suggestionFlag) {
-        this.suggestionFlag = suggestionFlag;
+    public void setAIFlag(boolean AIFlag) {
+        this.AIFlag = AIFlag;
     }
 }

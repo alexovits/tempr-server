@@ -20,6 +20,9 @@ public class HeatingCircuit extends BaseEntity{
     @Column(name = "suggestedTemperature")
     private Integer suggestedTemperature;
 
+    @Column(name = "AIFlag")
+    private Boolean AIFlag;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Thermostat thermostat;
@@ -101,5 +104,13 @@ public class HeatingCircuit extends BaseEntity{
     @Override
     public String toString(){
         return String.format("Sensor{name = %s, desiredTemperature = %s, sensorID = %s, heatingSourceID = %s, suggestedTemperature = %s}", name, desiredTemperature, sensor.getChipId(), heatingSource.getId(), suggestedTemperature);
+    }
+
+    public Boolean getAIFlag() {
+        return AIFlag;
+    }
+
+    public void setAIFlag(Boolean AIFlag) {
+        this.AIFlag = AIFlag;
     }
 }

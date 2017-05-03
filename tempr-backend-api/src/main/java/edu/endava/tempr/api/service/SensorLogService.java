@@ -9,5 +9,6 @@ import edu.endava.tempr.model.SensorLog;
 public interface SensorLogService {
     SensorLog findOne(Long sensorLogId);
     SensorLog create(int sensorLog, HeatingCircuit heatingCircuit);
-    SensorLog getLatest(Long heatingCircuitId);
+    SensorLog getLatestLog(Long heatingCircuitId);
+    Integer getLatestTemperature(Long heatingCircuitId);
 }

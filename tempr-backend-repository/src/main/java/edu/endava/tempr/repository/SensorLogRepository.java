@@ -12,6 +12,6 @@ import java.util.List;
  */
 @Repository
 public interface SensorLogRepository extends JpaRepository<SensorLog, Long> {
-    SensorLog findFirstByHeatingCircuitOrderByLogTimeStampDesc(Long heatingCricuitId);
+    SensorLog findFirstByHeatingCircuitIdOrderByLogTimeStampDesc(Long heatingCricuitId);
    // List<SensorLog> findByHeatingCircuitAndSensorLogTimeStampGreaterThanOrderByLogTimeStampDesc(Long heatingCircuitId, LocalDateTime fromDate);
 }
