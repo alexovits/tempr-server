@@ -33,6 +33,7 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
             throw new InvalidParameterException("Couldn't find Thermostat with the token: " + thermostatToken);
         }
         heatingCircuit.setThermostat(ownerThermostat);
+        heatingCircuit.setAiFlag(false); //By default when creating new HC flag is false
         HeatingCircuit savedHeatingCircuit = heatingCircuitRepository.save(heatingCircuit);
         LOG.info("Created Heating Circuit™ with id: {} for thermostat with token: {}", savedHeatingCircuit.getId(), thermostatToken);
         // Q: kell ez? it's unidir
