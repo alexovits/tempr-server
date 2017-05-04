@@ -1,5 +1,6 @@
 package edu.endava.tempr.api.controller;
 
+import com.sun.org.apache.regexp.internal.RE;
 import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.model.HeatingCircuit;
@@ -31,18 +32,16 @@ public class HeatingCircuitController {
     /**
      * ••• Used by Hardware •••
      * Log the temperature on a specific Heating Circuit
-     * @param sensorId The unique ID of the sensor.
+     * @param chipId The unique ID of the sensor.
      * @param temperature Temperature value that shall be logged.
      * @return ResponseEntity containing the status of the request's action
      * */
     @RequestMapping(value = "/thermostat/heatingcircuit/log/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createSensorLog(@RequestHeader(value="Authorization") String basicAuthHeader, @RequestParam("sensorId") Long sensorId, @RequestParam("temperature") Integer temperature) {
-        LOG.info("Request to log for {} sensor the {} temperature {}", sensorId, temperature, basicAuthHeader);
-        HeatingCircuit heatingCircuit = heatingCircuitService.findByChipId(sensorId);
-        // Decoding the second part of the Authorization header
-        String decodedUserName = new String(Base64.decodeBase64(basicAuthHeader.split(" ")[1]));
-        // Check if the Heating Circuit's Thermostat belongs to the same user that sent the request
-        if(heatingCircuit.getThermostat().getUser().getUsername() != decodedUserName){
+    public ResponseEntity createSensorLog(@RequestHeader(value="Authorization") String basicAuthHeader, @RequestParam("chipId") Long chipId, @RequestParam("temperature") Integer temperature) {
+        LOG.info("Request to log for {} sensor the {} temperature {}", chipId, temperature, basicAuthHeader);
+        // Fetch the heating circuit that has the sensor
+        HeatingCircuit heatingCircuit = heatingCircuitService.findByChipId(chipId);
+        if(!userHasSensor(basicAuthHeader, heatingCircuit)){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         sensorLogService.create(temperature, heatingCircuit);
@@ -111,8 +110,19 @@ public class HeatingCircuitController {
     @RequestMapping(value = "/thermostat/temperatures/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getTemperatures(@RequestParam("token") String thermostatToken) {
         LOG.info("Request for the temperature informations about {}", thermostatToken);
-        //Implement get temp in thermostat service
+        // TO-DO
+        // Implement get temp in thermostat service
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    private boolean userHasSensor(String basicAuthHeader, HeatingCircuit heatingCircuit){
+        // Decoding the second part of the Authorization header
+        String decodedUserName = new String(Base64.decodeBase64(basicAuthHeader.split(" ")[1]));
+        // Check if the Heating Circuit's Thermostat belongs to the same user that sent the request
+        if(heatingCircuit.getThermostat().getUser().getUsername() != decodedUserName){
+            return false;
+        }
+        return true;
     }
 
     /*
