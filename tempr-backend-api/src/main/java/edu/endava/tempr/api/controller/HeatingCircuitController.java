@@ -4,6 +4,7 @@ import com.sun.org.apache.regexp.internal.RE;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
+import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.model.HeatingCircuit;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -31,6 +32,9 @@ public class HeatingCircuitController {
 
     @Autowired
     private SensorLogService sensorLogService;
+
+    @Autowired
+    ThermostatService thermostatService;
 
     /**
      * ••• Used by Hardware •••
@@ -174,9 +178,7 @@ public class HeatingCircuitController {
     @RequestMapping(value = "/thermostat/temperatures/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getTemperatures(@RequestParam("token") String thermostatToken) {
         LOG.info("Request for the temperature informations about {}", thermostatToken);
-        // TO-DO
-        // Implement get temp in thermostat service
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(thermostatService.getTemperatures(thermostatToken),HttpStatus.OK);
     }
 
     private boolean userHasSensor(String basicAuthHeader, HeatingCircuit heatingCircuit) {
