@@ -17,6 +17,8 @@ public class HeatingCircuitDto extends AbstractDto{
 
     private SensorDto sensorDto;
 
+    private Boolean aiFlag;
+
     public HeatingCircuitDto() {
     }
 
@@ -66,5 +68,19 @@ public class HeatingCircuitDto extends AbstractDto{
 
     public void setSuggestedTemperature(Integer suggestedTemperature) {
         this.suggestedTemperature = suggestedTemperature;
+    }
+
+    public Boolean getAiFlag() {
+        return aiFlag;
+    }
+
+    public void setAiFlag(Boolean aiFlag) {
+        this.aiFlag = aiFlag;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("HeatingCircuitDTO{ name=%1$s, thermostatToken=%2$s, desiredTemperature=%3$d, suggestedTemperature=%4$d, heatingSource=%5$s, sensor=%6$s, aiFlag=%7$s}",
+                name, thermostatToken, desiredTemperature, suggestedTemperature, heatingSourceDto, sensorDto, aiFlag);
     }
 }

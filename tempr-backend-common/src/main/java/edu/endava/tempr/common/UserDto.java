@@ -64,12 +64,7 @@ public class UserDto extends AbstractDto {
 
     @Override
     public String toString() {
-        return "UserDto{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return String.format("UserDTO{ username=%1$s, password=%2$s, firstName=%3$s, lastName=%4$s, email=%5$s}",
+                username, password, firstName, lastName, email);
     }
 }

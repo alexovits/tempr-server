@@ -14,4 +14,9 @@ public interface HeatingCircuitService {
     HeatingCircuit update(HeatingCircuit heatingCircuit);
     Integer getDesiredTemperature(long heatingCircuitId);
     void updateDesiredTemperature(long heatingCircuitId, int desiredTemperature);
+    Boolean getAiFlag(long heatingCircuitId);
+    void updateAiFlag(long heatingCircuitId, boolean aiFlag);
+    Integer getSuggestedTemperature(long heatingCircuitId);
+    void updateSuggestedTemperature(long heatingCircuitId, int suggestedTemperature);
+
 }

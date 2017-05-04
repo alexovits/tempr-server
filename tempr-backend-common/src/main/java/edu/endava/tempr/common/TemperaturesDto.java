@@ -55,4 +55,10 @@ public class TemperaturesDto{
     public void setAIFlag(boolean AIFlag) {
         this.AIFlag = AIFlag;
     }
+
+    @Override
+    public String toString() {
+        return String.format("TemperaturesDTO{ currentTemperature=%1$d, suggestedTemperature=%2$d, desiredTemperature=%3$d, heatingCircuitId=%4$d, AIFlag=%5$b}",
+                currentTemperature, suggestedTemperature, desiredTemperature, heatingCircuitId, AIFlag);
+    }
 }

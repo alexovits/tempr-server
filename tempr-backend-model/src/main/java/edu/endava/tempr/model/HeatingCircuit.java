@@ -20,19 +20,19 @@ public class HeatingCircuit extends BaseEntity{
     @Column(name = "suggestedTemperature")
     private Integer suggestedTemperature;
 
-    @Column(name = "AIFlag")
-    private Boolean AIFlag;
+    @Column(name = "aiFlag")
+    private Boolean aiFlag;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Thermostat thermostat;
 
     @OneToOne
-    @JoinColumn(nullable = true)
+    @JoinColumn()
     private HeatingSource heatingSource;
 
     @OneToOne
-    @JoinColumn(nullable = true, name = "chipId", referencedColumnName = "chipId")
+    @JoinColumn(name = "chipId", referencedColumnName = "chipId")
     private Sensor sensor;
 
     @OneToMany(mappedBy = "heatingCircuit", fetch = FetchType.EAGER)
@@ -101,16 +101,17 @@ public class HeatingCircuit extends BaseEntity{
         this.suggestedTemperature = suggestedTemperature;
     }
 
+    public Boolean getAiFlag() {
+        return aiFlag;
+    }
+
+    public void setAiFlag(Boolean aiFlag) {
+        this.aiFlag = aiFlag;
+    }
+
     @Override
-    public String toString(){
-        return String.format("Sensor{name = %s, desiredTemperature = %s, sensorID = %s, heatingSourceID = %s, suggestedTemperature = %s}", name, desiredTemperature, sensor.getChipId(), heatingSource.getId(), suggestedTemperature);
-    }
-
-    public Boolean getAIFlag() {
-        return AIFlag;
-    }
-
-    public void setAIFlag(Boolean AIFlag) {
-        this.AIFlag = AIFlag;
+    public String toString() {
+        return String.format("HeatingCircuit{ name=%1$s, thermostatToken=%2$s, desiredTemperature=%3$d, suggestedTemperature=%4$d, heatingSource=%5$s, sensor=%6$s, aiFlag=%7$b}",
+                name, thermostat.getToken(), desiredTemperature, suggestedTemperature, heatingSource, sensor, aiFlag);
     }
 }

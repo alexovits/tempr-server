@@ -78,6 +78,19 @@ public class HeatingCircuitController {
 
     /**
      * ••• Used by UI •••
+     * Returns the desired temperature of a specific Heating Circuit
+     * @param heatingCircuitId The internal ID of a Heating Circuit
+     * @return ResponseEntity containing the status of the request's action and the desired temperature
+     * */
+    @RequestMapping(value = "/thermostat/heatingcircuit/suggestedtemperature/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getSuggestedTemperature(@RequestParam("heatingCircuitId") Long heatingCircuitId) {
+        LOG.info("Request to get suggested temperature of {} to {}", heatingCircuitId);
+        heatingCircuitService.getDesiredTemperature(heatingCircuitId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
+     * ••• Used by UI •••
      * Returns the latest reported temperature of a heatingCircuit object, thus the most current one.
      *
      * @param heatingCircuitId The internal ID of a Heating Circuit
@@ -91,7 +104,7 @@ public class HeatingCircuitController {
 
     /**
      * ••• Used by UI •••
-     * Returns the latest temperature data from all of the sensors of a specific token
+     * Returns the latest temperature data from all of the Heating Circuits of a specific token
      *
      * @return ResponseEntity containing the temperature as Integer and the Status
      * */

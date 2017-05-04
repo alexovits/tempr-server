@@ -8,8 +8,6 @@ import edu.endava.tempr.repository.ThermostatRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
@@ -53,14 +51,12 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
         return heatingCircuitRepository.findOne(heatingCircuitId);
     }
 
-    //Isn't this a bit redundant? Should we have dedicated functions?
-    // Maybe if the update would check on whether the object has id/chipId it can search for it so only 1 query is executed
     @Override
     public HeatingCircuit update(HeatingCircuit heatingCircuit) {
         HeatingCircuit updateHeatingCircuit = heatingCircuitRepository.findOne(heatingCircuit.getId());
         if(updateHeatingCircuit == null){
             LOG.error("No Heating Circuit™ found with this ID: {}", updateHeatingCircuit.getId());
-            return null;
+            throw new InvalidParameterException(String.format("No Heating Circuit™ found with this ID %1$d",heatingCircuit.getId()));
         }
         return heatingCircuitRepository.save(heatingCircuit);
     }
@@ -74,12 +70,34 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
 
     @Override
     public void updateDesiredTemperature(long heatingCircuitId, int desiredTemperature) {
-        /*HeatingCircuit heatingCircuit = findByChipId(chipId);
-        heatingCircuit.setDesiredTemperature(desiredTemperature);
-        update(heatingCircuit);*/
-        //TODO --> Check if there's no valid hcID and throw exception
         HeatingCircuit heatingCircuit = findOne(heatingCircuitId);
         heatingCircuit.setDesiredTemperature(desiredTemperature);
+        update(heatingCircuit);
+    }
+
+    @Override
+    public Boolean getAiFlag(long heatingCircuitId) {
+        HeatingCircuit heatingCircuit = findOne(heatingCircuitId);
+        return heatingCircuit.getAiFlag();
+    }
+
+    @Override
+    public void updateAiFlag(long heatingCircuitId, boolean aiFlag) {
+        HeatingCircuit heatingCircuit = findOne(heatingCircuitId);
+        heatingCircuit.setAiFlag(aiFlag);
+        update(heatingCircuit);
+    }
+
+    @Override
+    public Integer getSuggestedTemperature(long heatingCircuitId) {
+        HeatingCircuit heatingCircuit = findOne(heatingCircuitId);
+        return heatingCircuit.getSuggestedTemperature();
+    }
+
+    @Override
+    public void updateSuggestedTemperature(long heatingCircuitId, int suggestedTemperature) {
+        HeatingCircuit heatingCircuit = findOne(heatingCircuitId);
+        heatingCircuit.setSuggestedTemperature(suggestedTemperature);
         update(heatingCircuit);
     }
 }

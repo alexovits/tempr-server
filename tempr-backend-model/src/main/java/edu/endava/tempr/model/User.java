@@ -108,14 +108,8 @@ public class User extends BaseEntity {
 
     @Override
     public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", type='" + userType.toString() + '\'' +
-                '}';
+        return String.format("User{ username=%1$s, password=%2$s, firstName=%3$s, lastName=%4$s, email=%5$s, userTpye=%6$s}",
+                username, password, firstName, lastName, email, userType.toString());
     }
 
 }

@@ -3,14 +3,15 @@ package edu.endava.tempr.common;
 /**
  * Created by zsoltszabo on 14/12/2016.
  */
-public class ThermostatDto extends AbstractDto{
+public class ThermostatDto extends AbstractDto {
     private String token;
     private String name;
     private Short configured;
     private Long userId;
     private Integer desiredTemperature;
 
-    public ThermostatDto(){}
+    public ThermostatDto() {
+    }
 
     public String getToken() {
         return token;
@@ -54,12 +55,7 @@ public class ThermostatDto extends AbstractDto{
 
     @Override
     public String toString() {
-        return "ThermostatDto{" +
-                "name='" + name + '\'' +
-                ", token='" + token + '\'' +
-                ", configured='" + configured + '\'' +
-                ", userId='" + userId + '\'' +
-                ", desiredTemperature='" + desiredTemperature + '\'' +
-                '}';
+        return String.format("ThermostatDTO{ name=%1$s, token=%2$s, configured=%3$d, userId=%4$d, desiredTemperature=%5$d}",
+                name, token, configured, userId, desiredTemperature);
     }
 }

@@ -43,4 +43,10 @@ public class SensorLog extends BaseEntity{
     public void setHeatingCircuit(HeatingCircuit heatingCircuit) {
         this.heatingCircuit = heatingCircuit;
     }
+
+    @Override
+    public String toString() {
+        return String.format("SensorLog{ timeStamp=%1$t, heatingCircuitId=%2$d, temperature=%3$d}",
+                logTimeStamp, heatingCircuit, temperature);
+    }
 }

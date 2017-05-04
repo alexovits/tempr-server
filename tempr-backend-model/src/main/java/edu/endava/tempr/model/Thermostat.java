@@ -90,12 +90,9 @@ public class Thermostat extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Thermostat{" +
-                "name='" + name + '\'' +
-                ", token='" + token + '\'' +
-                ", configured='" + configured + '\'' +
-                ", userId=" + user.getId() + '\'' +
-                ", desiredTemperature=" + desiredTemperature + '\'' +
-                '}';
+        return String.format("Thermostat{ name=%1$s, token=%2$s, configured=%3$d, userId=%4$d, desiredTemperature=%5$d}",
+                name, token, configured, user.getId(), desiredTemperature);
     }
+
+
 }

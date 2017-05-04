@@ -9,5 +9,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "HeatingSource")
 public class HeatingSource extends BaseEntity{
-
+    @Override
+    public String toString() {
+        return String.format("HeatingSource{id=%1$d}",
+                getId());
+    }
 }

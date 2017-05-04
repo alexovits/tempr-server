@@ -35,4 +35,10 @@ public class SensorLogDto extends AbstractDto{
     public void setTemperature(Integer temperature) {
         this.temperature = temperature;
     }
+
+    @Override
+    public String toString() {
+        return String.format("SensorLogDTO{ timeStamp=%1$t, heatingCircuitId=%2$d, temperature=%3$d}",
+                logTimeStamp, heatingCircuitId, temperature);
+    }
 }

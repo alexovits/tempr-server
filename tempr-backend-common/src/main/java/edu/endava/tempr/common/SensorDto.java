@@ -13,4 +13,10 @@ public class SensorDto extends AbstractDto{
     public void setChipId(Long chipId) {
         this.chipId = chipId;
     }
+
+    @Override
+    public String toString() {
+        return String.format("SensorDTO{chipId=%1$d}",
+                chipId);
+    }
 }

@@ -1,10 +1,8 @@
 package edu.endava.tempr.api.service.impl;
 
-import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.common.TemperaturesDto;
-import edu.endava.tempr.model.HeatingCircuit;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.ThermostatRepository;
@@ -101,14 +99,8 @@ public class ThermostatServiceBean implements ThermostatService {
             throw new RuntimeException("Invalid Token");
         }
 
-        Integer y = 1;
-        Long fakeID = 3L;
-
         thermostat.getHeatingCircuitList().forEach(
-                //hc -> temperatureList.add(new TemperaturesDto(sensorLogService.getLatest(hc.getId()).getTemperature(), hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAIFlag()))
-                hc -> {
-                    temperatureList.add(new TemperaturesDto(sensorLogService.getLatestTemperature(hc.getId()), hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAIFlag()));
-                }
+                hc -> temperatureList.add(new TemperaturesDto(sensorLogService.getLatestTemperature(hc.getId()), hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAiFlag()))
         );
         return temperatureList;
     }
