@@ -116,10 +116,11 @@ public class HeatingCircuitController {
     }
 
     private boolean userHasSensor(String basicAuthHeader, HeatingCircuit heatingCircuit){
-        // Decoding the second part of the Authorization header
-        String decodedUserName = new String(Base64.decodeBase64(basicAuthHeader.split(" ")[1]));
+        // Decoding the second part of the Authorization header and fetching the username from it
+        String decodedUserName = new String(Base64.decodeBase64(basicAuthHeader.split(" ")[1])).split(":")[0];
+        LOG.info("Validating if user: {} owns the Heating Circuit with id: {}", decodedUserName, heatingCircuit.getId());
         // Check if the Heating Circuit's Thermostat belongs to the same user that sent the request
-        if(heatingCircuit.getThermostat().getUser().getUsername() != decodedUserName){
+        if(!heatingCircuit.getThermostat().getUser().getUsername().equals(decodedUserName)){
             return false;
         }
         return true;
