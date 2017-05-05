@@ -26,7 +26,7 @@ public class UserAssembler implements Assembler<UserDto, User> {
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
-        user.setThermostat(thermostatAssembler.toEntity(dto.ge));
+        user.setThermostat(thermostatAssembler.toEntity(dto.getThermostatDto()));
         return user;
     }
 
@@ -39,9 +39,7 @@ public class UserAssembler implements Assembler<UserDto, User> {
         userDto.setFirstName(entity.getFirstName());
         userDto.setLastName(entity.getLastName());
         userDto.setEmail(entity.getEmail());
-        for(Thermostat thermostat:entity.getThermostatList()){
-            userDto.getThermostatDtoList().add(thermostatAssembler.toDto(thermostat));
-        }
+        userDto.setThermostatDto(thermostatAssembler.toDto(entity.getThermostat()));
         return userDto;
     }
 
