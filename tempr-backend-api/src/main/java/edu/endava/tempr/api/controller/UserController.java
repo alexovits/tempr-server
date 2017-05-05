@@ -55,7 +55,6 @@ public class UserController {
     @RequestMapping(value = "/user/register/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
         User user = userAssembler.toEntity(userDto);
-
         //Based on whether the user was created or not
         return (userService.createUser(user) != null) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -64,7 +63,6 @@ public class UserController {
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         User user = userService.findOne(id);
-
         // If no user found with the given id
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -78,9 +76,7 @@ public class UserController {
         if(user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        Thermostat
-
-        return new ResponseEntity<>(userAssembler.toDto(user).getThermostatDtoList(), HttpStatus.OK);
+        LOG.info("Sending back token: {}", user.getThermostat().getToken());
+        return new ResponseEntity<>(userAssembler.toDto(user).getThermostatDto(), HttpStatus.OK);
     }
 }
