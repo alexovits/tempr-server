@@ -44,10 +44,8 @@ public class Application {
 
             // Showing every thermostat of a user
             User user = userService.findByName("user");
-            Thermostat k = user.getThermostatList();
-            for (Thermostat t : k) {
-                LOG.info(t.toString());
-            }
+            Thermostat k = user.getThermostat();
+            LOG.info("User {} has thermostat {}",user.getUsername(),defThermostat);
 
             // Add heating circuits to the thermostat & sensor
             HeatingCircuit heatingCircuit = new HeatingCircuit();

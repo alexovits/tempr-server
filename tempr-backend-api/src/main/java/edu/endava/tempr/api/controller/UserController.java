@@ -73,15 +73,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/thermostatList/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ThermostatDto>> getThermostatList(@RequestBody UserDto userDto) {
+    public ResponseEntity<ThermostatDto> getThermostatList(@RequestBody UserDto userDto) {
         User user = userService.findOne(userDto.getId());
         if(user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        for(Thermostat t : user.getThermostatList()){
-            LOG.info("Device: {}",t.getName());
-        }
+        Thermostat
 
         return new ResponseEntity<>(userAssembler.toDto(user).getThermostatDtoList(), HttpStatus.OK);
     }

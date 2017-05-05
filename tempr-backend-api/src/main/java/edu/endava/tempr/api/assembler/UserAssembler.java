@@ -26,9 +26,7 @@ public class UserAssembler implements Assembler<UserDto, User> {
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
-        for(ThermostatDto thermostatDto: dto.getThermostatDtoList()){
-            user.getThermostatList().add(thermostatAssembler.toEntity(thermostatDto));
-        }
+        user.setThermostat(thermostatAssembler.toEntity(dto.ge));
         return user;
     }
 
