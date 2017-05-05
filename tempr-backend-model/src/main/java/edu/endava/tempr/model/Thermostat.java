@@ -20,9 +20,6 @@ public class Thermostat extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "desiredTemperature")
-    private Integer desiredTemperature;
-
     @OneToOne
     private User user;
 
@@ -65,14 +62,6 @@ public class Thermostat extends BaseEntity {
         this.user = user;
     }
 
-    public Integer getDesiredTemperature() {
-        return desiredTemperature;
-    }
-
-    public void setDesiredTemperature(Integer desiredTemperature) {
-        this.desiredTemperature = desiredTemperature;
-    }
-
     public List<HeatingCircuit> getHeatingCircuitList() {
         return heatingCircuitList;
     }
@@ -90,8 +79,8 @@ public class Thermostat extends BaseEntity {
 
     @Override
     public String toString() {
-        return String.format("Thermostat{ name=%1$s, token=%2$s, configured=%3$d, userId=%4$d, desiredTemperature=%5$d}",
-                name, token, configured, user.getId(), desiredTemperature);
+        return String.format("Thermostat{ name=%1$s, token=%2$s, configured=%3$d, userId=%4$d}",
+                name, token, configured, user.getId());
     }
 
 

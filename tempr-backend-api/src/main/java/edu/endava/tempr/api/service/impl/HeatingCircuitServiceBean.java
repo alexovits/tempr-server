@@ -36,9 +36,9 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
         heatingCircuit.setAiFlag(false); //By default when creating new HC flag is false
         HeatingCircuit savedHeatingCircuit = heatingCircuitRepository.save(heatingCircuit);
         LOG.info("Created Heating Circuit™ with id: {} for thermostat with token: {}", savedHeatingCircuit.getId(), thermostatToken);
-        // Q: kell ez? it's unidir
-        ownerThermostat.addHeatingCircuit(savedHeatingCircuit);
-        thermostatRepository.save(ownerThermostat);
+        // Adding to the list is not needed
+        //ownerThermostat.addHeatingCircuit(savedHeatingCircuit);
+        //thermostatRepository.save(ownerThermostat);
         return savedHeatingCircuit;
     }
 
