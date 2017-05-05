@@ -37,15 +37,14 @@ public class Application {
             // Create a demo user
             User defUser = userService.createUser(new User("user", "user", "John", "Doe", "user@tempr.com", UserType.USER));
 
-            // Create demo devices for the user
+            // Create demo thermostat for the user
             Thermostat defThermostat = new Thermostat();
             defThermostat.setName("Thermo-1");
-            defThermostat.setDesiredTemperature(19);
             defThermostat = thermostatService.createThermostat(defUser, defThermostat);
 
             // Showing every thermostat of a user
             User user = userService.findByName("user");
-            List<Thermostat> k = user.getThermostatList();
+            Thermostat k = user.getThermostatList();
             for (Thermostat t : k) {
                 LOG.info(t.toString());
             }

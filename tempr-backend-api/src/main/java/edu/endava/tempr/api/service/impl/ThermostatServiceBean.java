@@ -60,7 +60,6 @@ public class ThermostatServiceBean implements ThermostatService {
     public Thermostat createThermostat(User user, Thermostat thermostat) {
         Thermostat savedThermostat = null;
         thermostat.setToken(generateNewToken(user.getUsername()));
-        thermostat.setUser(user);
         thermostat.setConfigured((short) 0);
         try {
             savedThermostat = thermostatRepository.save(thermostat);
@@ -71,7 +70,7 @@ public class ThermostatServiceBean implements ThermostatService {
         LOG.info("Created thermostat: '{}'", savedThermostat.toString());
 
         // Inserts save thermostat into user's list
-        user.addThermostat(savedThermostat);
+        // user.addThermostat(savedThermostat);
         userRepository.save(user);
 
         return savedThermostat;

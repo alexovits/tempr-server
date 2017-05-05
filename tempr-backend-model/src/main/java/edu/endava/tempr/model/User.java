@@ -27,8 +27,10 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Thermostat> thermostatList = new ArrayList<>();
+    // There is a circular foreign & primary key relation
+    @OneToOne
+    @JoinColumn(name = "token", referencedColumnName = "token")
+    private Thermostat thermostat;
 
     public User() {
         //EMPTY
@@ -59,15 +61,6 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public List<Thermostat> getThermostatList() {
-        return thermostatList;
-    }
-
-    public void setThermostatList(List<Thermostat> thermostatList) {
-        this.thermostatList = new ArrayList<>();
-        thermostatList.forEach(t -> thermostatList.add(t));
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -92,12 +85,6 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    public void addThermostat(Thermostat thermostat){
-        if(!thermostatList.contains(thermostat)){
-            thermostatList.add(thermostat);
-        }
-    }
-
     public UserType getUserType() {
         return userType;
     }
@@ -106,10 +93,17 @@ public class User extends BaseEntity {
         this.userType = userType;
     }
 
-    @Override
-    public String toString() {
-        return String.format("User{ username=%1$s, password=%2$s, firstName=%3$s, lastName=%4$s, email=%5$s, userTpye=%6$s}",
-                username, password, firstName, lastName, email, userType.toString());
+    public Thermostat getThermostat() {
+        return thermostat;
     }
 
+    public void setThermostat(Thermostat thermostat) {
+        this.thermostat = thermostat;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("User{ username=%1$s, password=%2$s, firstName=%3$s, lastName=%4$s, email=%5$s, userType=%6$s, thermostatToken=%7$s}",
+                username, password, firstName, lastName, email, userType.toString(), thermostat.getToken());
+    }
 }
