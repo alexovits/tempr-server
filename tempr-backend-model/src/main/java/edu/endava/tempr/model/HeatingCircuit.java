@@ -24,7 +24,7 @@ public class HeatingCircuit extends BaseEntity{
     private Boolean aiFlag;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private Thermostat thermostat;
 
     @OneToOne

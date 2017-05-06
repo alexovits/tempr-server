@@ -7,7 +7,6 @@ public class UserDto extends AbstractDto {
     private String firstName;
     private String lastName;
     private String email;
-    private ThermostatDto thermostatDto;
 
     public UserDto() {}
 
@@ -51,18 +50,10 @@ public class UserDto extends AbstractDto {
         this.email = email;
     }
 
-    public void setThermostatDto(ThermostatDto thermostatDto) {
-        this.thermostatDto = thermostatDto;
-    }
-
-    public ThermostatDto getThermostatDto(){
-        return thermostatDto;
-    }
-
     @Override
     public String toString() {
-        return String.format("UserDTO{ username=%1$s, password=%2$s, firstName=%3$s, lastName=%4$s, email=%5$s, token=%6$s}",
-                username, password, firstName, lastName, email, thermostatDto.getToken());
+        return String.format("UserDTO{ username=%1$s, password=%2$s, firstName=%3$s, lastName=%4$s, email=%5$s}",
+                username, password, firstName, lastName, email);
     }
 
 

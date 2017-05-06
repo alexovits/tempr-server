@@ -76,7 +76,8 @@ public class UserController {
         if(user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        LOG.info("Sending back token: {}", user.getThermostat().getToken());
-        return new ResponseEntity<>(userAssembler.toDto(user).getThermostatDto(), HttpStatus.OK);
+        //LOG.info("Sending back token: {}", user.getThermostat().getToken());
+        //return new ResponseEntity<>(userAssembler.toDto(user).getThermostatDto(), HttpStatus.OK);
+        return null;
     }
 }

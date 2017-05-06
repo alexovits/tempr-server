@@ -21,7 +21,7 @@ public class Thermostat extends BaseEntity {
     private String name;
 
     @OneToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "thermostat", fetch = FetchType.EAGER)

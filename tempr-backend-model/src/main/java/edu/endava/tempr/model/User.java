@@ -1,8 +1,6 @@
 package edu.endava.tempr.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "Users")
@@ -26,11 +24,6 @@ public class User extends BaseEntity {
     @Column(name = "usertype", nullable = false)
     @Enumerated(EnumType.STRING)
     private UserType userType;
-
-    // There is a circular foreign & primary key relation
-    @OneToOne
-    @JoinColumn(name = "token", referencedColumnName = "token")
-    private Thermostat thermostat;
 
     public User() {
         //EMPTY
@@ -93,17 +86,9 @@ public class User extends BaseEntity {
         this.userType = userType;
     }
 
-    public Thermostat getThermostat() {
-        return thermostat;
-    }
-
-    public void setThermostat(Thermostat thermostat) {
-        this.thermostat = thermostat;
-    }
-
     @Override
     public String toString() {
-        return String.format("User{ username=%1$s, password=%2$s, firstName=%3$s, lastName=%4$s, email=%5$s, userType=%6$s, thermostatToken=%7$s}",
-                username, password, firstName, lastName, email, userType.toString(), thermostat.getToken());
+        return String.format("User{ username=%1$s, password=%2$s, firstName=%3$s, lastName=%4$s, email=%5$s, userType=%6$s}",
+                username, password, firstName, lastName, email, userType.toString());
     }
 }

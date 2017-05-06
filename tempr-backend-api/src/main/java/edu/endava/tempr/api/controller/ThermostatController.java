@@ -32,6 +32,7 @@ public class ThermostatController {
     @Autowired
     private UserService userService;
 
+    // ** Clean up logic
     @RequestMapping(value = "/thermostat/register/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatDto> registerThermostat(@RequestBody ThermostatDto thermostatDto) {
         // Check if user that wants to have thermostat exists at all
@@ -44,7 +45,7 @@ public class ThermostatController {
 
         // Create new thermostat
         Thermostat newThermostat = thermostatService.createThermostat(user, thermostatAssembler.toEntity(thermostatDto));
-        user.addThermostat(newThermostat);
+        //user.setThermostat(newThermostat);
         userService.updateUser(user);
         return new ResponseEntity<>(thermostatAssembler.toDto(newThermostat), HttpStatus.OK);
     }
