@@ -7,6 +7,7 @@ import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.common.UserDto;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/login/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> loginUser(@RequestBody UserDto userDto) {
-        User user = userService.findByName(userDto.getUsername());
+    public ResponseEntity<UserDto> loginUser(@RequestHeader(value = "Authorization") String basicAuthHeader) {
+        String decodedUserName = new String(Base64.decodeBase64(basicAuthHeader.split(" ")[1])).split(":")[0];
+        User user = userService.findByName(decodedUserName);
         if(user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
