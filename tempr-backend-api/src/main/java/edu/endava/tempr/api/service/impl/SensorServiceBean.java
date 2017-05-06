@@ -37,16 +37,12 @@ public class SensorServiceBean implements SensorService{
     }
 
     @Override
-    public Sensor create(Sensor sensor, Long heatingCircuitId) {
-        HeatingCircuit heatingCircuit;
-        if((heatingCircuit = heatingCircuitRepository.findOne(heatingCircuitId)) == null){
-            throw new InvalidParameterException("Couldn't find Heating Circuit™ with the id: " + heatingCircuitId);
-        }
+    public Sensor create(long chipId) {
+        Sensor sensor = new Sensor();
+        sensor.setChipId(chipId);
         LOG.info("Saving sensor with Chip ID: {}", sensor.getChipId());
         Sensor savedSensor = sensorRepository.save(sensor);
         LOG.info("Successfully saved sensor with Chip ID: {}", sensor.getChipId());
-        heatingCircuit.setSensor(savedSensor);
-        heatingCircuitRepository.save(heatingCircuit);
         return savedSensor;
     }
 

@@ -3,6 +3,7 @@ package edu.endava.tempr.api.controller;
 import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.api.service.ThermostatService;
+import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.model.HeatingCircuit;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -51,6 +52,25 @@ public class HeatingCircuitController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         sensorLogService.create(temperature, heatingCircuit);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
+     * ••• Used by UI •••
+     * Creates a new Heating Circuit™
+     *
+     * @param heatingCircuitDto Must have the {name, thermostatToken, sensor={chipId}} defined
+     * @return ResponseEntity containing the status of the request's action
+     */
+    @RequestMapping(value = "/thermostat/heatingcircuit/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createHeatingCircuit(@RequestBody HeatingCircuitDto heatingCircuitDto) {
+        LOG.info("Request to create HC {}", heatingCircuitDto);
+        try {
+            heatingCircuitService.create(heatingCircuitDto);
+        } catch (InvalidParameterException e) {
+            LOG.error(e.getStackTrace().toString());
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 

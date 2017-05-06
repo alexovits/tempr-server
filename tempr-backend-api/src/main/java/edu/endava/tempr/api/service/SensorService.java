@@ -7,7 +7,7 @@ import edu.endava.tempr.model.Sensor;
 public interface SensorService {
     Sensor findOne(Long sensorId);
     Sensor findByChipId(Long chipId);
-    Sensor create(Sensor sensor, Long heatingCircuitId);
+    Sensor create(long chipId);
     Sensor update(Sensor sensor);
     void delete(Long id);
 }

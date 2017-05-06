@@ -1,6 +1,8 @@
 package edu.endava.tempr;
 
 import edu.endava.tempr.api.service.*;
+import edu.endava.tempr.common.HeatingCircuitDto;
+import edu.endava.tempr.common.SensorDto;
 import edu.endava.tempr.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,20 +50,23 @@ public class Application {
             LOG.info("User {} has thermostat {}",user.getUsername(),defThermostat);
 
             // Add heating circuits to the thermostat & sensor
-            HeatingCircuit heatingCircuit = new HeatingCircuit();
-            heatingCircuit.setName("Nagyszoba");
-            heatingCircuit = heatingCircuitService.create(heatingCircuit, defThermostat.getToken());
-            Sensor sensor = new Sensor();
-            sensor.setChipId((long) 8670624);
-            sensorService.create(sensor, heatingCircuit.getId());
+            HeatingCircuit heatingCircuit;
+            HeatingCircuitDto heatingCircuitDto = new HeatingCircuitDto();
+            SensorDto newSensor = new SensorDto();
+            newSensor.setChipId((long) 8670624);
+            heatingCircuitDto.setName("Nagyszoba");
+            heatingCircuitDto.setSensor(newSensor);
+            heatingCircuitDto.setThermostatToken(defThermostat.getToken());
+            heatingCircuit = heatingCircuitService.create(heatingCircuitDto);
 
             // Add another hc
             heatingCircuit = new HeatingCircuit();
-            heatingCircuit.setName("Nappali");
-            heatingCircuit = heatingCircuitService.create(heatingCircuit, defThermostat.getToken());
-            sensor = new Sensor();
-            sensor.setChipId((long) 460059);
-            sensorService.create(sensor, heatingCircuit.getId());
+            heatingCircuitDto = new HeatingCircuitDto();
+            heatingCircuitDto.setName("Nappali");
+            newSensor.setChipId((long) 2453634);
+            heatingCircuitDto.setSensor(newSensor);
+            heatingCircuitDto.setThermostatToken(defThermostat.getToken());
+            heatingCircuit = heatingCircuitService.create(heatingCircuitDto);
 
             LOG.info(heatingCircuitService.findByChipId((long) 8670624).getName());
 

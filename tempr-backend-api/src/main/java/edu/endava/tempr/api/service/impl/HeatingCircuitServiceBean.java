@@ -1,7 +1,10 @@
 package edu.endava.tempr.api.service.impl;
 
 import edu.endava.tempr.api.service.HeatingCircuitService;
+import edu.endava.tempr.api.service.SensorService;
+import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.model.HeatingCircuit;
+import edu.endava.tempr.model.Sensor;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.repository.HeatingCircuitRepository;
 import edu.endava.tempr.repository.ThermostatRepository;
@@ -26,19 +29,30 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
     @Autowired
     private ThermostatRepository thermostatRepository;
 
+    @Autowired
+    private SensorService sensorService;
+
+    // Doesn't use everything from parameter hc object only the needed ones so that the registration process can't be altered by malicious inputs
+    // This is the reason why in this case DTO is used, because only certain attributes are needed
     @Override
-    public HeatingCircuit create(HeatingCircuit heatingCircuit, String thermostatToken) {
+    public HeatingCircuit create(HeatingCircuitDto heatingCircuitDto) {
+        HeatingCircuit heatingCircuit = new HeatingCircuit();
         Thermostat ownerThermostat;
-        if((ownerThermostat = thermostatRepository.findByToken(thermostatToken)) == null){
-            throw new InvalidParameterException("Couldn't find Thermostat with the token: " + thermostatToken);
+        // Checks if all the necessary parameters are set
+        if(heatingCircuitDto.getName() == null || heatingCircuitDto.getSensor().getChipId() == null || heatingCircuitDto.getThermostatToken() == null){
+            throw new InvalidParameterException("Name and chipID needed for the Heating Circuit registration");
         }
+        // Checks if a thermostat with the given token exists
+        if((ownerThermostat = thermostatRepository.findByToken(heatingCircuitDto.getThermostatToken())) == null){
+            throw new InvalidParameterException("Couldn't find Thermostat with the token: " + heatingCircuitDto.getThermostatToken());
+        }
+        // Sets only the obligatory attributes
+        heatingCircuit.setName(heatingCircuitDto.getName());
         heatingCircuit.setThermostat(ownerThermostat);
         heatingCircuit.setAiFlag(false); //By default when creating new HC flag is false
+        heatingCircuit.setSensor(sensorService.create(heatingCircuitDto.getSensor().getChipId()));
         HeatingCircuit savedHeatingCircuit = heatingCircuitRepository.save(heatingCircuit);
-        LOG.info("Created Heating Circuit™ with id: {} for thermostat with token: {}", savedHeatingCircuit.getId(), thermostatToken);
-        // Adding to the list is not needed
-        //ownerThermostat.addHeatingCircuit(savedHeatingCircuit);
-        //thermostatRepository.save(ownerThermostat);
+        LOG.info("Created Heating Circuit™ with id: {} for thermostat with token: {}", savedHeatingCircuit.getId(), savedHeatingCircuit.getThermostat().getToken());
         return savedHeatingCircuit;
     }
 
