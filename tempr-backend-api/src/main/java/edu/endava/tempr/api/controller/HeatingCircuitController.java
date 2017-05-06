@@ -59,7 +59,7 @@ public class HeatingCircuitController {
      * ••• Used by UI •••
      * Creates a new Heating Circuit™
      *
-     * @param heatingCircuitDto Must have the {name, thermostatToken, sensor={chipId}} defined
+     * @param heatingCircuitDto Must have the {name, thermostatToken, sensor={chipId}} defined.
      * @return ResponseEntity containing the status of the request's action
      */
     @RequestMapping(value = "/thermostat/heatingcircuit/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

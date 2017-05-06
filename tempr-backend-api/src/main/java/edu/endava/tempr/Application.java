@@ -3,7 +3,10 @@ package edu.endava.tempr;
 import edu.endava.tempr.api.service.*;
 import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.common.SensorDto;
-import edu.endava.tempr.model.*;
+import edu.endava.tempr.model.HeatingCircuit;
+import edu.endava.tempr.model.Thermostat;
+import edu.endava.tempr.model.User;
+import edu.endava.tempr.model.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +16,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
-
-import java.util.List;
 
 @EntityScan(
         basePackageClasses = {Application.class, Jsr310JpaConverters.class}
