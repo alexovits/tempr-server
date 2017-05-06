@@ -15,7 +15,7 @@ public class HeatingCircuitDto extends AbstractDto{
 
     private HeatingSourceDto heatingSourceDto;
 
-    private SensorDto sensorDto;
+    private Long sensorChipId;
 
     private Boolean aiFlag;
 
@@ -46,12 +46,12 @@ public class HeatingCircuitDto extends AbstractDto{
         this.heatingSourceDto = heatingSourceDto;
     }
 
-    public SensorDto getSensor() {
-        return sensorDto;
+    public Long getSensorChipId() {
+        return sensorChipId;
     }
 
-    public void setSensor(SensorDto sensorDto) {
-        this.sensorDto = sensorDto;
+    public void setSensorChipId(Long sensorChipId) {
+        this.sensorChipId = sensorChipId;
     }
 
     public Integer getDesiredTemperature() {
@@ -80,7 +80,7 @@ public class HeatingCircuitDto extends AbstractDto{
 
     @Override
     public String toString() {
-        return String.format("HeatingCircuitDTO{ name=%1$s, thermostatToken=%2$s, desiredTemperature=%3$d, suggestedTemperature=%4$d, heatingSource=%5$s, sensor=%6$s, aiFlag=%7$s}",
-                name, thermostatToken, desiredTemperature, suggestedTemperature, heatingSourceDto, sensorDto, aiFlag);
+        return String.format("HeatingCircuitDTO{ name=%1$s, thermostatToken=%2$s, desiredTemperature=%3$d, suggestedTemperature=%4$d, heatingSource=%5$s, sensorChipId=%6$s, aiFlag=%7$s}",
+                name, thermostatToken, desiredTemperature, suggestedTemperature, heatingSourceDto, sensorChipId, aiFlag);
     }
 }

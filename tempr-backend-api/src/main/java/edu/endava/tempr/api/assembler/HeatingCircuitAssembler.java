@@ -1,5 +1,6 @@
 package edu.endava.tempr.api.assembler;
 
+import edu.endava.tempr.api.service.SensorService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.model.HeatingCircuit;
@@ -16,6 +17,9 @@ public class HeatingCircuitAssembler implements Assembler<HeatingCircuitDto, Hea
     @Autowired
     HeatingSourceAssembler heatingSourceAssembler;
 
+    @Autowired
+    SensorService sensorService;
+
     @Override
     public HeatingCircuit toEntity(HeatingCircuitDto dto) {
         HeatingCircuit heatingCircuit = new HeatingCircuit();
@@ -24,6 +28,7 @@ public class HeatingCircuitAssembler implements Assembler<HeatingCircuitDto, Hea
         heatingCircuit.setHeatingSource(heatingSourceAssembler.toEntity(dto.getHeatingSourceDto()));
         heatingCircuit.setThermostat(thermostatService.findOne(dto.getThermostatToken()));
         heatingCircuit.setSuggestedTemperature(dto.getSuggestedTemperature());
+        heatingCircuit.setSensor(sensorService.findByChipId(dto.getSensorChipId()));
         return heatingCircuit;
     }
 
@@ -35,6 +40,7 @@ public class HeatingCircuitAssembler implements Assembler<HeatingCircuitDto, Hea
         heatingCircuitDto.setHeatingSourceDto(heatingSourceAssembler.toDto(entity.getHeatingSource()));
         heatingCircuitDto.setThermostatToken(entity.getThermostat().getToken());
         heatingCircuitDto.setSuggestedTemperature(entity.getSuggestedTemperature());
+        heatingCircuitDto.setSensorChipId(entity.getSensor().getChipId());
         return heatingCircuitDto;
     }
 }

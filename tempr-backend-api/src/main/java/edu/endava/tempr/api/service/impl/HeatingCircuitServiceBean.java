@@ -39,7 +39,7 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
         HeatingCircuit heatingCircuit = new HeatingCircuit();
         Thermostat ownerThermostat;
         // Checks if all the necessary parameters are set
-        if(heatingCircuitDto.getName() == null || heatingCircuitDto.getSensor().getChipId() == null || heatingCircuitDto.getThermostatToken() == null){
+        if(heatingCircuitDto.getName() == null || heatingCircuitDto.getSensorChipId() == null || heatingCircuitDto.getThermostatToken() == null){
             throw new InvalidParameterException("Name and chipID needed for the Heating Circuit registration");
         }
         // Checks if a thermostat with the given token exists
@@ -50,7 +50,7 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
         heatingCircuit.setName(heatingCircuitDto.getName());
         heatingCircuit.setThermostat(ownerThermostat);
         heatingCircuit.setAiFlag(false); //By default when creating new HC flag is false
-        heatingCircuit.setSensor(sensorService.create(heatingCircuitDto.getSensor().getChipId()));
+        heatingCircuit.setSensor(sensorService.create(heatingCircuitDto.getSensorChipId()));
         HeatingCircuit savedHeatingCircuit = heatingCircuitRepository.save(heatingCircuit);
         LOG.info("Created Heating Circuit™ with id: {} for thermostat with token: {}", savedHeatingCircuit.getId(), savedHeatingCircuit.getThermostat().getToken());
         return savedHeatingCircuit;

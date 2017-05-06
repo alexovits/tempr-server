@@ -7,6 +7,7 @@ public class UserDto extends AbstractDto {
     private String firstName;
     private String lastName;
     private String email;
+    private String userType; //CR: Is this ok? The enum is present in the model module.
 
     public UserDto() {}
 
@@ -50,11 +51,17 @@ public class UserDto extends AbstractDto {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return String.format("UserDTO{ username=%1$s, password=%2$s, firstName=%3$s, lastName=%4$s, email=%5$s}",
-                username, password, firstName, lastName, email);
+    public String getUserType() {
+        return userType;
     }
 
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 
+    @Override
+    public String toString() {
+        return String.format("UserDTO{ username=%1$s, password=%2$s, firstName=%3$s, lastName=%4$s, email=%5$s, userType=%6$s}",
+                username, password, firstName, lastName, email, userType);
+    }
 }
