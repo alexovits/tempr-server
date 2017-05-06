@@ -34,12 +34,6 @@ public class ThermostatServiceBean implements ThermostatService {
     @Autowired
     SensorLogService sensorLogService;
 
-    @Override
-    public List<Thermostat> findAll() {
-        LOG.info("Looking for all thermostats");
-        return thermostatRepository.findAll();
-    }
-
     // Creates a new token for a device by using the template: {username}/{UUID's first tokenLength chars}
     private String generateNewToken(String userName){
         String token = userName + "/" + UUID.randomUUID().toString().substring(0, tokenLength);
@@ -87,6 +81,11 @@ public class ThermostatServiceBean implements ThermostatService {
         }
         LOG.info("Thermostat with token: '{}' was updated!", thermostat.getToken());
         return thermostatRepository.save(thermostat);
+    }
+
+    @Override
+    public Thermostat findByUserId(Long userId) {
+        return thermostatRepository.findByUserId(userId);
     }
 
     @Override

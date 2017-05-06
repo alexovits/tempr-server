@@ -1,7 +1,5 @@
 package edu.endava.tempr.api.controller;
 
-import com.sun.org.apache.regexp.internal.RE;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.api.service.ThermostatService;
@@ -183,7 +181,7 @@ public class HeatingCircuitController {
 
     /**
      * For validating user request
-     * Makes sure that the user owns the heatingCricuit it wants to interact with.
+     * Makes sure that the user owns the heatingCircuit it wants to interact with.
     */
     private boolean userHasSensor(String basicAuthHeader, HeatingCircuit heatingCircuit) {
         // Decoding the second part of the Authorization header and fetching the username from it

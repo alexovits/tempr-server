@@ -50,6 +50,17 @@ public class ThermostatController {
         return new ResponseEntity<>(thermostatAssembler.toDto(newThermostat), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/thermostat/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ThermostatDto> getThermostat(@RequestParam("userId") Long userId) {
+        try {
+            return new ResponseEntity<>(thermostatAssembler.toDto(thermostatService.findByUserId(userId)), HttpStatus.OK);
+        } catch (NullPointerException e){
+            return new ResponseEntity<>(new ThermostatDto(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    // UNUSED for the time being
     @RequestMapping(value = "/thermostat/configure/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatDto> configureThermostat(@RequestBody ThermostatDto thermostatDto) {
         Thermostat thermostat = thermostatService.findOne(thermostatDto.getToken());
@@ -71,7 +82,7 @@ public class ThermostatController {
         return new ResponseEntity<>(thermostatAssembler.toDto(thermostat), HttpStatus.OK);
     }
 
-    // UNUSED for the time being
+
     @RequestMapping(value = "/thermostat/unconfigure/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatDto> unConfigureThermostat(@RequestBody ThermostatDto thermostatDto) {
         Thermostat thermostat = thermostatService.findOne(thermostatDto.getToken());
