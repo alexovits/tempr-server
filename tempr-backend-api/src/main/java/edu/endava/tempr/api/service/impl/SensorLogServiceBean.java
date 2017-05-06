@@ -38,11 +38,13 @@ public class SensorLogServiceBean implements SensorLogService{
         return savedSensorLog;
     }
 
+    // Returns the entire log object of the latest log
     @Override
     public SensorLog getLatestLog(Long heatingCircuitId) {
         return sensorLogRepository.findFirstByHeatingCircuitIdOrderByLogTimeStampDesc(heatingCircuitId);
     }
 
+    // Returns only the temperature value of the latest log
     @Override
     public Integer getLatestTemperature(Long heatingCircuitId) {
         Integer latestTemp = null;

@@ -166,7 +166,7 @@ public class HeatingCircuitController {
     @RequestMapping(value = "/thermostat/heatingcircuit/temperature/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> getLatestTempOfHeatingCircuit(@RequestParam("heatingCircuitId") Long heatingCircuitId) {
         LOG.info("Request for the latet temperature report: Heating Circuit™ ID -> {}", heatingCircuitId);
-        return new ResponseEntity(sensorLogService.getLatestLog(heatingCircuitId), HttpStatus.OK);
+        return new ResponseEntity(sensorLogService.getLatestTemperature(heatingCircuitId), HttpStatus.OK);
     }
 
     /**
@@ -181,6 +181,10 @@ public class HeatingCircuitController {
         return new ResponseEntity(thermostatService.getTemperatures(thermostatToken),HttpStatus.OK);
     }
 
+    /**
+     * For validating user request
+     * Makes sure that the user owns the heatingCricuit it wants to interact with.
+    */
     private boolean userHasSensor(String basicAuthHeader, HeatingCircuit heatingCircuit) {
         // Decoding the second part of the Authorization header and fetching the username from it
         String decodedUserName = new String(Base64.decodeBase64(basicAuthHeader.split(" ")[1])).split(":")[0];
