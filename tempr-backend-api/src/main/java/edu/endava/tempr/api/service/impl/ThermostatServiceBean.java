@@ -99,7 +99,7 @@ public class ThermostatServiceBean implements ThermostatService {
         }
 
         thermostat.getHeatingCircuitList().forEach(
-                hc -> temperatureList.add(new TemperaturesDto(sensorLogService.getLatestTemperature(hc.getId()), hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAiFlag()))
+                hc -> temperatureList.add(new TemperaturesDto(sensorLogService.getLatestTemperature(hc.getId()), hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAiFlag(), hc.getName()))
         );
         return temperatureList;
     }
