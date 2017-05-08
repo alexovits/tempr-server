@@ -89,7 +89,7 @@ public class ThermostatServiceBean implements ThermostatService {
     }
 
     @Override
-    public List getTemperatures(String thermostatToken) {
+    public List<TemperaturesDto> getTemperatures(String thermostatToken) {
         List temperatureList = new ArrayList<TemperaturesDto>();
         Thermostat thermostat = thermostatRepository.findByToken(thermostatToken);
 

@@ -7,13 +7,15 @@ public class TemperaturesDto{
     private Integer currentTemperature, suggestedTemperature, desiredTemperature;
     private Long heatingCircuitId;
     private Boolean AIFlag;
+    private String heatingCircuitName;
 
-    public TemperaturesDto(Integer currentTemperature, Integer suggestedTemperature, Integer desiredTemperature, Long heatingCircuitId, Boolean AIFlag){
+    public TemperaturesDto(Integer currentTemperature, Integer suggestedTemperature, Integer desiredTemperature, Long heatingCircuitId, Boolean AIFlag, String heatingCircuitName){
         this.currentTemperature = currentTemperature;
         this.suggestedTemperature = suggestedTemperature;
         this.desiredTemperature = desiredTemperature;
         this.heatingCircuitId = heatingCircuitId;
         this.AIFlag = AIFlag;
+        this.heatingCircuitName = heatingCircuitName;
     }
 
     public Integer getCurrentTemperature() {
@@ -58,7 +60,7 @@ public class TemperaturesDto{
 
     @Override
     public String toString() {
-        return String.format("TemperaturesDTO{ currentTemperature=%1$d, suggestedTemperature=%2$d, desiredTemperature=%3$d, heatingCircuitId=%4$d, AIFlag=%5$b}",
-                currentTemperature, suggestedTemperature, desiredTemperature, heatingCircuitId, AIFlag);
+        return String.format("TemperaturesDTO{ currentTemperature=%1$d, suggestedTemperature=%2$d, desiredTemperature=%3$d, heatingCircuitId=%4$d, heatingCircuitName%5$s, AIFlag=%6$b}",
+                currentTemperature, suggestedTemperature, desiredTemperature, heatingCircuitId, heatingCircuitName, AIFlag);
     }
 }

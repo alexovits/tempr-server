@@ -4,6 +4,7 @@ import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.common.HeatingCircuitDto;
+import edu.endava.tempr.common.TemperaturesDto;
 import edu.endava.tempr.model.HeatingCircuit;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
+import java.util.List;
 
 
 /**
@@ -194,7 +196,7 @@ public class HeatingCircuitController {
      * @return ResponseEntity containing the temperature as Integer and the Status
      */
     @RequestMapping(value = "/thermostat/temperatures/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getTemperatures(@RequestParam("token") String thermostatToken) {
+    public ResponseEntity<List<TemperaturesDto>> getTemperatures(@RequestParam("token") String thermostatToken) {
         LOG.info("Request for the temperature informations about {}", thermostatToken);
         return new ResponseEntity(thermostatService.getTemperatures(thermostatToken),HttpStatus.OK);
     }
