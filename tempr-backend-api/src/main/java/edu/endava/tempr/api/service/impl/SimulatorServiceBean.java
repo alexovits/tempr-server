@@ -72,7 +72,7 @@ public class SimulatorServiceBean implements SimulatorService {
     @Override
     public List<TemperaturesDto> getSimulatedLogList() {
         List<TemperaturesDto> simList = new ArrayList<>();
-        heatingCircuitList.forEach((chipId, simulatedHC) -> simList.add(new TemperaturesDto(simulatedHC.getTemperature(), simulatedHC.getSuggestedTemperature(), simulatedHC.getDesiredTemperature(), chipId, suggestionFlag)));
+        heatingCircuitList.forEach((chipId, simulatedHC) -> simList.add(new TemperaturesDto(simulatedHC.getTemperature(), simulatedHC.getSuggestedTemperature(), simulatedHC.getDesiredTemperature(), chipId, suggestionFlag, "HC")));
         return simList;
     }
 

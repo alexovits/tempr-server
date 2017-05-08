@@ -58,6 +58,14 @@ public class TemperaturesDto{
         this.AIFlag = AIFlag;
     }
 
+    public void setHeatingCircuitName(String heatingCircuitName){
+        this.heatingCircuitName = heatingCircuitName;
+    }
+
+    public String getHeatingCircuitName(){
+        return heatingCircuitName;
+    }
+
     @Override
     public String toString() {
         return String.format("TemperaturesDTO{ currentTemperature=%1$d, suggestedTemperature=%2$d, desiredTemperature=%3$d, heatingCircuitId=%4$d, heatingCircuitName%5$s, AIFlag=%6$b}",

@@ -29,9 +29,6 @@ public class ThermostatServiceBean implements ThermostatService {
     ThermostatRepository thermostatRepository;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     SensorLogService sensorLogService;
 
     // Creates a new token for a device by using the template: {username}/{UUID's first tokenLength chars}
@@ -63,11 +60,6 @@ public class ThermostatServiceBean implements ThermostatService {
         }
         LOG.info("Created thermostat with token: '{}'", savedThermostat.getToken());
         LOG.info("Created thermostat: '{}'", savedThermostat.toString());
-
-        // Inserts save thermostat into user's list
-        // user.addThermostat(savedThermostat);
-        //userRepository.save(user);
-
         return savedThermostat;
     }
 
