@@ -186,7 +186,12 @@ public class HeatingCircuitController {
     @RequestMapping(value = "/thermostat/heatingcircuit/temperature/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> getLatestTempOfHeatingCircuit(@RequestParam("heatingCircuitId") Long heatingCircuitId) {
         LOG.info("Request for the latet temperature report: Heating Circuit™ ID -> {}", heatingCircuitId);
-        return new ResponseEntity(sensorLogService.getLatestTemperature(heatingCircuitId), HttpStatus.OK);
+        try{
+            return new ResponseEntity(sensorLogService.getLatestTemperature(heatingCircuitId), HttpStatus.OK);
+        }catch(NullPointerException e){
+            LOG.error("Couldn't fetch the latest temperature because of exception {}", e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 
     /**

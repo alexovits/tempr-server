@@ -68,7 +68,7 @@ public class TemperaturesDto{
 
     @Override
     public String toString() {
-        return String.format("TemperaturesDTO{ currentTemperature=%1$d, suggestedTemperature=%2$d, desiredTemperature=%3$d, heatingCircuitId=%4$d, heatingCircuitName%5$s, AIFlag=%6$b}",
+        return String.format("TemperaturesDTO{ currentTemperature=%1$d, suggestedTemperature=%2$d, desiredTemperature=%3$d, heatingCircuitId=%4$d, heatingCircuitName=%5$s, AIFlag=%6$b}",
                 currentTemperature, suggestedTemperature, desiredTemperature, heatingCircuitId, heatingCircuitName, AIFlag);
     }
 }

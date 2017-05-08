@@ -51,20 +51,18 @@ public class Application {
             LOG.info("User {} has thermostat {}",user.getUsername(),defThermostat);
 
             // Add heating circuits to the thermostat & sensor
-            HeatingCircuit heatingCircuit;
             HeatingCircuitDto heatingCircuitDto = new HeatingCircuitDto();
             heatingCircuitDto.setName("Nagyszoba");
             heatingCircuitDto.setSensorChipId((long) 8670624);
             heatingCircuitDto.setThermostatToken(defThermostat.getToken());
-            heatingCircuit = heatingCircuitService.create(heatingCircuitDto);
+            heatingCircuitService.create(heatingCircuitDto);
 
             // Add another hc
-            heatingCircuit = new HeatingCircuit();
             heatingCircuitDto = new HeatingCircuitDto();
             heatingCircuitDto.setName("Nappali");
             heatingCircuitDto.setSensorChipId((long) 2453634);
             heatingCircuitDto.setThermostatToken(defThermostat.getToken());
-            heatingCircuit = heatingCircuitService.create(heatingCircuitDto);
+            heatingCircuitService.create(heatingCircuitDto);
 
             LOG.info(heatingCircuitService.findByChipId((long) 8670624).getName());
 
