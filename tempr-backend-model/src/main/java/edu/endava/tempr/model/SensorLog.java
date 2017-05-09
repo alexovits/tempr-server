@@ -2,6 +2,7 @@ package edu.endava.tempr.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by zsoltszabo on 4/6/17.
@@ -46,7 +47,7 @@ public class SensorLog extends BaseEntity{
 
     @Override
     public String toString() {
-        return String.format("SensorLog{ timeStamp=%1$t, heatingCircuitId=%2$d, temperature=%3$d}",
-                logTimeStamp, heatingCircuit, temperature);
+        return String.format("SensorLog{ timeStamp=%1$s, heatingCircuitId=%2$d, temperature=%3$d}",
+                logTimeStamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), heatingCircuit.getId(), temperature);
     }
 }

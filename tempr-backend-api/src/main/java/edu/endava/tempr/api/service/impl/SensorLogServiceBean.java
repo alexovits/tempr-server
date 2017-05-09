@@ -22,6 +22,8 @@ public class SensorLogServiceBean implements SensorLogService{
 
     private static final Logger LOG = LoggerFactory.getLogger(SensorLogService.class);
 
+    private static final int LAST_INTERVAL = 7;
+
     @Autowired
     private SensorLogRepository sensorLogRepository;
 
@@ -79,6 +81,6 @@ public class SensorLogServiceBean implements SensorLogService{
 
     @Override
     public List<SensorLog> getLastWeeksLogs(Long heatingCircuitId) {
-        return null;
+        return getLogsSince(heatingCircuitId, LocalDateTime.now().minusDays(LAST_INTERVAL));
     }
 }

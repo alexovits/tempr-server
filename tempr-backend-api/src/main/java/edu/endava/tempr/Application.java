@@ -2,11 +2,7 @@ package edu.endava.tempr;
 
 import edu.endava.tempr.api.service.*;
 import edu.endava.tempr.common.HeatingCircuitDto;
-import edu.endava.tempr.common.SensorDto;
-import edu.endava.tempr.model.HeatingCircuit;
-import edu.endava.tempr.model.Thermostat;
-import edu.endava.tempr.model.User;
-import edu.endava.tempr.model.UserType;
+import edu.endava.tempr.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +13,10 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
+import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.stream.IntStream;
+
 @EntityScan(
         basePackageClasses = {Application.class, Jsr310JpaConverters.class}
 )
@@ -24,7 +24,8 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 public class Application {
 
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
-    private static final int daysToGenerate = 10;
+    private static final int DAYS_TO_GENERATE = 10;
+    private static final int HOURS_TO_GENERATE = 24;
 
 
     public static void main(String[] args) throws Exception {
@@ -68,28 +69,27 @@ public class Application {
 
             HeatingCircuit hc = heatingCircuitService.findByChipId((long) 8670624);
 
-            sensorLogService.create(10,hc);
+            // Adding random logs for the last ten days to the "Device-2" thermostat of user "user"
+            Random rand = new Random();
+            IntStream.range(0, DAYS_TO_GENERATE).forEachOrdered(day -> {
+                IntStream.range(0, HOURS_TO_GENERATE).forEachOrdered(hour -> {
+                    int randTemperature = rand.nextInt(7) + 17;
+                    sensorLogService.create(LocalDateTime.now().minusDays(day).minusHours(hour), randTemperature, hc);
+                });
+            });
 
             LOG.info("Here is {}", thermostatService.getTemperatures(defThermostat.getToken()));
 
-            // Adding random logs for the last ten days to the "Device-2" thermostat of user "user"
-             /*Random rand = new Random();
-            LocalDateTime newDate = LocalDateTime.now();
-            for(int i=0;i<daysToGenerate;i++){
-                ThermostatLog randomThermostatLog = new ThermostatLog();
-                randomThermostatLog.setToken(defThermostat.getToken());
-                randomThermostatLog.setLogTimeStamp(newDate);
-                int randTemperature = rand.nextInt(7) + 20;
-                randomThermostatLog.setIntTemp(Integer.toString(randTemperature));
-                thermostatLogService.create(randomThermostatLog);
-                newDate = newDate.minusDays(1);
+            for(SensorLog s: sensorLogService.getLastWeeksLogs(hc.getId())){
+                LOG.info("---> {}",s);
             }
 
+            /*
             // Get the latest log of the
             ThermostatLog lastLog = thermostatLogService.getLatest(defThermostat.getToken());
             LOG.info("Got the latest log {}",lastLog.toString());
 
-            LOG.info("Get the logs from the last {} days", daysToGenerate);
+            LOG.info("Get the logs from the last {} days", DAYS_TO_GENERATE);
             List<ThermostatLog> fetchedLogs = thermostatLogService.getLastTenDays(defThermostat.getToken());
             for(ThermostatLog fetchedLog: fetchedLogs){
                 LOG.info(fetchedLog.toString());

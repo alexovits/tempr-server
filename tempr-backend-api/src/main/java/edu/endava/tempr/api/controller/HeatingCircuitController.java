@@ -1,11 +1,14 @@
 package edu.endava.tempr.api.controller;
 
+import edu.endava.tempr.api.assembler.SensorLogAssembler;
 import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.common.HeatingCircuitDto;
+import edu.endava.tempr.common.SensorLogDto;
 import edu.endava.tempr.common.TemperaturesDto;
 import edu.endava.tempr.model.HeatingCircuit;
+import edu.endava.tempr.model.SensorLog;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,7 +39,10 @@ public class HeatingCircuitController {
     private SensorLogService sensorLogService;
 
     @Autowired
-    ThermostatService thermostatService;
+    private ThermostatService thermostatService;
+
+    @Autowired
+    private SensorLogAssembler sensorLogAssembler;
 
     /**
      * ••• Used by Hardware •••
@@ -185,7 +192,7 @@ public class HeatingCircuitController {
      */
     @RequestMapping(value = "/thermostat/heatingcircuit/temperature/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> getLatestTempOfHeatingCircuit(@RequestParam("heatingCircuitId") Long heatingCircuitId) {
-        LOG.info("Request for the latet temperature report: Heating Circuit™ ID -> {}", heatingCircuitId);
+        LOG.info("Request for the latest temperature report: Heating Circuit™ ID -> {}", heatingCircuitId);
         try{
             return new ResponseEntity(sensorLogService.getLatestTemperature(heatingCircuitId), HttpStatus.OK);
         }catch(NullPointerException e){
@@ -204,6 +211,27 @@ public class HeatingCircuitController {
     public ResponseEntity<List<TemperaturesDto>> getTemperatures(@RequestParam("token") String thermostatToken) {
         LOG.info("Request for the temperature informations about {}", thermostatToken);
         return new ResponseEntity(thermostatService.getTemperatures(thermostatToken),HttpStatus.OK);
+    }
+
+
+    /**
+     * ••• Used by UI •••
+     * Returns the logs from the last 7 days
+     *
+     * @return ResponseEntity containing the temperature as Integer and the Status
+     */
+    @RequestMapping(value = "/thermostat/heatingcircuit/history/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<SensorLogDto>> getLastWeek(@RequestParam("heatingCircuitId") Long heatingCircuitId) {
+        LOG.info("Request for the last 7 days temperature report: Heating Circuit™ ID -> {}", heatingCircuitId);
+        List<SensorLogDto> responseList = new ArrayList<>();
+        try {
+            for (SensorLog sensorLog : sensorLogService.getLastWeeksLogs(heatingCircuitId)) {
+                responseList.add(sensorLogAssembler.toDto(sensorLog));
+            }
+        }catch (InvalidParameterException e){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(responseList, HttpStatus.OK);
     }
 
     /**
