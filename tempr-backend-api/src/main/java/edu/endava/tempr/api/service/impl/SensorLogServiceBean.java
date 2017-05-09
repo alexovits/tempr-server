@@ -66,9 +66,7 @@ public class SensorLogServiceBean implements SensorLogService{
     // Returns only the temperature value of the latest log
     @Override
     public Integer getLatestTemperature(Long heatingCircuitId) {
-        Integer latestTemp = null;
-        latestTemp = getLatestLog(heatingCircuitId).getTemperature();
-        return latestTemp;
+        return getLatestLog(heatingCircuitId).getTemperature();
     }
 
     @Override
