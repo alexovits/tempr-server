@@ -42,7 +42,7 @@ public class SensorLogServiceBean implements SensorLogService{
         sensorLog.setLogTimeStamp(LocalDateTime.now());
         sensorLog.setHeatingCircuit(heatingCircuit);
         SensorLog savedSensorLog = sensorLogRepository.save(sensorLog);
-        LOG.info("Successfully saved sensor log for Heating Circuit with ID {} and temperature {} with timeStamp {}", heatingCircuit.getId(), temperature, savedSensorLog.getLogTimeStamp());
+        //LOG.info("Successfully saved sensor log for Heating Circuit with ID {} and temperature {} with timeStamp {}", heatingCircuit.getId(), temperature, savedSensorLog.getLogTimeStamp());
         return savedSensorLog;
     }
 
@@ -53,7 +53,7 @@ public class SensorLogServiceBean implements SensorLogService{
         sensorLog.setLogTimeStamp(timeStamp);
         sensorLog.setHeatingCircuit(heatingCircuit);
         SensorLog savedSensorLog = sensorLogRepository.save(sensorLog);
-        LOG.info("Successfully saved sensor log for Heating Circuit with ID {} and temperature {} with timeStamp {}", heatingCircuit.getId(), temperature, savedSensorLog.getLogTimeStamp());
+        //LOG.info("Successfully saved sensor log for Heating Circuit with ID {} and temperature {} with timeStamp {}", heatingCircuit.getId(), temperature, savedSensorLog.getLogTimeStamp());
         return savedSensorLog;
     }
 

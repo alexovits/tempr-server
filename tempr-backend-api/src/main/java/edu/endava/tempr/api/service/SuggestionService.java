@@ -1,5 +1,7 @@
 package edu.endava.tempr.api.service;
 
+import edu.endava.tempr.api.service.impl.ai.ComputedSuggestion;
+
 import java.util.List;
 
 /**
@@ -7,5 +9,6 @@ import java.util.List;
  */
 public interface SuggestionService {
     Double getSuggestionTemperature(int day, int hour) throws Exception;
-    List<Double> getSuggestionTemperature(int day) throws Exception;
+    List<ComputedSuggestion> getSuggestionTemperature(int day) throws Exception;
+    void setShit(Long id) throws Exception;
 }

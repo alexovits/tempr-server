@@ -24,7 +24,7 @@ import java.util.stream.IntStream;
 public class Application {
 
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
-    private static final int DAYS_TO_GENERATE = 10;
+    private static final int DAYS_TO_GENERATE = 30;
     private static final int HOURS_TO_GENERATE = 24;
 
 
@@ -34,7 +34,7 @@ public class Application {
 
     @Bean
     @Autowired
-    public CommandLineRunner addDefaultUser(SensorLogService sensorLogService, UserService userService, ThermostatService thermostatService, HeatingCircuitService heatingCircuitService, SensorService sensorService) {
+    public CommandLineRunner addDefaultUser(SuggestionService suggestionService, SensorLogService sensorLogService, UserService userService, ThermostatService thermostatService, HeatingCircuitService heatingCircuitService, SensorService sensorService) {
         return (args) -> {
             // Create a demo ADMIN
             User adminUser = userService.createUser(new User("admin", "admin", "Admin", "Janos", "admin@tempr.com", UserType.ADMIN));
@@ -73,7 +73,8 @@ public class Application {
             Random rand = new Random();
             IntStream.range(0, DAYS_TO_GENERATE).forEachOrdered(day -> {
                 IntStream.range(0, HOURS_TO_GENERATE).forEachOrdered(hour -> {
-                    int randTemperature = rand.nextInt(7) + 17;
+//                    int randTemperature = rand.nextInt(7) + 18;
+                    int randTemperature = new Double(rand.nextGaussian()*3 + 21).intValue();
                     sensorLogService.create(LocalDateTime.now().minusDays(day).minusHours(hour), randTemperature, hc);
                 });
             });
@@ -83,6 +84,9 @@ public class Application {
             for(SensorLog s: sensorLogService.getLastWeeksLogs(hc.getId())){
                 LOG.info("---> {}",s);
             }
+
+            suggestionService.setShit(hc.getId());
+            LOG.info("This is the shit:----> {}", suggestionService.getSuggestionTemperature(0));
 
             /*
             // Get the latest log of the
