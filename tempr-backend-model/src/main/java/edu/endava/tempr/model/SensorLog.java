@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
  * Created by zsoltszabo on 4/6/17.
  */
 @Entity
-@Table(name="SensorLog", indexes={@Index(name="HeatingCircuit_Index", columnList = "heatingCircuit")})
+@Table(name="SensorLog", indexes={@Index(name="HeatingCircuit_Index", columnList = "heating_circuit_id")})
 public class SensorLog extends BaseEntity{
 
     @Column(nullable = false, columnDefinition = "DATETIME")
