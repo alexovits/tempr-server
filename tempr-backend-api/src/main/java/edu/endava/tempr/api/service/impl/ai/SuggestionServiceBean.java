@@ -1,6 +1,7 @@
 package edu.endava.tempr.api.service.impl.ai;
 
 import com.google.common.collect.ImmutableList;
+import edu.endava.tempr.api.exception.OutOfHistogramRangeException;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.api.service.SuggestionService;
 import edu.endava.tempr.model.SensorLog;
@@ -8,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.rmi.runtime.Log;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,28 +37,24 @@ public class SuggestionServiceBean implements SuggestionService {
     @Autowired
     private SensorLogService sensorLogService;
 
-    public SuggestionServiceBean() throws Exception {
-        // EMPTY
-    }
-
     @Override
-    public Double getSuggestionTemperature(int day, int segment) throws Exception {
-        // Check for range
+    public Double getSuggestionTemperature(int day, int segment, long heatingCircuitId) throws Exception {
+        if(day<0 || day>=WEEK_DAYS || segment<0 || segment>=DAY_SEGMENTS){
+            throw new OutOfHistogramRangeException(String.format("Parameters out of range (0<day<%1$d, 0<segment<%2$d)",WEEK_DAYS,DAY_SEGMENTS));
+        }
+        computedHistogram = evaluateHistogram(heatingCircuitId);
         return computedHistogram.get(day).get(segment).getTemperature();
     }
 
     @Override
-    public List<ComputedSuggestion> getSuggestionTemperature(int day) throws Exception {
-        // Check for range
+    public List<ComputedSuggestion> getSuggestionTemperature(int day, long heatingCircuitId) throws Exception {
+        if(day<0 || day>=WEEK_DAYS){
+            throw new OutOfHistogramRangeException(String.format("Parameters out of range (0<day<%1$d, 0<segment<%2$d)",WEEK_DAYS,DAY_SEGMENTS));
+        }
+        computedHistogram = evaluateHistogram(heatingCircuitId);
         return computedHistogram.get(day);
     }
 
-    @Override
-    public void setShit(Long id) throws Exception {
-//        final long x = new Date().getTime();
-        computedHistogram = evaluateHistogram(id);
-//        LOG.info("Suggestion calculation took {} ms", new Date().getTime()-x);
-    }
 
     private List<List<ComputedSuggestion>> evaluateHistogram(Long heatingCircuitId) throws Exception {
         List<List<ComputedSuggestion>> computedHistogram = initializeHistogram();

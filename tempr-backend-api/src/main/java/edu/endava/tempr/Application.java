@@ -24,7 +24,7 @@ import java.util.stream.IntStream;
 public class Application {
 
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
-    private static final int DAYS_TO_GENERATE = 30;
+    private static final int DAYS_TO_GENERATE = 25;
     private static final int HOURS_TO_GENERATE = 24;
 
 
@@ -74,31 +74,18 @@ public class Application {
             IntStream.range(0, DAYS_TO_GENERATE).forEachOrdered(day -> {
                 IntStream.range(0, HOURS_TO_GENERATE).forEachOrdered(hour -> {
 //                    int randTemperature = rand.nextInt(7) + 18;
-                    int randTemperature = new Double(rand.nextGaussian()*3 + 21).intValue();
+                    int randTemperature = new Double(rand.nextGaussian()*3 + 21).intValue();// mean:21, stddev:3
                     sensorLogService.create(LocalDateTime.now().minusDays(day).minusHours(hour), randTemperature, hc);
                 });
             });
 
             LOG.info("Here is {}", thermostatService.getTemperatures(defThermostat.getToken()));
 
-            for(SensorLog s: sensorLogService.getLastWeeksLogs(hc.getId())){
+            /*for(SensorLog s: sensorLogService.getLastWeeksLogs(hc.getId())){
                 LOG.info("---> {}",s);
-            }
-
-            suggestionService.setShit(hc.getId());
-            LOG.info("This is the shit:----> {}", suggestionService.getSuggestionTemperature(0));
-
-            /*
-            // Get the latest log of the
-            ThermostatLog lastLog = thermostatLogService.getLatest(defThermostat.getToken());
-            LOG.info("Got the latest log {}",lastLog.toString());
-
-            LOG.info("Get the logs from the last {} days", DAYS_TO_GENERATE);
-            List<ThermostatLog> fetchedLogs = thermostatLogService.getLastTenDays(defThermostat.getToken());
-            for(ThermostatLog fetchedLog: fetchedLogs){
-                LOG.info(fetchedLog.toString());
             }*/
 
+            LOG.info("This is the shit:----> {}", suggestionService.getSuggestionTemperature(0,hc.getId()));
         };
     }
 }

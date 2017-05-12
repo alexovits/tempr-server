@@ -1,5 +1,6 @@
 package edu.endava.tempr.api.service.impl;
 
+import edu.endava.tempr.api.exception.UserNotFoundException;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.UserRepository;
@@ -67,6 +68,7 @@ public class UserServiceBean implements UserService {
         User user = userRepository.findByUsername(userName);
         if(user == null){
             return null;
+            //throw new UserNotFoundException(String.format("No user found with username %1$s",userName));
         }
         return user;
     }
