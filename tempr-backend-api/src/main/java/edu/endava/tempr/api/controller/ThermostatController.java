@@ -56,10 +56,7 @@ public class ThermostatController {
         LOG.info("Request for thermostat from {}", decodedUserName);
         try {
             return new ResponseEntity<>(thermostatAssembler.toDto(thermostatService.findByUserName(decodedUserName)), HttpStatus.OK);
-        } catch (UserNotFoundException e){
-            LOG.error(e.getMessage());
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        } catch (ThermostatNotFoundException e) {
+        } catch (ThermostatNotFoundException | UserNotFoundException e){
             LOG.error(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }

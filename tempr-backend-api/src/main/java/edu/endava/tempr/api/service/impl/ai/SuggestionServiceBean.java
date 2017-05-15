@@ -2,6 +2,7 @@ package edu.endava.tempr.api.service.impl.ai;
 
 import com.google.common.collect.ImmutableList;
 import edu.endava.tempr.api.exception.OutOfHistogramRangeException;
+import edu.endava.tempr.api.exception.SensorLogNotFoundException;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.api.service.SuggestionService;
 import edu.endava.tempr.model.SensorLog;
@@ -38,7 +39,7 @@ public class SuggestionServiceBean implements SuggestionService {
     private SensorLogService sensorLogService;
 
     @Override
-    public Double getSuggestionTemperature(int day, int segment, long heatingCircuitId) throws Exception {
+    public Double getSuggestionTemperature(int day, int segment, long heatingCircuitId) throws OutOfHistogramRangeException, SensorLogNotFoundException {
         if(day<0 || day>=WEEK_DAYS || segment<0 || segment>=DAY_SEGMENTS){
             throw new OutOfHistogramRangeException(String.format("Parameters out of range (0<day<%1$d, 0<segment<%2$d)",WEEK_DAYS,DAY_SEGMENTS));
         }
@@ -47,7 +48,7 @@ public class SuggestionServiceBean implements SuggestionService {
     }
 
     @Override
-    public List<ComputedSuggestion> getSuggestionTemperature(int day, long heatingCircuitId) throws Exception {
+    public List<ComputedSuggestion> getSuggestionTemperature(int day, long heatingCircuitId) throws OutOfHistogramRangeException, SensorLogNotFoundException {
         if(day<0 || day>=WEEK_DAYS){
             throw new OutOfHistogramRangeException(String.format("Parameters out of range (0<day<%1$d, 0<segment<%2$d)",WEEK_DAYS,DAY_SEGMENTS));
         }
@@ -56,16 +57,13 @@ public class SuggestionServiceBean implements SuggestionService {
     }
 
 
-    private List<List<ComputedSuggestion>> evaluateHistogram(Long heatingCircuitId) throws Exception {
+    private List<List<ComputedSuggestion>> evaluateHistogram(Long heatingCircuitId) throws SensorLogNotFoundException {
         List<List<ComputedSuggestion>> computedHistogram = initializeHistogram();
         // Fetch sensors from database
         LocalDateTime fromDate = LocalDateTime.now().minusWeeks(WEEKS);
         final long x = new Date().getTime();
         List<SensorLog> sensorLogs = sensorLogService.getLogsSince(heatingCircuitId, fromDate);
         LOG.info("Query took {} ms", new Date().getTime()-x);
-        if(sensorLogs.size() == 0){
-            throw new Exception("No history of logs");
-        }
         // Iterate and calculate the suggested temperatures
         int prevDayOfYear = sensorLogs.get(0).getLogTimeStamp().getDayOfYear();
 

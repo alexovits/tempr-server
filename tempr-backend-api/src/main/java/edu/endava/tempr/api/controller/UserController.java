@@ -88,10 +88,7 @@ public class UserController {
             User user = userService.findOne(userId);
             Thermostat usersThermostat = thermostatService.findByUserName(user.getUsername());
             return new ResponseEntity<>(thermostatAssembler.toDto(usersThermostat), HttpStatus.OK);
-        } catch (UserNotFoundException e) {
-            LOG.error(e.getStackTrace().toString());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (ThermostatNotFoundException e) {
+        } catch (ThermostatNotFoundException | UserNotFoundException e) {
             LOG.error(e.getStackTrace().toString());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
