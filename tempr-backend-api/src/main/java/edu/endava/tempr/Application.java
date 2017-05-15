@@ -31,7 +31,6 @@ public class Application {
     private static final long ADMIN_SENSOR_ID_1 = 4523455;
     private static final long ADMIN_SENSOR_ID_2 = 5342245;
 
-
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
     }

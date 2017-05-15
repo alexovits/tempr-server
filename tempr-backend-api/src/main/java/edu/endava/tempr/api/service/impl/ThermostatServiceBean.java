@@ -71,15 +71,21 @@ public class ThermostatServiceBean implements ThermostatService {
     }
 
     @Override
-    public Thermostat createThermostat(User user, Thermostat thermostat) {
-        // Set default properties for new thermostat
-        thermostat.setToken(generateNewToken(user.getUsername()));
-        thermostat.setConfigured((short) 0);
-        thermostat.setUser(user);
-        Thermostat savedThermostat = thermostatRepository.save(thermostat);
-        LOG.info("Created thermostat with token: '{}'", savedThermostat.getToken());
-        LOG.info("Created thermostat: '{}'", savedThermostat.toString());
-        return savedThermostat;
+    public Thermostat createThermostat(User user, Thermostat thermostat) throws ThermostatAlreadyCreated {
+        try {
+            Thermostat checkThermostat = findByUserId(user.getId());
+        } catch (ThermostatNotFoundException e) {
+            // If there's no thermostat with this username
+            // Set default properties for new thermostat
+            thermostat.setToken(generateNewToken(user.getUsername()));
+            thermostat.setConfigured((short) 0);
+            thermostat.setUser(user);
+            Thermostat savedThermostat = thermostatRepository.save(thermostat);
+            LOG.info("Created thermostat with token: '{}'", savedThermostat.getToken());
+            LOG.info("Created thermostat: '{}'", savedThermostat.toString());
+            return savedThermostat;
+        }
+       throw new ThermostatAlreadyCreated(String.format("User %1$s already has a thermostat",user));
     }
 
     @Override

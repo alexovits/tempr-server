@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ThermostatService {
     Thermostat findOne(String token) throws ThermostatNotFoundException;
-    Thermostat createThermostat(User user, Thermostat thermostat);
+    Thermostat createThermostat(User user, Thermostat thermostat) throws ThermostatAlreadyCreated;
     Thermostat updateThermostat(Thermostat thermostat) throws ThermostatNotFoundException;
     Thermostat findByUserId(Long userId) throws UserNotFoundException, ThermostatNotFoundException;
     Thermostat findByUserName(String username) throws UserNotFoundException, ThermostatNotFoundException;

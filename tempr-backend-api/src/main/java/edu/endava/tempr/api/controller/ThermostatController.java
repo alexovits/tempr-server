@@ -67,6 +67,9 @@ public class ThermostatController {
         } catch (UserNotFoundException e) {
             LOG.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (ThermostatAlreadyCreated e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
