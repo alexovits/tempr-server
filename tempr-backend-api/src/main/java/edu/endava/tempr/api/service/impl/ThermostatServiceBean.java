@@ -1,5 +1,6 @@
 package edu.endava.tempr.api.service.impl;
 
+import edu.endava.tempr.api.exception.SensorLogNotFoundException;
 import edu.endava.tempr.api.exception.ThermostatAlreadyConfiguredException;
 import edu.endava.tempr.api.exception.ThermostatNotFoundException;
 import edu.endava.tempr.api.exception.UserNotFoundException;
@@ -86,18 +87,15 @@ public class ThermostatServiceBean implements ThermostatService {
         return thermostatRepository.save(thermostat);
     }
 
-
-
     @Override
     public List<TemperaturesDto> getTemperatures(String thermostatToken) throws ThermostatNotFoundException {
         List temperatureList = new ArrayList<TemperaturesDto>();
         Thermostat thermostat = findOne(thermostatToken);
-        // NullPointerException occurs when the user has no logs at all.
         thermostat.getHeatingCircuitList().forEach(
                 hc -> {
                     try {
                         temperatureList.add(new TemperaturesDto(sensorLogService.getLatestTemperature(hc.getId()), hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAiFlag(), hc.getName()));
-                    } catch (NullPointerException e) {
+                    } catch (SensorLogNotFoundException e) {
                         temperatureList.add(new TemperaturesDto(null, hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAiFlag(), hc.getName()));
                     }
                 }

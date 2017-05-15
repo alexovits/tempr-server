@@ -39,9 +39,8 @@ public class ThermostatController {
     @RequestMapping(value = "/thermostat/register/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatDto> registerThermostat(@RequestBody ThermostatDto thermostatDto) {
         // Check if user that wants to create thermostat exists at all
-        User user = null;
         try {
-            user = userService.findOne(thermostatDto.getUserId());
+            User user = userService.findOne(thermostatDto.getUserId());
             Thermostat newThermostat = thermostatService.createThermostat(user, thermostatAssembler.toEntity(thermostatDto));
             userService.updateUser(user);
             return new ResponseEntity<>(thermostatAssembler.toDto(newThermostat), HttpStatus.OK);
@@ -58,7 +57,11 @@ public class ThermostatController {
         try {
             return new ResponseEntity<>(thermostatAssembler.toDto(thermostatService.findByUserName(decodedUserName)), HttpStatus.OK);
         } catch (UserNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            LOG.error(e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } catch (ThermostatNotFoundException e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
 

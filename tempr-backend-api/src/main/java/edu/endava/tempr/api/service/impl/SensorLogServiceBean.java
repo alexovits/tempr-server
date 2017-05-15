@@ -1,16 +1,16 @@
 package edu.endava.tempr.api.service.impl;
 
+import edu.endava.tempr.api.exception.SensorLogNotFoundException;
+import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.model.HeatingCircuit;
 import edu.endava.tempr.model.SensorLog;
-import edu.endava.tempr.repository.HeatingCircuitRepository;
 import edu.endava.tempr.repository.SensorLogRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,11 +28,13 @@ public class SensorLogServiceBean implements SensorLogService{
     private SensorLogRepository sensorLogRepository;
 
     @Autowired
-    private HeatingCircuitRepository heatingCircuitRepository;
+    private HeatingCircuitService heatingCircuitService;
 
     @Override
-    public SensorLog findOne(Long sensorLogId) {
-        return sensorLogRepository.findOne(sensorLogId);
+    public SensorLog findOne(Long sensorLogId) throws SensorLogNotFoundException {
+        SensorLog sensorLog = sensorLogRepository.findOne(sensorLogId);
+        if(sensorLog == null) throw new SensorLogNotFoundException(String.format("Couldn't find sensor log with ID %1$d", sensorLog));
+        return sensorLog;
     }
 
     @Override
@@ -59,26 +61,27 @@ public class SensorLogServiceBean implements SensorLogService{
 
     // Returns the entire log object of the latest log
     @Override
-    public SensorLog getLatestLog(Long heatingCircuitId) {
-        return sensorLogRepository.findFirstByHeatingCircuitIdOrderByLogTimeStampDesc(heatingCircuitId);
+    public SensorLog getLatestLog(Long heatingCircuitId) throws SensorLogNotFoundException {
+        SensorLog latestLog = sensorLogRepository.findFirstByHeatingCircuitIdOrderByLogTimeStampDesc(heatingCircuitId);
+        if(latestLog == null) throw new SensorLogNotFoundException(String.format("Heating Circuit with ID %1$d has no previous logs yet.", heatingCircuitId));
+        return latestLog;
     }
 
     // Returns only the temperature value of the latest log
     @Override
-    public Integer getLatestTemperature(Long heatingCircuitId) {
+    public Integer getLatestTemperature(Long heatingCircuitId) throws SensorLogNotFoundException {
         return getLatestLog(heatingCircuitId).getTemperature();
     }
 
     @Override
-    public List<SensorLog> getLogsSince(Long heatingCircuitId, LocalDateTime timeStamp) {
-        if(heatingCircuitRepository.findOne(heatingCircuitId) == null){
-            throw new InvalidParameterException(String.format("Couldn't find a heating circuit with the id %1$d", heatingCircuitId));
-        }
-        return sensorLogRepository.findByHeatingCircuitIdAndLogTimeStampGreaterThan(heatingCircuitId, timeStamp);
+    public List<SensorLog> getLogsSince(Long heatingCircuitId, LocalDateTime timeStamp) throws SensorLogNotFoundException {
+        List<SensorLog> sensorLogs = sensorLogRepository.findByHeatingCircuitIdAndLogTimeStampGreaterThan(heatingCircuitId, timeStamp);
+        if(sensorLogs == null) throw new SensorLogNotFoundException(String.format("Heating Circuit with ID %1$d has no logs before %2$s.", heatingCircuitId));
+        return sensorLogs;
     }
 
     @Override
-    public List<SensorLog> getLastWeeksLogs(Long heatingCircuitId) {
+    public List<SensorLog> getLastWeeksLogs(Long heatingCircuitId) throws SensorLogNotFoundException {
         return getLogsSince(heatingCircuitId, LocalDateTime.now().minusDays(LAST_INTERVAL));
     }
 }

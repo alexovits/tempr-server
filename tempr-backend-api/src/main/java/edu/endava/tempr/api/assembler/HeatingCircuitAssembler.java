@@ -1,15 +1,21 @@
 package edu.endava.tempr.api.assembler;
 
+import edu.endava.tempr.api.exception.SensorNotFoundException;
+import edu.endava.tempr.api.exception.ThermostatNotFoundException;
 import edu.endava.tempr.api.service.SensorService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.model.HeatingCircuit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by zsoltszabo on 4/4/17.
  */
 public class HeatingCircuitAssembler implements Assembler<HeatingCircuitDto, HeatingCircuit>{
+
+    private static final Logger LOG = LoggerFactory.getLogger(HeatingCircuitAssembler.class);
 
     @Autowired
     ThermostatService thermostatService;
@@ -26,9 +32,17 @@ public class HeatingCircuitAssembler implements Assembler<HeatingCircuitDto, Hea
         heatingCircuit.setName(dto.getName());
         heatingCircuit.setDesiredTemperature(dto.getDesiredTemperature());
         heatingCircuit.setHeatingSource(heatingSourceAssembler.toEntity(dto.getHeatingSourceDto()));
-        heatingCircuit.setThermostat(thermostatService.findOne(dto.getThermostatToken()));
         heatingCircuit.setSuggestedTemperature(dto.getSuggestedTemperature());
-        heatingCircuit.setSensor(sensorService.findByChipId(dto.getSensorChipId()));
+        try {
+            heatingCircuit.setSensor(sensorService.findByChipId(dto.getSensorChipId()));
+            heatingCircuit.setThermostat(thermostatService.findOne(dto.getThermostatToken()));
+        } catch (ThermostatNotFoundException e) {
+            LOG.error("Couldn't fully convert HC entity to object");
+            LOG.error(e.getMessage());
+        } catch (SensorNotFoundException e) {
+            LOG.error("Couldn't fully convert HC entity to object");
+            LOG.error(e.getMessage());
+        }
         return heatingCircuit;
     }
 
