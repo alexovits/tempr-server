@@ -1,6 +1,7 @@
 package edu.endava.tempr.api.controller;
 
 import edu.endava.tempr.api.assembler.SensorLogAssembler;
+import edu.endava.tempr.api.exception.ThermostatNotFoundException;
 import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.api.service.ThermostatService;
@@ -58,6 +59,7 @@ public class HeatingCircuitController {
         // Fetch the heating circuit that has the sensor
         HeatingCircuit heatingCircuit = heatingCircuitService.findByChipId(chipId);
         if (!userHasSensor(basicAuthHeader, heatingCircuit)) {
+            LOG.error("The chipId doesn't belong to the user");
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         sensorLogService.create(temperature, heatingCircuit);
@@ -164,7 +166,7 @@ public class HeatingCircuitController {
         try {
             heatingCircuitService.updateAiFlag(heatingCircuitId, aiFlag);
         } catch (InvalidParameterException e) {
-            LOG.error(e.getStackTrace().toString());
+            LOG.error(e.getMessage());
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(HttpStatus.OK);
@@ -196,7 +198,7 @@ public class HeatingCircuitController {
         try{
             return new ResponseEntity(sensorLogService.getLatestTemperature(heatingCircuitId), HttpStatus.OK);
         }catch(NullPointerException e){
-            LOG.error("Couldn't fetch the latest temperature because of exception {}", e.getMessage());
+            LOG.error(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
@@ -209,8 +211,13 @@ public class HeatingCircuitController {
      */
     @RequestMapping(value = "/thermostat/temperatures/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TemperaturesDto>> getTemperatures(@RequestParam("token") String thermostatToken) {
-        LOG.info("Request for the temperature informations about {}", thermostatToken);
-        return new ResponseEntity(thermostatService.getTemperatures(thermostatToken),HttpStatus.OK);
+        LOG.info("Request for the temperature information about {}", thermostatToken);
+        try {
+            return new ResponseEntity(thermostatService.getTemperatures(thermostatToken),HttpStatus.OK);
+        } catch (ThermostatNotFoundException e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 
 
@@ -228,7 +235,8 @@ public class HeatingCircuitController {
             for (SensorLog sensorLog : sensorLogService.getLastWeeksLogs(heatingCircuitId)) {
                 responseList.add(sensorLogAssembler.toDto(sensorLog));
             }
-        }catch (InvalidParameterException e){
+        } catch (InvalidParameterException e){
+            LOG.error(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(responseList, HttpStatus.OK);
@@ -248,8 +256,4 @@ public class HeatingCircuitController {
         }
         return true;
     }
-
-    /*
-    * UI knows ThermoId, userId, heatingCircuitId
-    * */
 }

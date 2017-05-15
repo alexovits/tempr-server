@@ -1,6 +1,9 @@
 package edu.endava.tempr.api.controller;
 
+import edu.endava.tempr.api.assembler.ThermostatAssembler;
 import edu.endava.tempr.api.assembler.UserAssembler;
+import edu.endava.tempr.api.exception.ThermostatNotFoundException;
+import edu.endava.tempr.api.exception.UserNotFoundException;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.common.ThermostatDto;
@@ -35,6 +38,9 @@ public class UserController {
     private UserAssembler userAssembler;
 
     @Autowired
+    private ThermostatAssembler thermostatAssembler;
+
+    @Autowired
     private ThermostatService thermostatService;
 
     @RequestMapping(value = "/user/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,9 +53,12 @@ public class UserController {
     @RequestMapping(value = "/user/login/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> loginUser(@RequestHeader(value = "Authorization") String basicAuthHeader) {
         String decodedUserName = new String(Base64.decodeBase64(basicAuthHeader.split(" ")[1])).split(":")[0];
-        User user = userService.findByName(decodedUserName);
-        if(user == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        User user = null;
+        try {
+            user = userService.findByName(decodedUserName);
+        } catch (UserNotFoundException e) {
+            LOG.error(e.getStackTrace().toString());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         user.setPassword(""); // For safety
         return new ResponseEntity<>(userAssembler.toDto(user), HttpStatus.OK);
@@ -65,22 +74,26 @@ public class UserController {
     // Only exists for occasional debugging purposes
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
-        User user = userService.findOne(id);
-        // If no user found with the given id
-        if (user == null) {
+        try {
+            return new ResponseEntity<>(userAssembler.toDto(userService.findOne(id)), HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            LOG.error(e.getStackTrace().toString());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(userAssembler.toDto(user), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user/thermostatList/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ThermostatDto> getThermostatList(@RequestBody UserDto userDto) {
-        User user = userService.findOne(userDto.getId());
-        if(user == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    @RequestMapping(value = "/user/thermostat/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ThermostatDto> getThermostatList(@RequestParam("userId") Long userId) {
+        try {
+            User user = userService.findOne(userId);
+            Thermostat usersThermostat = thermostatService.findByUserName(user.getUsername());
+            return new ResponseEntity<>(thermostatAssembler.toDto(usersThermostat), HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            LOG.error(e.getStackTrace().toString());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (ThermostatNotFoundException e) {
+            LOG.error(e.getStackTrace().toString());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        //LOG.info("Sending back token: {}", user.getThermostat().getToken());
-        //return new ResponseEntity<>(userAssembler.toDto(user).getThermostatDto(), HttpStatus.OK);
-        return null;
     }
 }

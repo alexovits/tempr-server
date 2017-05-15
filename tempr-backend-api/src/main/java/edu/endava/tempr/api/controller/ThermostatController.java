@@ -1,8 +1,8 @@
 package edu.endava.tempr.api.controller;
 
 import edu.endava.tempr.api.assembler.ThermostatAssembler;
-import edu.endava.tempr.api.exception.InvalidThermostatTokenException;
 import edu.endava.tempr.api.exception.ThermostatAlreadyConfiguredException;
+import edu.endava.tempr.api.exception.ThermostatNotFoundException;
 import edu.endava.tempr.api.exception.UserNotFoundException;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sun.rmi.runtime.Log;
 
 /**
  * Created by zsoltszabo on 31/12/2016.
@@ -39,19 +38,17 @@ public class ThermostatController {
 
     @RequestMapping(value = "/thermostat/register/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatDto> registerThermostat(@RequestBody ThermostatDto thermostatDto) {
-        // Check if user that wants to have thermostat exists at all
-        User user = userService.findOne(thermostatDto.getUserId());
-
-        // If user with id is not found
-        if(user == null){
+        // Check if user that wants to create thermostat exists at all
+        User user = null;
+        try {
+            user = userService.findOne(thermostatDto.getUserId());
+            Thermostat newThermostat = thermostatService.createThermostat(user, thermostatAssembler.toEntity(thermostatDto));
+            userService.updateUser(user);
+            return new ResponseEntity<>(thermostatAssembler.toDto(newThermostat), HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            LOG.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        // Create new thermostat
-        Thermostat newThermostat = thermostatService.createThermostat(user, thermostatAssembler.toEntity(thermostatDto));
-        //user.setThermostat(newThermostat);
-        userService.updateUser(user);
-        return new ResponseEntity<>(thermostatAssembler.toDto(newThermostat), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/thermostat/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,13 +62,11 @@ public class ThermostatController {
         }
     }
 
-
-    // UNUSED for the time being
     @RequestMapping(value = "/thermostat/configure/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity configureThermostat(@RequestBody ThermostatDto thermostatDto) {
         try {
             thermostatService.configureThermostat(thermostatDto.getToken());
-        } catch (InvalidThermostatTokenException e) {
+        } catch (ThermostatNotFoundException e) {
             LOG.error(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } catch (ThermostatAlreadyConfiguredException e) {
@@ -86,7 +81,7 @@ public class ThermostatController {
     public ResponseEntity<ThermostatDto> unConfigureThermostat(@RequestBody ThermostatDto thermostatDto) {
         try {
             thermostatService.unConfigureThermostat(thermostatDto.getToken());
-        } catch (InvalidThermostatTokenException e) {
+        } catch (ThermostatNotFoundException e) {
             LOG.error(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } catch (ThermostatAlreadyConfiguredException e) {
