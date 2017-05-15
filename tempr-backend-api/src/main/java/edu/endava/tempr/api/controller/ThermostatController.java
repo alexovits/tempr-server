@@ -63,7 +63,6 @@ public class ThermostatController {
         try {
             User user = userService.findOne(thermostatDto.getUserId());
             Thermostat newThermostat = thermostatService.createThermostat(user, thermostatAssembler.toEntity(thermostatDto));
-            userService.updateUser(user);
             return new ResponseEntity<>(thermostatAssembler.toDto(newThermostat), HttpStatus.OK);
         } catch (UserNotFoundException e) {
             LOG.error(e.getMessage());
