@@ -75,7 +75,7 @@ public class SensorLogServiceBean implements SensorLogService{
 
     @Override
     public List<SensorLog> getLogsSince(Long heatingCircuitId, LocalDateTime timeStamp) throws SensorLogNotFoundException {
-        List<SensorLog> sensorLogs = sensorLogRepository.findByHeatingCircuitIdAndLogTimeStampGreaterThan(heatingCircuitId, timeStamp);
+        List<SensorLog> sensorLogs = sensorLogRepository.findByHeatingCircuitIdAndLogTimeStampGreaterThanOrderByLogTimeStampDesc(heatingCircuitId, timeStamp);
         if(sensorLogs.size() == 0) throw new SensorLogNotFoundException(String.format("Heating Circuit with ID %1$d has no logs before %2$s.", heatingCircuitId, timeStamp));
         return sensorLogs;
     }

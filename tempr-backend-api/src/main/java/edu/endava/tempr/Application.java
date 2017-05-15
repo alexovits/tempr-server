@@ -26,6 +26,10 @@ public class Application {
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
     private static final int DAYS_TO_GENERATE = 25;
     private static final int HOURS_TO_GENERATE = 24;
+    private static final long USER_SENSOR_ID_1 = 8670624;
+    private static final long USER_SENSOR_ID_2 = 2453634;
+    private static final long ADMIN_SENSOR_ID_1 = 4523455;
+    private static final long ADMIN_SENSOR_ID_2 = 5342245;
 
 
     public static void main(String[] args) throws Exception {
@@ -53,21 +57,21 @@ public class Application {
 
             // Add heating circuits to the thermostat & sensor
             HeatingCircuitDto heatingCircuitDto = new HeatingCircuitDto();
-            heatingCircuitDto.setName("Nagyszoba");
-            heatingCircuitDto.setSensorChipId((long) 8670624);
+            heatingCircuitDto.setName("Dorm Room");
+            heatingCircuitDto.setSensorChipId(USER_SENSOR_ID_1);
             heatingCircuitDto.setThermostatToken(defThermostat.getToken());
             heatingCircuitService.create(heatingCircuitDto);
 
             // Add another hc
             heatingCircuitDto = new HeatingCircuitDto();
-            heatingCircuitDto.setName("Nappali");
-            heatingCircuitDto.setSensorChipId((long) 2453634);
+            heatingCircuitDto.setName("Downstairs");
+            heatingCircuitDto.setSensorChipId(USER_SENSOR_ID_2);
             heatingCircuitDto.setThermostatToken(defThermostat.getToken());
             heatingCircuitService.create(heatingCircuitDto);
 
-            LOG.info(heatingCircuitService.findByChipId((long) 8670624).getName());
+            LOG.info(heatingCircuitService.findByChipId(USER_SENSOR_ID_1).getName());
 
-            HeatingCircuit hc = heatingCircuitService.findByChipId((long) 8670624);
+            HeatingCircuit hc = heatingCircuitService.findByChipId(USER_SENSOR_ID_1);
 
             // Adding random logs for the last ten days to the "Device-2" thermostat of user "user"
             Random rand = new Random();
@@ -79,13 +83,53 @@ public class Application {
                 });
             });
 
+            //LOG.info("Here is {}", thermostatService.getTemperatures(defThermostat.getToken()));
+            //LOG.info("All the suggestions: {}", suggestionService.getSuggestionTemperature(0,hc.getId()));
+
+            // Mock for admin user ------------------------------------------------------------------------------
+
+            // Create demo thermostat for the user
+            defThermostat = new Thermostat();
+            defThermostat.setName("Thermo-admin");
+            defThermostat = thermostatService.createThermostat(adminUser, defThermostat);
+
+            LOG.info("User {} has thermostat {}", adminUser.getUsername(), defThermostat);
+
+            // Add heating circuits to the thermostat & sensor
+            heatingCircuitDto = new HeatingCircuitDto();
+            heatingCircuitDto.setName("Living Room");
+            heatingCircuitDto.setSensorChipId(ADMIN_SENSOR_ID_1);
+            heatingCircuitDto.setThermostatToken(defThermostat.getToken());
+            heatingCircuitService.create(heatingCircuitDto);
+
+            // Add another hc
+            heatingCircuitDto = new HeatingCircuitDto();
+            heatingCircuitDto.setName("Kitchen");
+            heatingCircuitDto.setSensorChipId(ADMIN_SENSOR_ID_2);
+            heatingCircuitDto.setThermostatToken(defThermostat.getToken());
+            heatingCircuitService.create(heatingCircuitDto);
+
+            LOG.info(heatingCircuitService.findByChipId(ADMIN_SENSOR_ID_1).getName());
+
+            HeatingCircuit hcAdmin = heatingCircuitService.findByChipId(ADMIN_SENSOR_ID_1);
+
+            IntStream.range(0, DAYS_TO_GENERATE).forEachOrdered(day -> {
+                IntStream.range(0, HOURS_TO_GENERATE).forEachOrdered(hour -> {
+                    int randTemperature = new Double(rand.nextGaussian()*3 + 21).intValue();// mean:21, stddev:3
+                    sensorLogService.create(LocalDateTime.now().minusDays(day).minusHours(hour), randTemperature, hcAdmin);
+                });
+            });
+
             LOG.info("Here is {}", thermostatService.getTemperatures(defThermostat.getToken()));
 
-            /*for(SensorLog s: sensorLogService.getLastWeeksLogs(hc.getId())){
-                LOG.info("---> {}",s);
-            }*/
+            //LOG.info("This is the sample:----> {}", suggestionService.getSuggestionTemperature(1,hcAdmin.getId()));
 
-            LOG.info("This is the shit:----> {}", suggestionService.getSuggestionTemperature(0,hc.getId()));
+            LocalDateTime currentDate = LocalDateTime.now();
+            LOG.info("Working with day {} and segment {}", currentDate.getDayOfWeek().getValue(), currentDate.getHour());
+            LOG.info("Before adding 23 log for now the suggestion is: {}", suggestionService.getSuggestionTemperature(currentDate.getDayOfWeek().getValue(), currentDate.getHour(), hcAdmin.getId()));
+            sensorLogService.create(23,hcAdmin);
+            LOG.info("After adding 23 log for now the suggestion is: {}", suggestionService.getSuggestionTemperature(currentDate.getDayOfWeek().getValue(), currentDate.getHour(), hcAdmin.getId()));
+
         };
     }
 }

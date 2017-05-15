@@ -61,6 +61,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         user.setPassword(""); // For safety
+        LOG.info("User {} successfully logged in",decodedUserName);
         return new ResponseEntity<>(userAssembler.toDto(user), HttpStatus.OK);
     }
 

@@ -40,22 +40,21 @@ public class SuggestionServiceBean implements SuggestionService {
 
     @Override
     public Double getSuggestionTemperature(int day, int segment, long heatingCircuitId) throws OutOfHistogramRangeException, SensorLogNotFoundException {
-        if(day<0 || day>=WEEK_DAYS || segment<0 || segment>=DAY_SEGMENTS){
-            throw new OutOfHistogramRangeException(String.format("Parameters out of range (0<day<%1$d, 0<segment<%2$d)",WEEK_DAYS,DAY_SEGMENTS));
+        if(day<=0 || day>WEEK_DAYS || segment<0 || segment>=DAY_SEGMENTS){
+            throw new OutOfHistogramRangeException(String.format("Parameters out of range (0<day<=%1$d, 0<=segment<%2$d)",WEEK_DAYS,DAY_SEGMENTS));
         }
         computedHistogram = evaluateHistogram(heatingCircuitId);
-        return computedHistogram.get(day).get(segment).getTemperature();
+        return computedHistogram.get(day-1).get(segment).getTemperature();
     }
 
     @Override
     public List<ComputedSuggestion> getSuggestionTemperature(int day, long heatingCircuitId) throws OutOfHistogramRangeException, SensorLogNotFoundException {
-        if(day<0 || day>=WEEK_DAYS){
-            throw new OutOfHistogramRangeException(String.format("Parameters out of range (0<day<%1$d, 0<segment<%2$d)",WEEK_DAYS,DAY_SEGMENTS));
+        if(day<=0 || day>=WEEK_DAYS){
+            throw new OutOfHistogramRangeException(String.format("Parameters out of range (0<day<=%1$d, 0<=segment<%2$d)",WEEK_DAYS,DAY_SEGMENTS));
         }
         computedHistogram = evaluateHistogram(heatingCircuitId);
-        return computedHistogram.get(day);
+        return computedHistogram.get(day-1);
     }
-
 
     private List<List<ComputedSuggestion>> evaluateHistogram(Long heatingCircuitId) throws SensorLogNotFoundException {
         List<List<ComputedSuggestion>> computedHistogram = initializeHistogram();
@@ -87,7 +86,13 @@ public class SuggestionServiceBean implements SuggestionService {
             // Add new log to the respective weekday and segment (hour)
             int segmentIndex = sensorLog.getLogTimeStamp().getHour();
             int dayIndex = sensorLog.getLogTimeStamp().getDayOfWeek().getValue()-1;
+            /*if(dayIndex == 0 && segmentIndex == 20){
+                LOG.info("Before {} adding {} {} {}" ,computedHistogram.get(dayIndex).get(segmentIndex).toString(),sensorLog.getTemperature(), weight, sensorLog.getLogTimeStamp());
+            }*/
             computedHistogram.get(dayIndex).get(segmentIndex).addLog(sensorLog.getTemperature(), weight);
+            /*if(dayIndex == 0 && segmentIndex == 20){
+                LOG.info("After {}" ,computedHistogram.get(dayIndex).get(segmentIndex).toString());
+            }*/
             prevDayOfYear = sensorLog.getLogTimeStamp().getDayOfYear();
         }
         return computedHistogram;
