@@ -1,11 +1,10 @@
 package edu.endava.tempr.api.controller;
 
 import edu.endava.tempr.api.assembler.ThermostatAssembler;
-import edu.endava.tempr.api.exception.ThermostatAlreadyConfiguredException;
-import edu.endava.tempr.api.exception.ThermostatNotFoundException;
-import edu.endava.tempr.api.exception.UserNotFoundException;
+import edu.endava.tempr.api.exception.*;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
+import edu.endava.tempr.common.TemperaturesDto;
 import edu.endava.tempr.common.ThermostatDto;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
@@ -17,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by zsoltszabo on 31/12/2016.
@@ -35,6 +36,26 @@ public class ThermostatController {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * ••• Used by UI •••
+     * Returns the latest temperature data from all of the Heating Circuits of a specific token
+     *
+     * @return ResponseEntity containing the temperature as Integer and the Status
+     */
+    @RequestMapping(value = "/thermostat/temperatures/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TemperaturesDto>> getTemperatures(@RequestParam("token") String thermostatToken) {
+        LOG.info("Request for the temperature information about {}", thermostatToken);
+        try {
+            return new ResponseEntity(thermostatService.getTemperatures(thermostatToken),HttpStatus.OK);
+        } catch (HeatingCircuitNotFoundException | ThermostatNotFoundException e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } catch (OutOfHistogramRangeException e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @RequestMapping(value = "/thermostat/register/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThermostatDto> registerThermostat(@RequestBody ThermostatDto thermostatDto) {

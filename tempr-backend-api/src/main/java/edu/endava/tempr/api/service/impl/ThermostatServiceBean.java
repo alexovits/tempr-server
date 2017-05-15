@@ -1,13 +1,12 @@
 package edu.endava.tempr.api.service.impl;
 
-import edu.endava.tempr.api.exception.SensorLogNotFoundException;
-import edu.endava.tempr.api.exception.ThermostatAlreadyConfiguredException;
-import edu.endava.tempr.api.exception.ThermostatNotFoundException;
-import edu.endava.tempr.api.exception.UserNotFoundException;
+import edu.endava.tempr.api.exception.*;
+import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.common.TemperaturesDto;
+import edu.endava.tempr.model.HeatingCircuit;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.ThermostatRepository;
@@ -37,6 +36,9 @@ public class ThermostatServiceBean implements ThermostatService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    HeatingCircuitService heatingCircuitService;
 
 
     @Override
@@ -88,18 +90,16 @@ public class ThermostatServiceBean implements ThermostatService {
     }
 
     @Override
-    public List<TemperaturesDto> getTemperatures(String thermostatToken) throws ThermostatNotFoundException {
+    public List<TemperaturesDto> getTemperatures(String thermostatToken) throws ThermostatNotFoundException, OutOfHistogramRangeException, HeatingCircuitNotFoundException {
         List temperatureList = new ArrayList<TemperaturesDto>();
         Thermostat thermostat = findOne(thermostatToken);
-        thermostat.getHeatingCircuitList().forEach(
-                hc -> {
-                    try {
-                        temperatureList.add(new TemperaturesDto(sensorLogService.getLatestTemperature(hc.getId()), hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAiFlag(), hc.getName()));
-                    } catch (SensorLogNotFoundException e) {
-                        temperatureList.add(new TemperaturesDto(null, hc.getSuggestedTemperature(), hc.getDesiredTemperature(), hc.getId(), hc.getAiFlag(), hc.getName()));
-                    }
-                }
-        );
+        for(HeatingCircuit hc : thermostat.getHeatingCircuitList()){
+            try {
+                temperatureList.add(new TemperaturesDto(sensorLogService.getLatestTemperature(hc.getId()), heatingCircuitService.getSuggestedTemperature(hc.getId()), hc.getDesiredTemperature(), hc.getId(), hc.getAiFlag(), hc.getName(), heatingCircuitService.getChipId(hc.getId())));
+            } catch (SensorLogNotFoundException e) {
+                temperatureList.add(new TemperaturesDto(null, null, hc.getDesiredTemperature(), hc.getId(), hc.getAiFlag(), hc.getName(), heatingCircuitService.getChipId(hc.getId())));
+            }
+        }
         return temperatureList;
     }
 

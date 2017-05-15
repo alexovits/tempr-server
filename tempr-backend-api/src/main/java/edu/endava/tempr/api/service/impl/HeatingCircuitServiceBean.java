@@ -1,9 +1,12 @@
 package edu.endava.tempr.api.service.impl;
 
 import edu.endava.tempr.api.exception.HeatingCircuitNotFoundException;
+import edu.endava.tempr.api.exception.OutOfHistogramRangeException;
+import edu.endava.tempr.api.exception.SensorLogNotFoundException;
 import edu.endava.tempr.api.exception.ThermostatNotFoundException;
 import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorService;
+import edu.endava.tempr.api.service.SuggestionService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.model.HeatingCircuit;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
+import java.time.LocalDateTime;
 
 /**
  * Created by zsoltszabo on 4/9/17.
@@ -32,6 +36,9 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
 
     @Autowired
     private SensorService sensorService;
+
+    @Autowired
+    private SuggestionService suggestionService;
 
     @Override
     public HeatingCircuit create(HeatingCircuitDto heatingCircuitDto) throws ThermostatNotFoundException {
@@ -97,15 +104,9 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
     }
 
     @Override
-    public Integer getSuggestedTemperature(long heatingCircuitId) throws HeatingCircuitNotFoundException {
-        return findOne(heatingCircuitId).getSuggestedTemperature();
-    }
-
-    @Override
-    public void updateSuggestedTemperature(long heatingCircuitId, int suggestedTemperature) throws HeatingCircuitNotFoundException {
-        HeatingCircuit heatingCircuit = findOne(heatingCircuitId);
-        heatingCircuit.setSuggestedTemperature(suggestedTemperature);
-        update(heatingCircuit);
+    public Double getSuggestedTemperature(long heatingCircuitId) throws HeatingCircuitNotFoundException, SensorLogNotFoundException, OutOfHistogramRangeException {
+        LocalDateTime currentDate = LocalDateTime.now();
+        return suggestionService.getSuggestionTemperature(currentDate.getDayOfWeek().getValue(), currentDate.getHour(), heatingCircuitId);
     }
 
     @Override
@@ -116,5 +117,15 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Long getChipId(Long heatingCircuitId){
+        try {
+            return findOne(heatingCircuitId).getSensor().getChipId();
+        } catch (HeatingCircuitNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

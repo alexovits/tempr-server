@@ -21,7 +21,6 @@ public class Sensor extends BaseEntity{
         this.chipId = chipId;
     }
 
-
     @Override
     public String toString(){
         return String.format("Sensor{sensorId = %s}", chipId);

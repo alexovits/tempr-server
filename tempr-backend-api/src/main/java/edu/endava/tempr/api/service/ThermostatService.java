@@ -1,8 +1,6 @@
 package edu.endava.tempr.api.service;
 
-import edu.endava.tempr.api.exception.ThermostatAlreadyConfiguredException;
-import edu.endava.tempr.api.exception.ThermostatNotFoundException;
-import edu.endava.tempr.api.exception.UserNotFoundException;
+import edu.endava.tempr.api.exception.*;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
 
@@ -17,7 +15,7 @@ public interface ThermostatService {
     Thermostat updateThermostat(Thermostat thermostat) throws ThermostatNotFoundException;
     Thermostat findByUserId(Long userId) throws UserNotFoundException, ThermostatNotFoundException;
     Thermostat findByUserName(String username) throws UserNotFoundException, ThermostatNotFoundException;
-    List getTemperatures(String thermostatToken) throws ThermostatNotFoundException;
+    List getTemperatures(String thermostatToken) throws ThermostatNotFoundException, OutOfHistogramRangeException, HeatingCircuitNotFoundException;
     void deleteThermostat(Long id);
     void configureThermostat(String thermostatToken) throws ThermostatAlreadyConfiguredException, ThermostatNotFoundException;
     void unConfigureThermostat(String thermostatToken) throws ThermostatAlreadyConfiguredException, ThermostatNotFoundException;

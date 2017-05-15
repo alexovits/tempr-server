@@ -1,6 +1,8 @@
 package edu.endava.tempr.api.service;
 
 import edu.endava.tempr.api.exception.HeatingCircuitNotFoundException;
+import edu.endava.tempr.api.exception.OutOfHistogramRangeException;
+import edu.endava.tempr.api.exception.SensorLogNotFoundException;
 import edu.endava.tempr.api.exception.ThermostatNotFoundException;
 import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.model.HeatingCircuit;
@@ -19,7 +21,7 @@ public interface HeatingCircuitService {
     void updateDesiredTemperature(long heatingCircuitId, int desiredTemperature) throws HeatingCircuitNotFoundException;
     Boolean getAiFlag(long heatingCircuitId) throws HeatingCircuitNotFoundException;
     void updateAiFlag(long heatingCircuitId, boolean aiFlag) throws HeatingCircuitNotFoundException;
-    Integer getSuggestedTemperature(long heatingCircuitId) throws HeatingCircuitNotFoundException;
-    void updateSuggestedTemperature(long heatingCircuitId, int suggestedTemperature) throws HeatingCircuitNotFoundException;
+    Double getSuggestedTemperature(long heatingCircuitId) throws HeatingCircuitNotFoundException, SensorLogNotFoundException, OutOfHistogramRangeException;
     boolean sensorBelongsToUser(String userName, HeatingCircuit heatingCircuit);
+    Long getChipId(Long heatingCircuitId);
 }

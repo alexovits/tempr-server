@@ -7,11 +7,9 @@ import edu.endava.tempr.api.exception.SensorLogNotFoundException;
 import edu.endava.tempr.api.exception.ThermostatNotFoundException;
 import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
-import edu.endava.tempr.api.service.SuggestionService;
 import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.common.SensorLogDto;
-import edu.endava.tempr.common.TemperaturesDto;
 import edu.endava.tempr.model.HeatingCircuit;
 import edu.endava.tempr.model.SensorLog;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -23,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +42,6 @@ public class HeatingCircuitController {
 
     @Autowired
     private ThermostatService thermostatService;
-
-    @Autowired
-    private SuggestionService suggestionService;
 
     @Autowired
     private SensorLogAssembler sensorLogAssembler;
@@ -147,17 +141,15 @@ public class HeatingCircuitController {
     @RequestMapping(value = "/thermostat/heatingcircuit/suggestedtemperature/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getSuggestedTemperature(@RequestParam("heatingCircuitId") Long heatingCircuitId) {
         LOG.info("Request to get suggested temperature of {}", heatingCircuitId);
-        LocalDateTime currentDate = LocalDateTime.now();
         try {
-            return new ResponseEntity<>(suggestionService.getSuggestionTemperature(currentDate.getDayOfWeek().getValue(), currentDate.getHour(), heatingCircuitId), HttpStatus.OK);
+            return new ResponseEntity<>(heatingCircuitService.getSuggestedTemperature(heatingCircuitId), HttpStatus.OK);
         } catch (OutOfHistogramRangeException e) {
             LOG.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (SensorLogNotFoundException e) {
+        } catch (HeatingCircuitNotFoundException | SensorLogNotFoundException e) {
             LOG.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
     }
 
     /**
@@ -215,23 +207,6 @@ public class HeatingCircuitController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
-    }
-
-    /**
-     * ••• Used by UI •••
-     * Returns the latest temperature data from all of the Heating Circuits of a specific token
-     *
-     * @return ResponseEntity containing the temperature as Integer and the Status
-     */
-    @RequestMapping(value = "/thermostat/temperatures/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TemperaturesDto>> getTemperatures(@RequestParam("token") String thermostatToken) {
-        LOG.info("Request for the temperature information about {}", thermostatToken);
-        try {
-            return new ResponseEntity(thermostatService.getTemperatures(thermostatToken),HttpStatus.OK);
-        } catch (ThermostatNotFoundException e) {
-            LOG.error(e.getMessage());
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
     }
 
     /**
