@@ -26,8 +26,6 @@ public abstract class BaseControllerTest extends BaseTest{
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-    //protected void setUp(BaseController )
-
     protected String mapToJson(Object obj) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(obj);

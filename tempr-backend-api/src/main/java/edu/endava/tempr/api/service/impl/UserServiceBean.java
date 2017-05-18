@@ -3,6 +3,7 @@ package edu.endava.tempr.api.service.impl;
 import edu.endava.tempr.api.exception.UserNotFoundException;
 import edu.endava.tempr.api.service.UserService;
 import edu.endava.tempr.model.User;
+import edu.endava.tempr.model.UserType;
 import edu.endava.tempr.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,7 @@ public class UserServiceBean implements UserService {
     public User createUser(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setUserType(UserType.USER);
         User savedUser = userRepository.save(user);
         LOG.info("Created new user with id: '{}'", savedUser.getId());
         return savedUser;

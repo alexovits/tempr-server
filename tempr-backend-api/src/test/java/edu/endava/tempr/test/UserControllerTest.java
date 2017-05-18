@@ -4,6 +4,7 @@ import edu.endava.tempr.api.service.UserService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
@@ -14,8 +15,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
  */
 public class UserControllerTest extends BaseControllerTest{
 
-    @Autowired
+    @Mock
     private UserService userService;
+
+    //Create @InjectMock controller
 
     @Before
     public void setUp(){
