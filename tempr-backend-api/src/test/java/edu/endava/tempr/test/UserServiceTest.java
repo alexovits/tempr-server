@@ -16,7 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zsoltszabo on 5/9/17.
@@ -43,10 +44,12 @@ public class UserServiceTest {
 
     @Test
     public void testFindAll() {
-        Collection<User> userList = victimUserService.findAll();
-
-        Assert.assertNotEquals("Failure - expected not null", userList);
-        Assert.assertEquals("Failure - expected size", 2, userList.size());
+        List<User> userList = new ArrayList<>();
+        userList.add(new User());
+        userList.add(new User());
+        Mockito.when(userRepository.findAll()).thenReturn(userList);
+        List<User> returnedUserList = victimUserService.findAll();
+        Assert.assertEquals("Failure - expected size", returnedUserList.size(), userList.size());
     }
 
     @Test
@@ -94,4 +97,6 @@ public class UserServiceTest {
         Assert.assertEquals(createdUser.getUsername(), user.getUsername());
         Assert.assertEquals(createdUser.getPassword(), user.getPassword());
     }
+
+    //How to test update and delet
 }

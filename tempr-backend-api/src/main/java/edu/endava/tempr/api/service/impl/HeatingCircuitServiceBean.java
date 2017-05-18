@@ -14,7 +14,6 @@ import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.repository.HeatingCircuitRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
@@ -28,17 +27,17 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ThermostatServiceBean.class);
 
-    @Autowired
     private HeatingCircuitRepository heatingCircuitRepository;
-
-    @Autowired
     private ThermostatService thermostatService;
-
-    @Autowired
     private SensorService sensorService;
-
-    @Autowired
     private SuggestionService suggestionService;
+
+    public HeatingCircuitServiceBean(HeatingCircuitRepository heatingCircuitRepository, ThermostatService thermostatService, SensorService sensorService, SuggestionService suggestionService){
+        this.heatingCircuitRepository = heatingCircuitRepository;
+        this.thermostatService = thermostatService;
+        this.sensorService = sensorService;
+        this.suggestionService = suggestionService;
+    }
 
     @Override
     public HeatingCircuit create(HeatingCircuitDto heatingCircuitDto) throws ThermostatNotFoundException {
