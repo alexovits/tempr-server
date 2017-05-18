@@ -18,8 +18,12 @@ public class UserServiceBean implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceBean.class);
 
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public UserServiceBean(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<User> findAll() {

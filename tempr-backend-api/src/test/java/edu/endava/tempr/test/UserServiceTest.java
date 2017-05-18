@@ -2,87 +2,96 @@ package edu.endava.tempr.test;
 
 import edu.endava.tempr.api.exception.UserNotFoundException;
 import edu.endava.tempr.api.service.UserService;
+import edu.endava.tempr.api.service.impl.UserServiceBean;
 import edu.endava.tempr.model.User;
+import edu.endava.tempr.repository.UserRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.jws.soap.SOAPBinding;
-import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.spi.LocaleNameProvider;
 
 /**
  * Created by zsoltszabo on 5/9/17.
  */
-@Transactional
-public class UserServiceTest extends BaseTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+public class UserServiceTest {
 
-    @Autowired
-    private UserService userService;
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceTest.class);
+
+    @Mock
+    private UserRepository userRepository;
+
+    private UserService victimUserService;
 
     @Before
     public void setUp(){
-        // clean up before each test method
+        victimUserService = new UserServiceBean(userRepository);
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         // clean up after each test method
     }
 
     @Test
-    public void testFindAll(){
-        Collection<User> userList = userService.findAll();
+    public void testFindAll() {
+        Collection<User> userList = victimUserService.findAll();
 
         Assert.assertNotEquals("Failure - expected not null", userList);
         Assert.assertEquals("Failure - expected size", 2, userList.size());
     }
 
     @Test
-    public void testFindOne(){
-        Long id = 1L;
+    public void testFindOneWithValidId() {
+        Long userId = 1L;
         Exception exception = null;
-        User entity = null;
-        try {
-            entity = userService.findOne(id);
-        } catch (UserNotFoundException e) {
-            exception = e;
-        }
-
-        Assert.assertNull("Failure - expected no exceptions", exception);
-        Assert.assertEquals("Failure - expected id match", entity.getId(), id);
-    }
-
-    @Test
-    public void testFindOneNotFound(){
-        Long id = Long.MAX_VALUE;
-        Exception exception = null;
-        User entity = null;
-        try {
-            entity = userService.findOne(id);
-        } catch (UserNotFoundException e) {
-            exception = e;
-        }
-
-        Assert.assertNotNull("Failure - expected exception", exception);
-        Assert.assertNull("Failure - expected null", entity);
-    }
-
-    @Test
-    public void testCreate(){
         User user = new User();
+        user.setId(userId);
+        User returnUser = null;
+        Mockito.when(userRepository.findById(userId)).thenReturn(user);
+        try {
+            returnUser = victimUserService.findOne(userId);
+        } catch (UserNotFoundException e) {
+            exception = e;
+        }
+
+        Assert.assertNull(exception);
+        Assert.assertEquals(returnUser.getId(), userId);
+    }
+
+    @Test
+    public void testFindOneWithInvalidId() {
+        Exception exception = null;
+        Mockito.when(userRepository.findById(1L)).thenReturn(null);
+        try {
+            victimUserService.findOne(1L);
+        } catch (UserNotFoundException e) {
+            exception = e;
+        }
+        Assert.assertNotNull(exception);
+    }
+
+    @Test
+    public void testCreate() {
+        User user = new User();
+        user.setId(1L);
         user.setUsername("Jozsef");
         user.setPassword("Passwordjoska");
-        User createdUser = userService.createUser(user);
-        Assert.assertNotNull("failure - expected not null", createdUser);
-        Assert.assertNotNull("failure - expected id attribute not null", createdUser.getId());
-        Assert.assertEquals("failure - expected text attribute match",user.getUsername(), createdUser.getUsername());
 
-        Collection<User> list = userService.findAll();
+        Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
 
-        Assert.assertEquals("failure - expected size", 3, list.size());
+        User createdUser = victimUserService.createUser(user);
+
+        Assert.assertEquals(createdUser.getId(), user.getId());
+        Assert.assertEquals(createdUser.getUsername(), user.getUsername());
+        Assert.assertEquals(createdUser.getPassword(), user.getPassword());
     }
 }
