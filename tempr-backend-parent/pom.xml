@@ -20,6 +20,8 @@
         <swagger.version>2.4.0</swagger.version>
         <!-- Plugin versions -->
         <maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
+        <!-- Structural properties -->
+        <resource.folder>src/main/resources</resource.folder>
     </properties>
 
     <build>
@@ -68,6 +70,11 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
@@ -93,6 +100,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 
 </project>

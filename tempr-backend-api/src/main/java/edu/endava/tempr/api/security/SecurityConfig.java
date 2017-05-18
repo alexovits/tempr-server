@@ -34,18 +34,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebA
         http.httpBasic();
         http.authorizeRequests()
                 .antMatchers("/user/register/").permitAll()
-                .antMatchers("/thermostat/configure/").permitAll()
-                .antMatchers("/thermostat/log/").permitAll()
-                .antMatchers("/user/").permitAll()
                 .antMatchers("/version").permitAll()
-                .antMatchers("/thermostat/desiredTemp/").permitAll()
+                .antMatchers("/user/").hasAuthority("ADMIN")
+                .antMatchers("/simulator/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); // Creating cookies when it is required
         http.sessionManagement().sessionFixation().newSession(); // New session on new authentication for the user
     }
 
-    //For ignoring the OPTIONS preflights
+    //For ignoring the OPTIONS preflights when running on localhost
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");

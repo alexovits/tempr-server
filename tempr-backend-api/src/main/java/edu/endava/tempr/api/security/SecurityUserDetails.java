@@ -2,9 +2,12 @@ package edu.endava.tempr.api.security;
 
 import edu.endava.tempr.model.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by zsoltszabo on 11/12/2016.
@@ -19,7 +22,9 @@ public class SecurityUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authList = new ArrayList<>(1);
+        authList.add(user.getUserType());
+        return authList;
     }
 
     @Override

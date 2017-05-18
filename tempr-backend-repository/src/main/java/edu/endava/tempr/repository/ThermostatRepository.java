@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ThermostatRepository extends JpaRepository<Thermostat, Long> {
     Thermostat findByToken(String token);
+    Thermostat findByUserId(Long userId);
 }

@@ -5,7 +5,7 @@
 
 ### Overview
 
-TempR API
+TempR REST API
 
 ### Architecture
 
@@ -14,15 +14,15 @@ Application tech stack:
 
 ### How to run it
 
-* Maven way  
-    Run the command below on the **server** module:
-    ````
-    mvn spring-boot:run
-    ````
++ Build & Run w/ tests:
+	* From the root folder run: ```mvn clean install```
+	* From the 'tempr-backend-api' folder run: ```mvn spring-boot:run```
++ Build & Run w/o tests:
+        * From the root folder run: ```mvn clean install -P prod```
+        * From the 'tempr-backend-api' folder run: ```mvn spring-boot:run -P prod```
 
-* Agnostic way  
+* Agnostic:  
     Run the compiled jar:
     ````
     java -jar <the-jar-name.jar>
     ````
-### Contributors
