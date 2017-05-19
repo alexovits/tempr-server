@@ -57,7 +57,7 @@
             <id>dev</id>
             <!-- The development profile is active by default -->
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <build.profile.id>dev</build.profile.id>
@@ -67,6 +67,9 @@
         </profile>
         <profile>
             <id>prod</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <build.profile.id>prod</build.profile.id>
                 <skip.integration.tests>false</skip.integration.tests>
