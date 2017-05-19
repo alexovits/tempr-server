@@ -67,6 +67,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/register/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
+        userDto.setUserType("USER");
         User user = userAssembler.toEntity(userDto);
         //Based on whether the user was created or not
         return (userService.createUser(user) != null) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
