@@ -5,6 +5,7 @@ import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorLogService;
 import edu.endava.tempr.model.HeatingCircuit;
 import edu.endava.tempr.model.SensorLog;
+import edu.endava.tempr.repository.HeatingCircuitRepository;
 import edu.endava.tempr.repository.SensorLogRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +25,12 @@ public class SensorLogServiceBean implements SensorLogService{
 
     private static final int LAST_INTERVAL = 7;
 
-    @Autowired
     private SensorLogRepository sensorLogRepository;
 
     @Autowired
-    private HeatingCircuitService heatingCircuitService;
+    public SensorLogServiceBean(SensorLogRepository sensorLogRepository){
+        this.sensorLogRepository = sensorLogRepository;
+    }
 
     @Override
     public SensorLog findOne(Long sensorLogId) throws SensorLogNotFoundException {

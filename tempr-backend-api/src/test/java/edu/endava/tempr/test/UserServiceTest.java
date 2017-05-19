@@ -49,7 +49,7 @@ public class UserServiceTest {
         userList.add(new User());
         Mockito.when(userRepository.findAll()).thenReturn(userList);
         List<User> returnedUserList = victimUserService.findAll();
-        Assert.assertEquals("Failure - expected size", returnedUserList.size(), userList.size());
+        Assert.assertEquals("Failure - expected size match", returnedUserList.size(), userList.size());
     }
 
     @Test

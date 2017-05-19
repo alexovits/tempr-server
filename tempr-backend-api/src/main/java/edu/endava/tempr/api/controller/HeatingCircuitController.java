@@ -86,7 +86,7 @@ public class HeatingCircuitController {
         LOG.info("Request to create HC {}", heatingCircuitDto);
         try {
             heatingCircuitService.create(heatingCircuitDto);
-        } catch (ThermostatNotFoundException e) {
+        } catch (NullPointerException e) {
             LOG.error(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }

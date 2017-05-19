@@ -27,7 +27,7 @@ public class Application {
     private static final int DAYS_TO_GENERATE = 25;
     private static final int HOURS_TO_GENERATE = 24;
     private static final long USER_SENSOR_ID_1 = 8670624;
-    private static final long USER_SENSOR_ID_2 = 2453634;
+    private static final long USER_SENSOR_ID_2 = 1269319;
     private static final long ADMIN_SENSOR_ID_1 = 4523455;
     private static final long ADMIN_SENSOR_ID_2 = 5342245;
 

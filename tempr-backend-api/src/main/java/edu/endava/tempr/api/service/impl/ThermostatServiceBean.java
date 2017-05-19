@@ -28,18 +28,21 @@ public class ThermostatServiceBean implements ThermostatService {
     private static final Logger LOG = LoggerFactory.getLogger(ThermostatServiceBean.class);
     private static final int tokenLength = 5;
 
-    @Autowired
     ThermostatRepository thermostatRepository;
 
-    @Autowired
     SensorLogService sensorLogService;
 
-    @Autowired
     UserService userService;
 
-    @Autowired
     HeatingCircuitService heatingCircuitService;
 
+    @Autowired
+    public ThermostatServiceBean(ThermostatRepository thermostatRepository, SensorLogService sensorLogService, UserService userService, HeatingCircuitService heatingCircuitService){
+        this.thermostatRepository = thermostatRepository;
+        this.sensorLogService = sensorLogService;
+        this.userService = userService;
+        this.heatingCircuitService = heatingCircuitService;
+    }
 
     @Override
     public Thermostat findByUserId(Long userId) throws ThermostatNotFoundException {
@@ -109,23 +112,23 @@ public class ThermostatServiceBean implements ThermostatService {
     }
 
     @Override
-    public void configureThermostat(String thermostatToken) throws ThermostatAlreadyConfiguredException, ThermostatNotFoundException {
+    public Thermostat configureThermostat(String thermostatToken) throws ThermostatAlreadyConfiguredException, ThermostatNotFoundException {
         Thermostat thermostat = findOne(thermostatToken);
         LOG.info("Configuring thermostat: {}", thermostat.getToken());
         // If it's already configured inform client
         if(thermostat.getConfigured() == 1) throw new ThermostatAlreadyConfiguredException(String.format("Thermostat with token %1$s configuration failed due to being already CONFIGURED.", thermostatToken));
         thermostat.setConfigured((short) 1); // Set it to configured
-        updateThermostat(thermostat);
+        return updateThermostat(thermostat);
     }
 
     @Override
-    public void unConfigureThermostat(String thermostatToken) throws ThermostatAlreadyConfiguredException, ThermostatNotFoundException {
+    public Thermostat unConfigureThermostat(String thermostatToken) throws ThermostatAlreadyConfiguredException, ThermostatNotFoundException {
         Thermostat thermostat = findOne(thermostatToken);
         LOG.info("Unconfiguring thermostat: {}", thermostat.getToken());
         // If it's already configured
         if(thermostat.getConfigured() == 0) throw new ThermostatAlreadyConfiguredException(String.format("Thermostat with token %1$s unconfiguration failed due to being already UNCONFIGURED.", thermostatToken));
         thermostat.setConfigured((short) 0); // Set it to unconfigured
-        updateThermostat(thermostat);
+        return updateThermostat(thermostat);
     }
 
     // Creates a new token for a device by using the template: {username}/{UUID's first tokenLength chars}

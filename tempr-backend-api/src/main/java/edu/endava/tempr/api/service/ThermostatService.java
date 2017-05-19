@@ -17,6 +17,6 @@ public interface ThermostatService {
     Thermostat findByUserName(String username) throws UserNotFoundException, ThermostatNotFoundException;
     List getTemperatures(String thermostatToken) throws ThermostatNotFoundException, OutOfHistogramRangeException, HeatingCircuitNotFoundException;
     void deleteThermostat(Long id);
-    void configureThermostat(String thermostatToken) throws ThermostatAlreadyConfiguredException, ThermostatNotFoundException;
-    void unConfigureThermostat(String thermostatToken) throws ThermostatAlreadyConfiguredException, ThermostatNotFoundException;
+    Thermostat configureThermostat(String thermostatToken) throws ThermostatAlreadyConfiguredException, ThermostatNotFoundException;
+    Thermostat unConfigureThermostat(String thermostatToken) throws ThermostatAlreadyConfiguredException, ThermostatNotFoundException;
 }

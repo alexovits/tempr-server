@@ -12,6 +12,7 @@ import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.model.HeatingCircuit;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.repository.HeatingCircuitRepository;
+import edu.endava.tempr.repository.ThermostatRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,33 +29,33 @@ public class HeatingCircuitServiceBean implements HeatingCircuitService {
     private static final Logger LOG = LoggerFactory.getLogger(ThermostatServiceBean.class);
 
     private HeatingCircuitRepository heatingCircuitRepository;
-    private ThermostatService thermostatService;
+    private ThermostatRepository thermostatRepository;
     private SensorService sensorService;
     private SuggestionService suggestionService;
 
-    public HeatingCircuitServiceBean(HeatingCircuitRepository heatingCircuitRepository, ThermostatService thermostatService, SensorService sensorService, SuggestionService suggestionService){
+    public HeatingCircuitServiceBean(HeatingCircuitRepository heatingCircuitRepository, ThermostatRepository thermostatRepository, SensorService sensorService, SuggestionService suggestionService){
         this.heatingCircuitRepository = heatingCircuitRepository;
-        this.thermostatService = thermostatService;
+        this.thermostatRepository = thermostatRepository;
         this.sensorService = sensorService;
         this.suggestionService = suggestionService;
     }
 
     @Override
-    public HeatingCircuit create(HeatingCircuitDto heatingCircuitDto) throws ThermostatNotFoundException {
+    public HeatingCircuit create(HeatingCircuitDto heatingCircuitDto) {
         HeatingCircuit heatingCircuit = new HeatingCircuit();
         // Checks if all the necessary parameters are set
         if(heatingCircuitDto.getName() == null || heatingCircuitDto.getSensorChipId() == null || heatingCircuitDto.getThermostatToken() == null){
             throw new InvalidParameterException("Name, chipID and token needed for the Heating Circuit registration");
         }
         // Checks if a thermostat with the given token exists
-        Thermostat ownerThermostat = thermostatService.findOne(heatingCircuitDto.getThermostatToken());
+        Thermostat ownerThermostat = thermostatRepository.findByToken(heatingCircuitDto.getThermostatToken());
         // Sets only the obligatory default attributes
         heatingCircuit.setName(heatingCircuitDto.getName());
         heatingCircuit.setThermostat(ownerThermostat);
         heatingCircuit.setAiFlag(false); //By default when creating new HC flag is false
         heatingCircuit.setSensor(sensorService.create(heatingCircuitDto.getSensorChipId()));
         HeatingCircuit savedHeatingCircuit = heatingCircuitRepository.save(heatingCircuit);
-        LOG.info("Created Heating Circuit™ with id: {} for thermostat with token: {}", savedHeatingCircuit.getId(), savedHeatingCircuit.getThermostat().getToken());
+        LOG.info("Created Heating Circuit™ with id: {}", savedHeatingCircuit.getId());
         return savedHeatingCircuit;
     }
 

@@ -1,17 +1,18 @@
 package edu.endava.tempr.test;
 
-import ch.qos.logback.core.net.AbstractSSLSocketAppender;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.endava.tempr.api.exception.HeatingCircuitNotFoundException;
+import edu.endava.tempr.api.exception.ThermostatNotFoundException;
 import edu.endava.tempr.api.service.HeatingCircuitService;
 import edu.endava.tempr.api.service.SensorService;
 import edu.endava.tempr.api.service.SuggestionService;
-import edu.endava.tempr.api.service.ThermostatService;
 import edu.endava.tempr.api.service.impl.HeatingCircuitServiceBean;
+import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.model.HeatingCircuit;
+import edu.endava.tempr.model.Sensor;
 import edu.endava.tempr.model.Thermostat;
 import edu.endava.tempr.model.User;
 import edu.endava.tempr.repository.HeatingCircuitRepository;
+import edu.endava.tempr.repository.ThermostatRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,10 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.security.InvalidParameterException;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
 
 
 /**
@@ -35,7 +40,7 @@ public class HeatingCircuitServiceTest {
     private HeatingCircuitRepository heatingCircuitRepository;
 
     @Mock
-    private ThermostatService thermostatService;
+    private ThermostatRepository thermostatRepository;
 
     @Mock
     private SensorService sensorService;
@@ -46,10 +51,79 @@ public class HeatingCircuitServiceTest {
     private HeatingCircuitService victimHeatingCircuitService;
 
     @Before
-    public void setUp() { victimHeatingCircuitService = new HeatingCircuitServiceBean(heatingCircuitRepository, thermostatService, sensorService, suggestionService); }
+    public void setUp() { victimHeatingCircuitService = new HeatingCircuitServiceBean(heatingCircuitRepository, thermostatRepository, sensorService, suggestionService); }
 
     @Test
-    public void trueSensorBelongTest(){
+    public void testCreate() {
+        HeatingCircuit resultHeatingCircuit = new HeatingCircuit();
+        HeatingCircuitDto testHeatingCircuitDto = new HeatingCircuitDto();
+        testHeatingCircuitDto.setName("Room-1");
+        testHeatingCircuitDto.setSensorChipId(1L);
+        testHeatingCircuitDto.setThermostatToken("token");
+        HeatingCircuit testHeatingCircuit = new HeatingCircuit();
+        testHeatingCircuit.setId(1L);
+        // Creating mock functions
+        Mockito.when(sensorService.create(Mockito.any(Long.class))).thenReturn(new Sensor());
+        Mockito.when(heatingCircuitRepository.save(Mockito.any(HeatingCircuit.class))).thenReturn(testHeatingCircuit);
+        Mockito.when(thermostatRepository.findByToken(Mockito.any(String.class))).thenReturn(new Thermostat());
+        // Executing service function
+        resultHeatingCircuit = victimHeatingCircuitService.create(testHeatingCircuitDto);
+        Assert.assertEquals("Failure - expected attribute match", resultHeatingCircuit.getId(), testHeatingCircuit.getId());
+    }
+
+    @Test
+    public void testCreateFailInvalidParameter() {
+        Exception exception = null;
+        HeatingCircuit resultHeatingCircuit = null;
+        HeatingCircuitDto testHeatingCircuitDto = new HeatingCircuitDto(); //Missing token -> exception
+        testHeatingCircuitDto.setName("Room-1");
+        testHeatingCircuitDto.setSensorChipId(1L);
+        HeatingCircuit testHeatingCircuit = new HeatingCircuit();
+        testHeatingCircuit.setId(1L);
+        // Creating mock functions
+        Mockito.when(sensorService.create(Mockito.any(Long.class))).thenReturn(new Sensor());
+        Mockito.when(heatingCircuitRepository.save(Mockito.any(HeatingCircuit.class))).thenReturn(testHeatingCircuit);
+        try {
+            Mockito.when(thermostatRepository.findByToken(Mockito.any(String.class))).thenReturn(new Thermostat());
+            // Executing service function
+            resultHeatingCircuit = victimHeatingCircuitService.create(testHeatingCircuitDto);
+        } catch (InvalidParameterException e) {
+            exception = e;
+            e.printStackTrace();
+        }
+        Assert.assertNotNull("Failure - Expected InvalidParameterException", exception);
+        Assert.assertThat(exception, instanceOf(InvalidParameterException.class));
+        Assert.assertNull(resultHeatingCircuit);
+    }
+
+    @Test
+    public void testCreateFailThermostatNotFound() {
+        Exception exception = null;
+        HeatingCircuit resultHeatingCircuit = null;
+        HeatingCircuitDto testHeatingCircuitDto = new HeatingCircuitDto(); //Missing token -> exception
+        testHeatingCircuitDto.setName("Room-1");
+        testHeatingCircuitDto.setSensorChipId(1L);
+        testHeatingCircuitDto.setThermostatToken("token");
+        HeatingCircuit testHeatingCircuit = new HeatingCircuit();
+        testHeatingCircuit.setId(1L);
+        // Creating mock functions
+        Mockito.when(sensorService.create(Mockito.any(Long.class))).thenReturn(new Sensor());
+        Mockito.when(heatingCircuitRepository.save(Mockito.any(HeatingCircuit.class))).thenReturn(null);
+        try {
+            Mockito.when(thermostatRepository.findByToken(Mockito.any(String.class))).thenReturn(new Thermostat());
+            // Executing service function
+            resultHeatingCircuit = victimHeatingCircuitService.create(testHeatingCircuitDto);
+        } catch (NullPointerException | InvalidParameterException e) {
+            exception = e;
+            e.printStackTrace();
+        }
+        Assert.assertNotNull(exception);
+        Assert.assertThat(exception, instanceOf(NullPointerException.class));
+        Assert.assertNull(resultHeatingCircuit);
+    }
+
+    @Test
+    public void trueSensorBelongTest() {
         HeatingCircuit testHeatingCircuit = Mockito.mock(HeatingCircuit.class);
         Thermostat testThermostat = Mockito.mock(Thermostat.class);
         User testUser = Mockito.mock(User.class);
@@ -63,7 +137,7 @@ public class HeatingCircuitServiceTest {
     }
 
     @Test
-    public void falseSensorBelongTest(){
+    public void falseSensorBelongTest() {
         HeatingCircuit testHeatingCircuit = Mockito.mock(HeatingCircuit.class);
         Thermostat testThermostat = Mockito.mock(Thermostat.class);
         User testUser = Mockito.mock(User.class);
@@ -75,7 +149,7 @@ public class HeatingCircuitServiceTest {
     }
 
     @Test
-    public void testFindOneWithValidChipId(){
+    public void testFindOneWithValidChipId() {
         HeatingCircuit heatingCircuit = new HeatingCircuit();
         Exception exception = null;
         HeatingCircuit returnHeatingCircuit = null;
@@ -94,7 +168,7 @@ public class HeatingCircuitServiceTest {
     }
 
     @Test
-    public void testFindOneWithInvalidChipId(){
+    public void testFindOneWithInvalidChipId() {
         HeatingCircuit heatingCircuit = new HeatingCircuit();
         Exception exception = null;
         HeatingCircuit returnHeatingCircuit = null;
@@ -112,7 +186,7 @@ public class HeatingCircuitServiceTest {
     }
 
     @Test
-    public void testFindOneWithInvalidHeatingCircuitId(){
+    public void testFindOneWithInvalidHeatingCircuitId() {
         HeatingCircuit heatingCircuit = new HeatingCircuit();
         Exception exception = null;
         HeatingCircuit returnHeatingCircuit = null;
@@ -130,7 +204,7 @@ public class HeatingCircuitServiceTest {
     }
 
     @Test
-    public void testFindOneWithValidHeatingCircuitId(){
+    public void testFindOneWithValidHeatingCircuitId() {
         HeatingCircuit heatingCircuit = new HeatingCircuit();
         Exception exception = null;
         HeatingCircuit returnHeatingCircuit = null;

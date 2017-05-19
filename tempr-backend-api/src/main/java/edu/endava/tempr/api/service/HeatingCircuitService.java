@@ -3,17 +3,14 @@ package edu.endava.tempr.api.service;
 import edu.endava.tempr.api.exception.HeatingCircuitNotFoundException;
 import edu.endava.tempr.api.exception.OutOfHistogramRangeException;
 import edu.endava.tempr.api.exception.SensorLogNotFoundException;
-import edu.endava.tempr.api.exception.ThermostatNotFoundException;
 import edu.endava.tempr.common.HeatingCircuitDto;
 import edu.endava.tempr.model.HeatingCircuit;
-
-import java.util.List;
 
 /**
  * Created by zsoltszabo on 4/8/17.
  */
 public interface HeatingCircuitService {
-    HeatingCircuit create(HeatingCircuitDto heatingCircuitDto) throws ThermostatNotFoundException;
+    HeatingCircuit create(HeatingCircuitDto heatingCircuitDto);
     HeatingCircuit findByChipId(long chipId) throws HeatingCircuitNotFoundException;
     HeatingCircuit findOne(long heatingCircuitId) throws HeatingCircuitNotFoundException;
     HeatingCircuit update(HeatingCircuit heatingCircuit) throws HeatingCircuitNotFoundException;

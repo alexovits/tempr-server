@@ -49,7 +49,7 @@ public class UserServiceBean implements UserService {
     public User createUser(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setUserType(UserType.USER);
+        //user.setUserType(UserType.USER);
         User savedUser = userRepository.save(user);
         LOG.info("Created new user with id: '{}'", savedUser.getId());
         return savedUser;
