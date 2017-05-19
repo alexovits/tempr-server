@@ -80,8 +80,8 @@ public class ThermostatController {
         try {
             return new ResponseEntity<>(thermostatAssembler.toDto(thermostatService.findByUserName(decodedUserName)), HttpStatus.OK);
         } catch (ThermostatNotFoundException | UserNotFoundException e){
-            LOG.error(e.getMessage());
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            LOG.warn(e.getMessage());
+            return new ResponseEntity(null, HttpStatus.OK);
         }
     }
 
