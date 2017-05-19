@@ -26,10 +26,12 @@ public class Application {
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
     private static final int DAYS_TO_GENERATE = 25;
     private static final int HOURS_TO_GENERATE = 24;
-    private static final long USER_SENSOR_ID_1 = 8670624;
-    private static final long USER_SENSOR_ID_2 = 1269319;
-    private static final long ADMIN_SENSOR_ID_1 = 4523455;
-    private static final long ADMIN_SENSOR_ID_2 = 5342245;
+    private static final long USER_SENSOR_ID_1 = 1269319;//Real
+    private static final long USER_SENSOR_ID_2 = 2579345;
+    private static final long ADMIN_SENSOR_ID_1 = 1188432;//Real
+    private static final long ADMIN_SENSOR_ID_2 = 123;
+    private static final long ADMIN_SENSOR_ID_3 = 456;
+    private static final long ADMIN_SENSOR_ID_4 = 789;
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
@@ -82,6 +84,15 @@ public class Application {
                 });
             });
 
+            HeatingCircuit hc2 = heatingCircuitService.findByChipId(USER_SENSOR_ID_2);
+            IntStream.range(0, DAYS_TO_GENERATE).forEachOrdered(day -> {
+                IntStream.range(0, HOURS_TO_GENERATE).forEachOrdered(hour -> {
+//                    int randTemperature = rand.nextInt(7) + 18;
+                    int randTemperature = new Double(rand.nextGaussian()*3 + 21).intValue();// mean:21, stddev:3
+                    sensorLogService.create(LocalDateTime.now().minusDays(day).minusHours(hour), randTemperature, hc2);
+                });
+            });
+
             //LOG.info("Here is {}", thermostatService.getTemperatures(defThermostat.getToken()));
             //LOG.info("All the suggestions: {}", suggestionService.getSuggestionTemperature(0,hc.getId()));
 
@@ -105,6 +116,20 @@ public class Application {
             heatingCircuitDto = new HeatingCircuitDto();
             heatingCircuitDto.setName("Kitchen");
             heatingCircuitDto.setSensorChipId(ADMIN_SENSOR_ID_2);
+            heatingCircuitDto.setThermostatToken(defThermostat.getToken());
+            heatingCircuitService.create(heatingCircuitDto);
+
+            // Add another hc
+            heatingCircuitDto = new HeatingCircuitDto();
+            heatingCircuitDto.setName("Bathroom");
+            heatingCircuitDto.setSensorChipId(ADMIN_SENSOR_ID_3);
+            heatingCircuitDto.setThermostatToken(defThermostat.getToken());
+            heatingCircuitService.create(heatingCircuitDto);
+
+            // Add another hc
+            heatingCircuitDto = new HeatingCircuitDto();
+            heatingCircuitDto.setName("Garage");
+            heatingCircuitDto.setSensorChipId(ADMIN_SENSOR_ID_4);
             heatingCircuitDto.setThermostatToken(defThermostat.getToken());
             heatingCircuitService.create(heatingCircuitDto);
 
