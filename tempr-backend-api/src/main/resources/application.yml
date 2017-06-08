@@ -1,0 +1,35 @@
+# Generic properties
+server:
+  contextPath: /tempr-api
+  port: 8080
+
+logging:
+  level:
+    org:
+      springframework:
+        web: INFO
+      hibernate: INFO
+
+# Persistence properties
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/tempr?useSSL=false
+    username: root
+    password: root
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL5Dialect
+      ddl-auto: create-drop
+
+# Actuator endpoint properties
+endpoints:
+  enabled: false
+  info:
+    enabled: true
+  health:
+    enabled: true
+management:
+  info:
+    git:
+      mode: simple

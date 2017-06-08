@@ -55,29 +55,4 @@ public class SimulatorController {
         simulatorService.setSuggestionFlag(suggestionFlag);
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    //TODO:
-    /**
-     - temperatures GET -> returns of every HC the desired, suggested, current,
-     - /desiredTemp POST -> sets desired temperature of given HC
-     - /log -> logs HC's temp
-
-     - HW endpoints:
-     - /log
-     - temperatures GET
-
-     - UI endpoints:
-     - /desiredTemp POST (Later)
-     - /temperatures GET
-     - ON/OFF ML
-     - /loghistory -> sensor last x days temp (Later)
-     - /heatingcircuit/register (Later)
-
-     - SUMILATOR: (/simulator indicates in-memory db usage)
-     - GET /simulator/temperatures
-     - /simulator/log
-     - /simulator/thermostat/register (Later)
-     - /simulator/heatingcircuit/register (Later)
-     - /simulator/reset (Later)
-     **/
 }

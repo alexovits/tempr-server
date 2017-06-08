@@ -34,7 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebA
         http.httpBasic();
         http.authorizeRequests()
                 .antMatchers("/user/register/").permitAll()
-                .antMatchers("/version").permitAll()
                 .antMatchers("/user/").hasAuthority("ADMIN")
                 .antMatchers("/simulator/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated();
